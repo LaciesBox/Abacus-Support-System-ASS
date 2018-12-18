@@ -3,8 +3,7 @@
     <q-layout-header>
       <q-toolbar
         color="primary"
-        :glossy="$q.theme === 'mat'"
-        :inverted="$q.theme === 'ios'"
+        height=300px
       >
         <q-btn
           flat
@@ -16,8 +15,8 @@
         />
 
         <q-toolbar-title>
-          Quasar App
-          <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
+          毘沙門天
+          <div slot="subtitle">Bishamonten</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
@@ -32,22 +31,18 @@
         inset-delimiter
       >
         <q-list no-border link inset-delimiter>
-          <q-list-header>Essential Links</q-list-header>
-          <q-item @click.native="openURL('http://quasar-framework.org')">
-            <q-item-side icon="school" />
-            <q-item-main label="Docs" sublabel="quasar-framework.org"></q-item-main>
+          <q-list-header>Directory</q-list-header>
+          <q-item @click.native="openURL('https://facebook.com/groups/unboxlacie/')">
+            <q-item-side icon="group" />
+            <q-item-main label="Lacie's Box Community"></q-item-main>
           </q-item>
-          <q-item @click.native="openURL('https://discord.gg/5TDhbDg')">
-            <q-item-side icon="chat" />
-            <q-item-main label="Discord Chat Channel" sublabel="https://discord.gg/5TDhbDg"></q-item-main>
+          <q-item @click.native="openURL('https://www.facebook.com/groups/1108088439350326/')">
+            <q-item-side icon="people_outline" />
+            <q-item-main label="Bishamonten Group"></q-item-main>
           </q-item>
-          <q-item @click.native="openURL('http://forum.quasar-framework.org')">
-            <q-item-side icon="forum" />
-            <q-item-main label="Forum" sublabel="forum.quasar-framework.org"></q-item-main>
-          </q-item>
-          <q-item @click.native="openURL('https://twitter.com/quasarframework')">
-            <q-item-side icon="rss feed" />
-            <q-item-main label="Twitter" sublabel="@quasarframework"></q-item-main>
+          <q-item @click.native="openURL('https://www.facebook.com/Bishamonten-2162920130626725/')">
+            <q-item-side icon="public" />
+            <q-item-main label="Bishamonten Page"></q-item-main>
           </q-item>
         </q-list>
       </q-list>
