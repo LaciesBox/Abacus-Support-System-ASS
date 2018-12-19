@@ -24,7 +24,8 @@
           </q-item>
         </q-list>
       </q-list>
-      <img class="abacus" src="../assets/Abacus.jpg" alt="Abacus">
+      <!--TODO: Make the image unselectable -->
+      <img class="abacus" src="../assets/abacus-standing.png" alt="Abacus">
     </q-layout-drawer>
     
 </template>
