@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: this.$q.platform.is.desktop
     }
   }
   
