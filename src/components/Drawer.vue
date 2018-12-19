@@ -24,6 +24,7 @@
           </q-item>
         </q-list>
       </q-list>
+      <img class="abacus" src="../assets/Abacus.jpg" alt="Abacus">
     </q-layout-drawer>
     
 </template>
@@ -37,4 +38,9 @@ export default {
 </script>
 
 <style>
+  .abacus {
+    height: 60%;
+    position: absolute;
+    bottom: 0px;
+  }
 </style>
