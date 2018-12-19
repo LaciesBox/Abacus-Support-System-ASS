@@ -17,9 +17,6 @@ export default {
   components: {
     MainPage,
     Toolbar
-  },
-  methods: {
-    openURL
   }
 }
 </script>
