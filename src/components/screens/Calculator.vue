@@ -1,14 +1,20 @@
 <template>
   <q-page-container>
+    <character-search />
     <q-page class="flex flex-center">
-      <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png">
+      <!-- <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png"> -->
+      
     </q-page>
   </q-page-container>
 </template>
 
 <script>
+import CharacterSearch from '../CharacterSearch.vue'
 export default {
   name: 'Calculator',
+  components: {
+    CharacterSearch
+  },
   data () {
     return {
       dataEntries:null

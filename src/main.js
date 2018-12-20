@@ -27,6 +27,7 @@ import {
   QItem,
   QItemSide,
   QItemMain,
+  QSearch,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -46,6 +47,7 @@ Vue.use(Quasar, {
     QItem,
     QItemSide,
     QItemMain,
+    QSearch,
   },
   directives: {
   },
