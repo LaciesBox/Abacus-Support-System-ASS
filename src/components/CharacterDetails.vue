@@ -1,5 +1,8 @@
 <template>
     <q-page>
+        <div class="chara-component">
+        </div>
+        <!--Start of character search UI-->
         <q-search
         float-label="Character Select"
         placeholder="Character Name"
@@ -14,10 +17,7 @@
             <q-item-main :label="charaName" />
         </q-item>
         </q-list>
-
-        <div class="chara-component">
-
-        </div>
+        <!--End of character search UI-->
     </q-page>
 </template>
 
