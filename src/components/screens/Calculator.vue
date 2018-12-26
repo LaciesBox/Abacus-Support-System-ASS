@@ -1,10 +1,15 @@
 <template>
   <q-page-container>
+<<<<<<< HEAD
     <character-search />
     <q-page class="flex flex-center">
       <!-- <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png"> -->
       
     </q-page>
+=======
+      <character-search :chara-entries="dataEntries"/>
+      <!-- <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png"> -->
+>>>>>>> Added character search functionality.
   </q-page-container>
 </template>
 

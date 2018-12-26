@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
 import Toolbar from './components/Toolbar.vue'
 
 export default {
