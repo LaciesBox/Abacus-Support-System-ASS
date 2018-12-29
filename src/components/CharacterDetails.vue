@@ -65,7 +65,7 @@ export default {
   },
 
   props: {
-    charaEntries: Array
+    charaEntries: Object
   },
 
   methods: {
@@ -74,12 +74,15 @@ export default {
         this.charaNamesFiltered = null;
       } else {
         let names = [];
-        this.charaEntries.forEach(function(chara) {
+
+        Object.keys(this.charaEntries).forEach(chara => {
           let charaName = chara.gsx$name.$t;
+          
           if (charaName.toUpperCase().includes(input.toUpperCase())) {
             names.push(charaName);
           }
         });
+
         if (names.length === 0) {
           names.push("No character found.");
         }

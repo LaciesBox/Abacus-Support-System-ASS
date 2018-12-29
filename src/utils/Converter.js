@@ -1,13 +1,14 @@
 
 const gsxToAss = function(characters){
+  let finalCharas = {};
+  
   characters.forEach(chara => {
-    let tempChara = {};
-
     Object.keys(chara).forEach(key => {
       // if key does not contain gsx, data is irrelevant; delete 
       if(!key.includes("gsx$")){
         delete chara[key];
-      } else {
+      } 
+      else {
         // get proper value
         chara[key] = chara[key].$t;
 
@@ -17,7 +18,11 @@ const gsxToAss = function(characters){
         }
       }
     })
+    finalCharas[chara.gsx$name] = chara;
+
   })
+
+  return finalCharas;
 }
 export default {
   gsxToAss

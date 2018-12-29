@@ -38,8 +38,7 @@ export default {
       xhr.open('GET', sheetUrl )
       xhr.onload = function () {
         self.dataEntries = JSON.parse(xhr.responseText);
-        self.dataEntries = self.dataEntries.feed.entry;
-        Converter.gsxToAss(self.dataEntries);
+        self.dataEntries = Converter.gsxToAss(self.dataEntries.feed.entry);
       }
       xhr.send()
     }
