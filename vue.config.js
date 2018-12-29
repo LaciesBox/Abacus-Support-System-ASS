@@ -7,7 +7,8 @@ module.exports = {
         "components": path.resolve(__dirname, 'src/components'),
         "utils": path.resolve(__dirname, 'src/utils'),
         "assets": path.resolve(__dirname, 'src/assets'),
-        "screens": path.resolve(__dirname, 'src/screens')
+        "screens": path.resolve(__dirname, 'src/screens'),
+        "constants": path.resolve(__dirname, 'src/constants'),
       }
     }
   },
