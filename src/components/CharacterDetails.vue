@@ -9,6 +9,7 @@
         icon="face"
         clearable
         inverted
+        v-model="character"
         color="secondary"
         @input="input => showCharaList(input)" 
         />

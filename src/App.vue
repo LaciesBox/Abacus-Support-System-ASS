@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import Toolbar from './components/Toolbar.vue'
+import { openURL } from 'quasar'
+import { Toolbar } from 'components'
 
 export default {
   name: 'LayoutDefault',

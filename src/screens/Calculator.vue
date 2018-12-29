@@ -1,12 +1,12 @@
 <template>
   <q-page-container>
       <character-details :chara-entries="dataEntries"/>
-      <!-- <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png"> -->
   </q-page-container>
 </template>
 
 <script>
-import CharacterDetails from '../CharacterDetails.vue'
+import { CharacterDetails } from "components"
+
 export default {
   name: 'Calculator',
   components: {
