@@ -24,7 +24,7 @@
 
 <script>
 export default {
-    name: 'CharacterSearch',
+    name: 'CharacterDetails',
     data: function (){
         return {
             charaNamesFiltered: null,

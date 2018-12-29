@@ -23,9 +23,10 @@
 </template>
 
 <script>
-import { Drawer } from "components";
+import Drawer from "./Drawer.vue";
 
 export default {
+  name: "Toolbar",
   components: {
     Drawer
   },
