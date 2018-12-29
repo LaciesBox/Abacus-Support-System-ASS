@@ -16,8 +16,10 @@ const consumeStat = function(stat, multiplier, isPositive){
   multiplier = isPositive ? multiplier : multiplier * -1;
 
   if(stat.willCalculate){
-    finallRoll += ( (stat.add + stat.base) * multiplier);
+    return  (stat.add + stat.base) * multiplier;
   }
+  
+  return 0;
 }
 
 const computeStats = function(type, multiplier, isPositive, max){
@@ -50,10 +52,10 @@ const roll = function(stats) {
   finalRollValue += computeStats(Consts.OCCUPATION, 1, true, 5);
 
   //compute talents
-  finalRollValue += computeStats(Consts.TALENT, .02, true, 5);
+  finalRollValue += computeStats(Consts.TALENT, PERCENTAGE_MULTIPLIER, true, 5);
 
   //compute afflictions
-  finalRollValue += computeStats(Consts.AFFLICTION, .02, true, 5);
+  finalRollValue += computeStats(Consts.AFFLICTION, PERCENTAGE_MULTIPLIER, true, 5);
 
   //return json object
   return {
