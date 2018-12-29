@@ -1,4 +1,4 @@
-import Consts from "constants/ass-constants";
+import Consts from "./Constants";
 
 const PERCENTAGE_MULTIPLIER = .02,
     MAX_ROLL = 20,
@@ -27,6 +27,7 @@ const computeStats = function(type, multiplier, isPositive, max){
   return sum;
 }
 
+// when player clicks "roll"
 const roll = function(stats) {
   //randomize
   let rollValue = Math.ceil(Math.random() * MAX_ROLL);

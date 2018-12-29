@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    {{charaEntries}}
     <!-- Start of chara details UI -->
 		<div class="text-center width-30 float-left generic-side-margin">
 			<q-card color="primary">
@@ -47,17 +48,26 @@
 </template>
 
 <script>
+import {Consts} from "utils";
+
 export default {
   name: "CharacterDetails",
-  data: function() {
+  
+  created() {
+    console.log(this.charaEntries);
+  },
+
+  data() {
     return {
       charaNamesFiltered: null,
       character: null
     };
   },
+
   props: {
     charaEntries: Array
   },
+
   methods: {
     showCharaList: function(input) {
       if (!input) {

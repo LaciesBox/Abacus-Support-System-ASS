@@ -21,10 +21,5 @@ export default {
   GENBU:'G',
   BYAKKO: 'B',
   SUZAKU: 'S',
-  SEIRYUU: 'X',
-  CHARA_HEADERS_SHEET: 0,
-  GENBU_SHEET: 1,
-  BYAKKO_SHEET: 2,
-  SUZAKU_SHEET: 3,
-  SEIRYUU_SHEET: 4
+  SEIRYUU: 'X'
 }
