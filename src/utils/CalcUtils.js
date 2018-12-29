@@ -1,6 +1,7 @@
 import Consts from "constants/ass-constants";
 
 const PERCENTAGE_MULTIPLIER = .02;
+const MAX_ROLL = 20;
 
 const blankRollDetails = function() {
   return {
@@ -18,7 +19,7 @@ const consumeStat = function(stat, multiplier, isPositive){
   if(stat.willCalculate){
     return  (stat.add + stat.base) * multiplier;
   }
-  
+
   return 0;
 }
 
@@ -36,7 +37,7 @@ const computeStats = function(type, multiplier, isPositive, max){
 
 const roll = function(stats) {
   //randomize
-  let rollValue = 0;
+  let rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let finalRollValue = rollValue;
 
   let stat = {};
