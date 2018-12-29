@@ -14,5 +14,8 @@ export default {
   TALENT: "talent",
   AFFLICTION: "affliction",
   OCCUPATION: "occupation",
-  MORTALITY_NUMBER: "mortalityNumber"
+  MORTALITY_NUMBER: "mortalityNumber",
+  CRIT_SUCC_IND: "success",
+  CRIT_FAIL_IND: "fail",
+  NORM_ROLL_IND: "normal"
 }

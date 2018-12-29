@@ -1,7 +1,9 @@
 import Consts from "constants/ass-constants";
 
-const PERCENTAGE_MULTIPLIER = .02;
-const MAX_ROLL = 20;
+const PERCENTAGE_MULTIPLIER = .02,
+    MAX_ROLL = 20,
+    CRITICAL_FAIL = 1,
+    CRITICAL_SUCC = 20;
 
 const blankRollDetails = function() {
   return {
@@ -14,9 +16,8 @@ const blankRollDetails = function() {
 }
 
 const consumeStat = function(stat, multiplier, isPositive){
-  multiplier = isPositive ? multiplier : multiplier * -1;
-
-  if(stat.willCalculate){
+  if(stat && stat.base && stat.willCalculate){
+    multiplier = isPositive ? multiplier : multiplier * -1;
     return  (stat.add + stat.base) * multiplier;
   }
 
@@ -27,6 +28,7 @@ const computeStats = function(type, multiplier, isPositive, max){
   let sum = 0;
   //compute 
   for(let i = 1; i <= max; i++){
+    //type + i: basically "talent1","affliction2", "occupation5", etc.
     stat = stats[type+i];
 
     sum += consumeStat(stat, multiplier, isPositive);
@@ -61,10 +63,17 @@ const roll = function(stats) {
   //return json object
   return {
     roll: rollValue,
-    finalRoll: finallRollValue
+    finalRoll: finallRollValue,
+    status: finalRollValue <= CRITICAL_FAIL ? 
+        Consts.CRIT_FAIL_IND : finalRollValue >= CRITICAL_SUCC ? 
+        Consts.CRIT_SUCC_IND : Consts.NORM_ROLL_IND
   }
 }
 
 export default {
-  roll
+  roll,
+  PERCENTAGE_MULTIPLIER,
+  MAX_ROLL,
+  CRITICAL_FAIL,
+  CRITICAL_SUCC
 }
