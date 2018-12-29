@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    {{charaEntries}}
     <!-- Start of chara details UI -->
 		<div class="text-center width-30 float-left generic-side-margin">
 			<q-card color="primary">

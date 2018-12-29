@@ -63,7 +63,7 @@ Vue.use(Quasar, {
     QCardSeparator,
     QCardActions,
     QInput,
-    QField,
+    QField
   },
   directives: {},
   plugins: {}

@@ -1,7 +1,7 @@
 
 const gsxToAss = function(characters){
   let finalCharas = {};
-  
+
   characters.forEach(chara => {
     Object.keys(chara).forEach(key => {
       // if key does not contain gsx, data is irrelevant; delete 
@@ -18,8 +18,8 @@ const gsxToAss = function(characters){
         }
       }
     })
+    // add object of array to finalCharas to be returned
     finalCharas[chara.gsx$name] = chara;
-
   })
 
   return finalCharas;
