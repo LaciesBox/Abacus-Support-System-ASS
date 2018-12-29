@@ -5,16 +5,6 @@ const PERCENTAGE_MULTIPLIER = .02,
     CRITICAL_FAIL = 1,
     CRITICAL_SUCC = 20;
 
-const blankRollDetails = function() {
-  return {
-    constitution:{
-      calculate:false,
-      base:"",
-      add:""
-    }
-  }
-}
-
 const consumeStat = function(stat, multiplier, isPositive){
   if(stat && stat.base && stat.willCalculate){
     multiplier = isPositive ? multiplier : multiplier * -1;
