@@ -2,7 +2,7 @@
   <q-page-container>
     <q-page class="flex flex-center">
       <img :alt="alt || name" :src="src || imgSrc">
-    </q-page>  
+    </q-page>
   </q-page-container>
 </template>
 
@@ -11,18 +11,18 @@
 import ImageUtils from "utils/ImageUtils.js";
 
 export default {
-  name: 'ImageContainer',
+  name: "ImageContainer",
   computed: {
     imgSrc() {
       return ImageUtils.getImgUrl(this.$route.params.egg_id);
     }
   },
   props: {
-    alt:{
+    alt: {
       type: String,
       required: false
     },
-    src:{
+    src: {
       type: String,
       required: false
     },
@@ -31,5 +31,5 @@ export default {
       required: false
     }
   }
-}
+};
 </script>
