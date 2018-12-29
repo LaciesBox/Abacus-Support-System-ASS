@@ -31,9 +31,13 @@
 </template>
 
 <script>
+import { openURL } from 'quasar'
 export default {
     props: {
         drawerOpen: Boolean
+    },
+    methods: {
+      openURL
     }
 }
 </script>

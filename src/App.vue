@@ -13,9 +13,6 @@ export default {
   name: 'LayoutDefault',
   components: {
     Toolbar
-  },
-  methods: {
-    openURL
   }
 }
 </script>
