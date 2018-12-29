@@ -12,6 +12,7 @@ export default {
   APPEAL,
   PHYSICAL_PROPERTIES,
   TALENT: "talent",
+  AFFLICTION: "affliction",
   OCCUPATION: "occupation",
   MORTALITY_NUMBER: "mortalityNumber"
 }
