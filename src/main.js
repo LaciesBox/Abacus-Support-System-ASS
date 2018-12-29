@@ -12,7 +12,7 @@ import 'quasar-extras/fontawesome'
 import 'quasar-extras/ionicons'
 import 'quasar-extras/mdi'
 import {
-  Quasar, 
+  Quasar,
   QBtn,
   QLayout,
   QLayoutHeader,
@@ -28,6 +28,14 @@ import {
   QItemSide,
   QItemMain,
   QSearch,
+  QCard,
+  QCardTitle,
+  QCardMain,
+  QCardMedia,
+  QCardSeparator,
+  QCardActions,
+  QInput,
+  QField,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -48,12 +56,18 @@ Vue.use(Quasar, {
     QItemSide,
     QItemMain,
     QSearch,
+    QCard,
+    QCardTitle,
+    QCardMain,
+    QCardMedia,
+    QCardSeparator,
+    QCardActions,
+    QInput,
+    QField
   },
-  directives: {
-  },
-  plugins: {
-  }
- })
+  directives: {},
+  plugins: {}
+})
 
 Vue.config.productionTip = false
 
