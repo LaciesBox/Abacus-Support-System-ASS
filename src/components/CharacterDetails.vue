@@ -44,7 +44,7 @@ export default {
                     let charaName = chara.gsx$name.$t;
                     if(charaName.toUpperCase().includes(input.toUpperCase())) {
                         names.push(charaName);
-                    };
+                    }
                 });
                 if(names.length === 0) {
                     names.push("No character found.");

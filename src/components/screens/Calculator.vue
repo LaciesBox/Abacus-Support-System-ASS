@@ -1,24 +1,16 @@
 <template>
   <q-page-container>
-<<<<<<< HEAD
-    <character-search />
-    <q-page class="flex flex-center">
+      <character-details :chara-entries="dataEntries"/>
       <!-- <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png"> -->
-      
-    </q-page>
-=======
-      <character-search :chara-entries="dataEntries"/>
-      <!-- <img alt="Bisamonten Logo" src="../../assets/bisha-logo.png"> -->
->>>>>>> Added character search functionality.
   </q-page-container>
 </template>
 
 <script>
-import CharacterSearch from '../CharacterSearch.vue'
+import CharacterDetails from '../CharacterDetails.vue'
 export default {
   name: 'Calculator',
   components: {
-    CharacterSearch
+    CharacterDetails
   },
   data () {
     return {
