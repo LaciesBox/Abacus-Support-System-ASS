@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Drawer from './Drawer.vue'
+import { Drawer } from "components";
 
 export default {
   components: {

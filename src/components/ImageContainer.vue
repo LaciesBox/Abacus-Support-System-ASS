@@ -8,7 +8,7 @@
 
 
 <script>
-import ImageUtils from "../utils/ImageUtils.js";
+import ImageUtils from "utils/ImageUtils.js";
 
 export default {
   name: 'ImageContainer',

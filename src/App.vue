@@ -7,7 +7,7 @@
 
 <script>
 import { openURL } from 'quasar'
-import Toolbar from './components/Toolbar.vue'
+import { Toolbar } from 'components'
 
 export default {
   name: 'LayoutDefault',

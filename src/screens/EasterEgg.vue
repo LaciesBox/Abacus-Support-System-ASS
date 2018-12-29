@@ -6,7 +6,7 @@
 </style>
 
 <script>
-import ImageContainer from "../ImageContainer.vue";
+import { ImageContainer } from "components";
 
 export default {
   name: 'EasterEgg',

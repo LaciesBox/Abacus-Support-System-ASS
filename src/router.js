@@ -4,9 +4,11 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 //import screens here
-import MainPage from './components/screens/MainPage.vue';
-import EasterEgg from './components/screens/EasterEgg.vue';
-import Calculator from './components/screens/Calculator.vue';
+import {
+  MainPage,
+  EasterEgg,
+  Calculator
+} from "screens";
 
 //add imported screen here
 export default new VueRouter({
