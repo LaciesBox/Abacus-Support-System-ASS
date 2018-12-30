@@ -51,7 +51,7 @@ const roll = function(stats) {
 
   //compute occupations
   finalRollValue += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
-  
+
   //compute talents
   finalRollValue += computeStats(stats, Consts.TALENT, 1, true, 5);
 

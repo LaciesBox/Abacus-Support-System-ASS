@@ -177,11 +177,10 @@ export default {
 
   methods: {
     doRoll: function(){
-      //save reference to stat
+      //provide reference, then collect data from children
       let stats = {};
       EventBus.$emit('retrieveStats', stats);
-      console.log(stats);
-      console.log(CalcUtils.roll(stats));
+
       this.rollResult = Object.assign({},CalcUtils.roll(stats));
     },
     getCount: function(field){

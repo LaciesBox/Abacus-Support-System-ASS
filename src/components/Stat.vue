@@ -43,7 +43,7 @@ export default {
     EventBus.$on('retrieveStats', data => {
       data[this.fieldName] = {
         add: Number(this.add),
-        base: this.value,
+        base: Number(this.value),
         willCalculate: this.willCalculate
       }
     });
