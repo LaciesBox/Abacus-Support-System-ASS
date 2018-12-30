@@ -35,7 +35,7 @@ import {
   QCardSeparator,
   QCardActions,
   QInput,
-  QField,
+  QField
 } from 'quasar'
 
 Vue.use(Quasar, {

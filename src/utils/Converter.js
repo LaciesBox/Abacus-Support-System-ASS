@@ -7,6 +7,10 @@ const removeGsxPrefix = function(s){
   return s.slice(4);
 }
 
+const gsxToAssField = function(s){
+  return removeGsxPrefix(kebabToCamel(s));
+}
+
 const gsxToAss = function(characters){
   let finalCharas = {};
 
@@ -17,7 +21,7 @@ const gsxToAss = function(characters){
     Object.keys(chara).forEach(key => {
       // if key does not contain gsx, data is irrelevant; skip
       if(key.includes("gsx$")){
-        finalKey = removeGsxPrefix(kebabToCamel(key));
+        finalKey = gsxToAssField(key);
         
         // array strings tagged as ending in "-arr" are converted into arrays; else assign value
         finalChara[finalKey] = key.endsWith("-arr") ? chara[key].$t.split("\n") : chara[key].$t;
@@ -31,5 +35,6 @@ const gsxToAss = function(characters){
   return finalCharas;
 }
 export default {
-  gsxToAss
+  gsxToAss,
+  gsxToAssField
 }

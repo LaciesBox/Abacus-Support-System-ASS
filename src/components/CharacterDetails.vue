@@ -1,12 +1,11 @@
 <template>
   <q-page>
-    {{charaEntries}}
     <!-- Start of chara details UI -->
 		<div class="text-center width-30 float-left generic-side-margin">
 			<q-card color="primary">
 				<q-card-media>
 					<img src="https://i.imgur.com/Ca6SOTc.png">
-					<q-card-title slot="overlay">Eien Sozai</q-card-title>
+					<q-card-title slot="overlay">{{chosenChara.name}}</q-card-title>
 				</q-card-media>
 			</q-card>
 		</div>
@@ -33,7 +32,7 @@
         icon="face"
         clearable
         inverted
-        v-model="character"
+        v-model="placeholder"
         color="secondary"
         @input="input => showCharaList(input)"
       />
@@ -44,24 +43,86 @@
       </q-list>
     </div>
     <!--End of character search UI-->
+
+    <!-- physical properties -->
+    <div class="row">
+      <div class="col-lg-3 col-xs-6" v-for="stat in Consts.PHYSICAL_PROPERTIES" v-bind:key="stat">
+        <stat :stat-name="stat" :value="chosenChara[stat]"/>
+      </div>
+    </div>
+
+    <!-- occupation count -->
+    <div class="row" v-if="occupationCount > 0 ">
+      <div class="col-lg-3 col-xs-6" v-for="i in occupationCount" 
+        v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
+        <stat 
+            :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
+            :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
+      </div>
+    </div>
+
+    <!-- talents -->
+    <div class="row" v-if="talentCount > 0 ">
+      <div class="col-lg-3 col-xs-6" v-for="i in talentCount" 
+        v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
+        <stat 
+            :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
+            :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
+      </div>
+    </div>
+
+    <!-- afflictions -->
+    <div class="row" v-if="afflictionCount > 0 ">
+      <div class="col-lg-3 col-xs-6" v-for="i in afflictionCount" 
+        v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
+        <stat 
+            :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
+            :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
+      </div>
+    </div>
+
   </q-page>
 </template>
 
 <script>
-import {Consts} from "utils";
+import { Consts } from "utils";
+
+import  Stat  from "./Stat.vue";
 
 export default {
   name: "CharacterDetails",
-  
+  components: {
+    Stat
+  },
+
   created() {
-    console.log(this.charaEntries);
+    this.Consts = Consts;
   },
 
   data() {
     return {
       charaNamesFiltered: null,
-      character: null
+      chosenCharaName: "Eien Sonzai",
+      placeholder: null,
     };
+  },
+
+  computed: {
+    chosenChara(){
+      if(this.charaEntries && this.chosenCharaName){
+        return this.charaEntries[this.chosenCharaName];
+      }
+      return {};
+    },
+    talentCount(){
+      return this.chosenChara[Consts.TALENT_ARR].length;
+    },
+    afflictionCount(){
+      return this.chosenChara[Consts.AFFLICTION_ARR].length;
+    },
+    occupationCount(){
+      return this.chosenChara[Consts.OCCUPATION_ARR].length;
+    }
   },
 
   props: {
