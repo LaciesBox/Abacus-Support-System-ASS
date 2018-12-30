@@ -14,8 +14,10 @@ const consumeStat = function(stat, multiplier, isPositive){
   return 0;
 }
 
-const computeStats = function(type, multiplier, isPositive, max){
+const computeStats = function(stats, type, multiplier, isPositive, max){
   let sum = 0;
+  let stat = {};
+
   //compute 
   for(let i = 1; i <= max; i++){
     //type + i: basically "talent1","affliction2", "occupation5", etc.
@@ -34,7 +36,7 @@ const roll = function(stats) {
   let finalRollValue = rollValue;
 
   let stat = {};
-
+  
   //compute physical properties
   Consts.PHYSICAL_PROPERTIES.forEach(property =>{
     stat = stats[property];
@@ -43,18 +45,17 @@ const roll = function(stats) {
   });
 
   //compute occupations
-  finalRollValue += computeStats(Consts.OCCUPATION, 1, true, 5);
-
+  finalRollValue += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
   //compute talents
-  finalRollValue += computeStats(Consts.TALENT, PERCENTAGE_MULTIPLIER, true, 5);
+  finalRollValue += computeStats(stats, Consts.TALENT, PERCENTAGE_MULTIPLIER, true, 5);
 
   //compute afflictions
-  finalRollValue += computeStats(Consts.AFFLICTION, PERCENTAGE_MULTIPLIER, true, 5);
+  finalRollValue += computeStats(stats, Consts.AFFLICTION, PERCENTAGE_MULTIPLIER, true, 5);
 
   //return json object
   return {
     roll: rollValue,
-    finalRoll: finallRollValue,
+    finalRoll: finalRollValue,
     status: finalRollValue <= CRITICAL_FAIL ? 
         Consts.CRIT_FAIL_IND : finalRollValue >= CRITICAL_SUCC ? 
         Consts.CRIT_SUCC_IND : Consts.NORM_ROLL_IND

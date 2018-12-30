@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    {{chosenChara}}
     <!-- Start of chara details UI -->
 		<div class="text-center width-30 float-left generic-side-margin">
 			<q-card color="primary">
@@ -46,16 +47,20 @@
 
     <!-- physical properties -->
     <div class="row">
-      <div class="col-lg-3 col-xs-6" v-for="stat in Consts.PHYSICAL_PROPERTIES" v-bind:key="stat">
-        <stat :stat-name="stat" :value="chosenChara[stat]"/>
+      <div
+          class="col-lg-3 col-xs-6" 
+          v-for="stat in Consts.PHYSICAL_PROPERTIES" 
+          v-bind:key="stat">
+        <stat :field-name="stat" :stat-name="stat" :value="chosenChara[stat]"/>
       </div>
     </div>
 
-    <!-- occupation count -->
+    <!-- occupation -->
     <div class="row" v-if="occupationCount > 0 ">
       <div class="col-lg-3 col-xs-6" v-for="i in occupationCount" 
         v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
         <stat 
+            :field-name="Consts.OCCUPATION+i"
             :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
             :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
       </div>
@@ -66,6 +71,7 @@
       <div class="col-lg-3 col-xs-6" v-for="i in talentCount" 
         v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
         <stat 
+            :field-name="Consts.TALENT+i"
             :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
             :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
       </div>
@@ -75,19 +81,30 @@
     <div class="row" v-if="afflictionCount > 0 ">
       <div class="col-lg-3 col-xs-6" v-for="i in afflictionCount" 
         v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
-        <stat 
+        <stat
+            :field-name="Consts.AFFLICTION+i"
             :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
             :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
       </div>
+    </div>
+
+    <!-- roll -->
+    <div class="row">
+      <q-btn @click="doRoll" label="Roll"/>
     </div>
 
   </q-page>
 </template>
 
 <script>
-import { Consts } from "utils";
+import { 
+  Consts, 
+  CalcUtils
+} from "utils";
 
-import  Stat  from "./Stat.vue";
+import Stat from "./Stat.vue";
+
+import { EventBus } from "store/ass-store";
 
 export default {
   name: "CharacterDetails",
@@ -115,13 +132,13 @@ export default {
       return {};
     },
     talentCount(){
-      return this.chosenChara[Consts.TALENT_ARR].length;
+      return this.getCount(Consts.TALENT_ARR);
     },
     afflictionCount(){
-      return this.chosenChara[Consts.AFFLICTION_ARR].length;
+      return this.getCount(Consts.AFFLICTION_ARR);
     },
     occupationCount(){
-      return this.chosenChara[Consts.OCCUPATION_ARR].length;
+      return this.getCount(Consts.OCCUPATION_ARR);
     }
   },
 
@@ -130,6 +147,17 @@ export default {
   },
 
   methods: {
+    doRoll: function(){
+      //save reference to stat
+      let stats = {};
+      EventBus.$emit('retrieveStats', stats);
+      console.log(stats);
+      console.log(CalcUtils.roll(stats));
+    },
+    getCount: function(field){
+      const count = this.chosenChara[field];
+      return  count ? count.length : 0;
+    },
     showCharaList: function(input) {
       if (!input) {
         this.charaNamesFiltered = null;
