@@ -1,5 +1,10 @@
 import Consts from "./Constants";
 
+//define clamp function for number
+Number.prototype.clamp = function(min, max) {
+  return Math.min(Math.max(this, min), max);
+};
+
 const PERCENTAGE_MULTIPLIER = .02,
     MAX_ROLL = 20,
     CRITICAL_FAIL = 1,
@@ -36,26 +41,26 @@ const roll = function(stats) {
   let finalRollValue = rollValue;
 
   let stat = {};
-  
+
   //compute physical properties
   Consts.PHYSICAL_PROPERTIES.forEach(property =>{
     stat = stats[property];
 
-    finalRollValue += consumeStat(stat, PERCENTAGE_MULTIPLIER, true);
+    finalRollValue += consumeStat(stat, 1, true);
   });
 
   //compute occupations
   finalRollValue += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
   //compute talents
-  finalRollValue += computeStats(stats, Consts.TALENT, PERCENTAGE_MULTIPLIER, true, 5);
+  finalRollValue += computeStats(stats, Consts.TALENT, 1, true, 5);
 
   //compute afflictions
-  finalRollValue += computeStats(stats, Consts.AFFLICTION, PERCENTAGE_MULTIPLIER, true, 5);
+  finalRollValue += computeStats(stats, Consts.AFFLICTION, 1, true, 5);
 
   //return json object
   return {
     roll: rollValue,
-    finalRoll: finalRollValue,
+    finalRoll: finalRollValue.clamp(0,20),
     status: finalRollValue <= CRITICAL_FAIL ? 
         Consts.CRIT_FAIL_IND : finalRollValue >= CRITICAL_SUCC ? 
         Consts.CRIT_SUCC_IND : Consts.NORM_ROLL_IND
