@@ -24,13 +24,12 @@ export default {
   AFFLICTION_ARR: "afflictionArr",
   AFFLICTION_SEVERITY_ARR: "afflictionSeverityArr",
   GANG: "gang",
+  NAME: "name",
   CODENAME: "codename",
   DEVAS: "devas",
   CRIT_SUCC_IND: 'S',
   CRIT_FAIL_IND: 'F',
   NORM_ROLL_IND: 'N',
-  GENBU:'G',
-  BYAKKO: 'B',
-  SUZAKU: 'S',
-  SEIRYUU: 'X'
+  LB_GANG: "Gang",
+  LB_DEVAS: "Devas"
 }

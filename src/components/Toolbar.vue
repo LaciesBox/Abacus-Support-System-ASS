@@ -18,7 +18,7 @@
             <div slot="subtitle">Bishamonten</div>
         </q-toolbar-title>
         </q-toolbar>
-        <drawer :drawerOpen="leftDrawerOpen"/>
+        <drawer :drawerOpen="false"/>
     </q-layout-header>
 </template>
 

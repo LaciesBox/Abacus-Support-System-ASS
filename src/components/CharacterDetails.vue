@@ -1,63 +1,66 @@
 <template>
-  <q-page>
-    {{chosenChara}}
+  <q-page class="q-pa-sm col-xs-12 col-sm-6">
     <!-- Start of chara details UI -->
-		<div class="text-center width-30 float-left generic-side-margin">
-			<q-card color="primary">
-				<q-card-media>
-					<img src="https://i.imgur.com/Ca6SOTc.png">
-					<q-card-title slot="overlay">{{chosenChara.name}}</q-card-title>
-				</q-card-media>
-			</q-card>
-		</div>
-    <div class="row generic-top-margin generic-side-margin">
-      <div class="col">
-        <q-card inline color="primary" class="physical-props-title">
-          <q-card-title>Physical Properties</q-card-title>
-        </q-card>
+    <div>
+      <div>
+        <img class="avatar float-left q-mr-sm" :src="chosenChara.avatar">
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-lg-6">
+          <ass-text :content="chosenChara[Consts.NAME]"/>
+          <ass-text :content="chosenChara[Consts.CODENAME]"/>
+        </div>
+
+        <div class="col-xs-12 col-lg-6">
+          <div class="row">
+            <ass-text class="col-xs-5 col-lg-12" 
+                :label="Consts.LB_GANG" :content="Gangs[chosenChara[Consts.GANG]]"/>
+            <ass-text class="col-xs-7 col-lg-12" 
+                :label="Consts.LB_DEVAS" :content="chosenChara[Consts.DEVAS]"/>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row inline generic-top-margin">
-      <div class="col">
-        <q-card inline color="primary" class="physical-props-title">
-          <q-card-title>Physical Properties</q-card-title>
-        </q-card>
-      </div>
-    </div>
-    <!-- End of chara details UI -->
-    <!--Start of character search UI-->
+
     <div class="row">
-      <q-search
-        float-label="Character Select"
-        placeholder="Character Name"
-        icon="face"
-        clearable
-        inverted
-        v-model="placeholder"
-        color="secondary"
-        @input="input => showCharaList(input)"
-      />
-      <q-list highlight link v-if="charaNamesFiltered">
-        <q-item v-for="(charaName, index) in charaNamesFiltered" v-bind:key="index">
-          <q-item-main :label="charaName"/>
-        </q-item>
-      </q-list>
+      <div class="col-xs-12">
+        <!--Start of character search UI-->
+        <q-search
+          placeholder="Character Name"
+          icon="face"
+          clearable
+          v-model="placeholder"
+          class="full-width"
+          @input="input => showCharaList(input)"
+        />
+        <q-list highlight link v-if="charaNamesFiltered">
+          <q-item v-for="(charaName, index) in charaNamesFiltered" v-bind:key="index">
+            <q-item-main :label="charaName"/>
+          </q-item>
+        </q-list>
+        <!--End of character search UI-->
+      </div>
     </div>
-    <!--End of character search UI-->
 
     <!-- physical properties -->
     <div class="row">
+      <div class="col-12">
+        <section-header content="Physical Properties"/>
+      </div>
       <div
-          class="col-lg-3 col-xs-6" 
-          v-for="stat in Consts.PHYSICAL_PROPERTIES" 
-          v-bind:key="stat">
-        <stat :field-name="stat" :stat-name="stat" :value="chosenChara[stat]"/>
+        class="col-md-3 col-xs-6"
+        v-for="stat in Consts.PHYSICAL_PROPERTIES" 
+        v-bind:key="stat">
+        <stat :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
       </div>
     </div>
 
     <!-- occupation -->
     <div class="row" v-if="occupationCount > 0 ">
-      <div class="col-lg-3 col-xs-6" v-for="i in occupationCount" 
+      <div class="col-12">
+        <section-header content="Occupations"/>
+      </div>
+      <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
         v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
         <stat 
             :field-name="Consts.OCCUPATION+i"
@@ -68,7 +71,10 @@
 
     <!-- talents -->
     <div class="row" v-if="talentCount > 0 ">
-      <div class="col-lg-3 col-xs-6" v-for="i in talentCount" 
+      <div class="col-12">
+        <section-header content="Talents"/>
+      </div>
+      <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
         v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
         <stat 
             :field-name="Consts.TALENT+i"
@@ -79,7 +85,10 @@
 
     <!-- afflictions -->
     <div class="row" v-if="afflictionCount > 0 ">
-      <div class="col-lg-3 col-xs-6" v-for="i in afflictionCount" 
+      <div class="col-12">
+        <section-header content="Afflictions"/>
+      </div>
+      <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
         v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
         <stat
             :field-name="Consts.AFFLICTION+i"
@@ -89,8 +98,14 @@
     </div>
 
     <!-- roll -->
-    <div class="row">
-      <q-btn @click="doRoll" label="Roll"/>
+    <div class="row q-pt-sm">
+      <div class="col-2">
+      <q-btn class="full-width" @click="doRoll" size="lg" label="Roll"/>
+      </div>
+      <div class="col-10 q-pl-sm">
+          <ass-text label="Roll" :content="rollResult.roll"/>
+          <ass-text label="Final Roll" :content="rollResult.finalRoll"/>
+      </div>
     </div>
 
   </q-page>
@@ -98,36 +113,46 @@
 
 <script>
 import { 
-  Consts, 
-  CalcUtils
+  Consts,
+  CalcUtils,
+  Lookups
 } from "utils";
 
 import Stat from "./Stat.vue";
+import AssText from "./AssText.vue";
+import SectionHeader from "./SectionHeader.vue";
 
 import { EventBus } from "store/ass-store";
 
 export default {
   name: "CharacterDetails",
   components: {
-    Stat
+    Stat,
+    AssText,
+    SectionHeader
   },
 
   created() {
     this.Consts = Consts;
+    this.Gangs = Lookups.GANGS;
   },
 
   data() {
     return {
       charaNamesFiltered: null,
-      chosenCharaName: "Eien Sonzai",
       placeholder: null,
+      rollResult: {
+        roll: "",
+        finalRoll: "",
+        status: ""
+      }
     };
   },
 
   computed: {
     chosenChara(){
-      if(this.charaEntries && this.chosenCharaName){
-        return this.charaEntries[this.chosenCharaName];
+      if(EventBus.characters && this.chosenCharaName){
+        return EventBus.characters[this.chosenCharaName];
       }
       return {};
     },
@@ -143,16 +168,20 @@ export default {
   },
 
   props: {
-    charaEntries: Object
+    //temporary; please move to data when search will be implemented
+    chosenCharaName: {
+      type: String,
+      default: "Eien Sonzai"
+    }
   },
 
   methods: {
     doRoll: function(){
-      //save reference to stat
+      //provide reference, then collect data from children
       let stats = {};
       EventBus.$emit('retrieveStats', stats);
-      console.log(stats);
-      console.log(CalcUtils.roll(stats));
+
+      this.rollResult = Object.assign({},CalcUtils.roll(stats));
     },
     getCount: function(field){
       const count = this.chosenChara[field];
@@ -164,9 +193,7 @@ export default {
       } else {
         let names = [];
 
-        Object.keys(this.charaEntries).forEach(chara => {
-          let charaName = chara.gsx$name.$t;
-          
+        Object.keys(EventBus.characters).forEach(charaName => {
           if (charaName.toUpperCase().includes(input.toUpperCase())) {
             names.push(charaName);
           }
@@ -202,13 +229,14 @@ export default {
 </style>
 
 <style>
-.generic-side-margin {
-  margin-left: 1em;
-  margin-right: 1em;
+.generic-side-padding {
+  padding-left: 1em;
+  padding-right: .5em;
 }
 .generic-top-margin {
   margin-top: 1em;
 }
+
 .width-30 {
   width: 30%;
 }
@@ -216,4 +244,5 @@ export default {
 .width-60 {
 	width: 60%;
 }
+
 </style>

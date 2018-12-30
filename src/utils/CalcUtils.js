@@ -51,16 +51,17 @@ const roll = function(stats) {
 
   //compute occupations
   finalRollValue += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
+
   //compute talents
   finalRollValue += computeStats(stats, Consts.TALENT, 1, true, 5);
 
   //compute afflictions
-  finalRollValue += computeStats(stats, Consts.AFFLICTION, 1, true, 5);
+  finalRollValue += computeStats(stats, Consts.AFFLICTION, 1, false, 5);
 
   //return json object
   return {
     roll: rollValue,
-    finalRoll: finalRollValue.clamp(0,20),
+    finalRoll: finalRollValue.clamp(1,20),
     status: finalRollValue <= CRITICAL_FAIL ? 
         Consts.CRIT_FAIL_IND : finalRollValue >= CRITICAL_SUCC ? 
         Consts.CRIT_SUCC_IND : Consts.NORM_ROLL_IND
