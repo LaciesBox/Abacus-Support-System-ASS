@@ -1,3 +1,9 @@
+const shorten = function(s){
+  if (s.length > 10){
+    return s.slice(0,10) + ".."
+  }
+  return s;
+}
 
 const kebabToCamel = function(s){
   return s.replace(/(\-\w)/g, function(m){return m[1].toUpperCase();});
@@ -36,5 +42,6 @@ const gsxToAss = function(characters){
 }
 export default {
   gsxToAss,
-  gsxToAssField
+  gsxToAssField,
+  shorten
 }

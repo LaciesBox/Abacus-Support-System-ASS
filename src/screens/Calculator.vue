@@ -1,6 +1,8 @@
 <template>
-  <q-page-container>
-      <character-details :chara-entries="dataEntries"/>
+  <q-page-container class="row">
+    <character-details/>
+    
+    <character-details chosen-chara-name="Kristine Heilig Pandora"/>
   </q-page-container>
 </template>
 
@@ -12,17 +14,14 @@ import {
   Converter
 } from "utils";
 
+import { EventBus } from "store/ass-store";
+
 import { CharacterDetails } from "components";
 
 export default {
   name: 'Calculator',
   components: {
     CharacterDetails
-  },
-  data () {
-    return {
-      dataEntries:null
-    }
   },
   watch: {
       currentPage: 'fetchData'
@@ -34,11 +33,10 @@ export default {
     fetchData: function () {
       var sheetUrl = SheetUtils.buildSheetUrl(SheetUtils.CHARA_HEADERS_SHEET);
       var xhr = new XMLHttpRequest();
-      var self = this;
-      xhr.open('GET', sheetUrl )
+      xhr.open('GET', sheetUrl );
       xhr.onload = function () {
-        self.dataEntries = JSON.parse(xhr.responseText);
-        self.dataEntries = Converter.gsxToAss(self.dataEntries.feed.entry);
+        const response  = JSON.parse(xhr.responseText);
+        EventBus.setCharacters(Converter.gsxToAss(response.feed.entry));
       }
       xhr.send()
     }
