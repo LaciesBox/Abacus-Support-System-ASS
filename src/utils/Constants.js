@@ -1,0 +1,35 @@
+
+const CONSTITUTION = "constitution",
+    AGILITY = "agility",
+    STRENGTH = "strength",
+    APPEAL = "appeal",
+    PHYSICAL_PROPERTIES = [CONSTITUTION, AGILITY, STRENGTH, APPEAL];
+
+export default {
+  CONSTITUTION,
+  AGILITY,
+  STRENGTH,
+  APPEAL,
+  PHYSICAL_PROPERTIES,
+  TALENT: "talent",
+  AFFLICTION: "affliction",
+  OCCUPATION: "occupation",
+  MORTALITY_NUMBER: "mortalityNumber",
+  AVATAR: "avatar",
+  OCCUPATION_ARR: "occupationArr",
+  OCCUPATION_PROFICIENCY_ARR: "occupationProficiencyArr",
+  OCCUPATION_IS_GENERALIST_ARR: "occupationIsGeneralistArr",
+  TALENT_ARR: "talentArr",
+  TALENT_PROFICIENCY_ARR: "talentProficiencyArr",
+  AFFLICTION_ARR: "afflictionArr",
+  AFFLICTION_SEVERITY_ARR: "afflictionSeverityArr",
+  GANG: "gang",
+  NAME: "name",
+  CODENAME: "codename",
+  DEVAS: "devas",
+  CRIT_SUCC_IND: 'S',
+  CRIT_FAIL_IND: 'F',
+  NORM_ROLL_IND: 'N',
+  LB_GANG: "Gang",
+  LB_DEVAS: "Devas"
+}
