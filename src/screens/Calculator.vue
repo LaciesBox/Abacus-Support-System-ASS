@@ -23,10 +23,8 @@
     </div>
     <!--End of character addition UI-->
     <div class="row">
-      
-      <div v-for="(chara, index) in charas" v-bind:key="index">
-        <character-details :chosen-chara-name="chara" :chara-index="index"/>
-      </div>
+      <character-details v-for="(chara, index) in charas" v-bind:key="index"
+      :chosen-chara-name="chara" :chara-index="index"/>
     </div>
   </q-page-container>
 
