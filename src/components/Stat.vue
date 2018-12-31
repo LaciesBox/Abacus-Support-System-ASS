@@ -1,6 +1,6 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
-    <div class="col-8">
+    <div class="col-7">
       <q-btn :label="btnLabel"
           @click="toggleCompute" 
           align="left"
@@ -9,17 +9,24 @@
           no-wrap
           :color="btnColor"/>
     </div>
-    <div class="col-2 q-pt-sm text-center">
-      {{this.value}}
+    <div class="col-3 text-center">
+      <q-chip square :color="statColor" style="height: 2.6em; width: 100%;">
+        {{this.value}}
+      </q-chip>
     </div>
     <div class="col-2">
-      <q-input :disable="!willCalculate" 
-          v-model="add" 
-          type="number"
-          :step="1"
-          align="center"
-          :min="min" 
-          :max="max"/>
+      <q-field
+        helper="MOD"
+      >
+        <q-input 
+        :disable="!willCalculate" 
+        v-model="add" 
+        type="number"
+        :step="1"
+        align="center"
+        :min="min" 
+        :max="max"/>
+      </q-field>
     </div>
   </div>
 </template>
@@ -56,6 +63,9 @@ export default {
   computed: {
     btnColor(){
       return this.willCalculate ? "primary" : "secondary";
+    },
+    statColor(){
+      return this.willCalculate ? "yellow" : "primary";
     },
     btnLabel(){
       return Converter.shorten(this.statName);

@@ -1,49 +1,45 @@
 <template>
-  <div class="q-pa-sm col-xs-12 col-sm-12">
+  <div class="q-pa-sm col-xs-12 col-sm-6">
     <!-- Start of chara details UI -->
-    <div>
+    <div style="height: 8em;">
       <div>
         <img class="avatar float-left q-mr-sm" :src="chosenChara.avatar">
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-lg-6">
-          <ass-text :link="chosenChara[Consts.NAME]" @click="openProfileModal"/>
-          <ass-text :content="chosenChara[Consts.CODENAME]"/>
+      <div class="row text-center">
+        <div class="col-xs-12 col-lg-12">
+          <q-card inline class="q-ma-sm" style="width: 85%">
+            <q-card-main>
+              <div class="row">
+                <div class="col-xs-12 col-lg-6">
+                  <q-icon name="mdi-account"/>
+                  <ass-text :content="chosenChara[Consts.NAME]" class="inline"/>
+                </div>
+                <div class="col-xs-12 col-lg-6">
+                  <q-icon name="mdi-account-group"/>
+                  <ass-text :content="Gangs[chosenChara[Consts.GANG]]" class="inline" />
+                </div>
+              </div>
+            </q-card-main>
+            <q-card-separator inset />
+            <q-card-main>
+              <div class="row">
+                <div class="col-xs-12 col-lg-6">
+                  <q-icon name="fas fa-user-secret"/>
+                  <ass-text :content="chosenChara[Consts.CODENAME]" class="inline"/>
+                </div>
+                <div class="col-xs-12 col-lg-6">
+                  <q-icon name="fas fa-life-ring"/>
+                  <ass-text :content="chosenChara[Consts.DEVAS]" class="inline"/>
+                </div>
+              </div>
+            </q-card-main>
+          </q-card>
         </div>
-
-        <div class="col-xs-12 col-lg-6">
-          <div class="row">
-            <ass-text class="col-xs-5 col-lg-12" 
-                :label="Consts.LB_GANG" :content="Gangs[chosenChara[Consts.GANG]]"/>
-            <ass-text class="col-xs-7 col-lg-12" 
-                :label="Consts.LB_DEVAS" :content="chosenChara[Consts.DEVAS]"/>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-12">
-        <!--Start of character search UI-->
-        <q-search
-          placeholder="Character Name"
-          icon="face"
-          clearable
-          v-model="placeholder"
-          class="full-width"
-          @input="input => showCharaList(input)"
-        />
-        <q-list highlight link v-if="charaNamesFiltered">
-          <q-item v-for="(charaName, index) in charaNamesFiltered" v-bind:key="index">
-            <q-item-main :label="charaName"/>
-          </q-item>
-        </q-list>
-        <!--End of character search UI-->
       </div>
     </div>
 
     <!-- physical properties -->
-    <div class="row">
+    <div class="row q-pr-sm q-pt-sm q-ma-sm">
       <div class="col-12">
         <section-header content="Physical Properties"/>
       </div>
@@ -57,7 +53,7 @@
     </div>
 
     <!-- occupation -->
-    <div class="row" v-if="occupationCount > 0 ">
+    <div class="row q-pr-sm q-pt-sm q-ma-sm" v-if="occupationCount > 0 ">
       <div class="col-12">
         <section-header content="Occupations"/>
       </div>
@@ -71,7 +67,7 @@
     </div>
 
     <!-- talents -->
-    <div class="row" v-if="talentCount > 0 ">
+    <div class="row q-pr-sm q-pt-sm q-ma-sm" v-if="talentCount > 0 ">
       <div class="col-12">
         <section-header content="Talents"/>
       </div>
@@ -85,7 +81,7 @@
     </div>
 
     <!-- afflictions -->
-    <div class="row" v-if="afflictionCount > 0 ">
+    <div class="row q-pr-sm q-pt-sm q-ma-sm" v-if="afflictionCount > 0 ">
       <div class="col-12">
         <section-header content="Afflictions"/>
       </div>
@@ -99,9 +95,9 @@
     </div>
 
     <!-- roll -->
-    <div class="row q-pt-sm">
+    <div class="row q-pr-sm q-pt-sm q-ma-sm">
       <div class="col-2">
-      <q-btn class="full-width" @click="doRoll" size="lg" label="Roll"/>
+      <q-btn class="full-width" @click="doRoll" size="lg" icon="casino"/>
       </div>
       <div class="col-10 q-pl-sm">
           <ass-text label="Roll" :content="rollResult.roll"/>
@@ -218,39 +214,13 @@ export default {
 </script>
 
 <style scoped>
-.q-search {
-  position: relative;
-  width: 15em;
-  margin-left: 1em;
-  margin-top: 1em;
+.avatar {
+  vertical-align: middle;
+  width: 8em;
+  height: 8em;
+  border-radius: 50%;
 }
-.q-list {
-  width: 15em;
-  margin-left: 1em;
+.inline {
+  display: inline;
 }
-.q-card-media {
-  width: 100%;
-}
-.physical-props-title {
-  width: 100%;
-}
-</style>
-
-<style>
-.generic-side-padding {
-  padding-left: 1em;
-  padding-right: .5em;
-}
-.generic-top-margin {
-  margin-top: 1em;
-}
-
-.width-30 {
-  width: 30%;
-}
-
-.width-60 {
-	width: 60%;
-}
-
 </style>
