@@ -13,12 +13,6 @@
       <q-chip square :color="statColor" style="height: 2.6em; width: 100%;">
         {{this.value}}
       </q-chip>
-      <!-- <q-btn :label="this.value" 
-          align="left"
-          class="full-width q-pl-xs"
-          label-width="12"
-          no-wrap
-          color="primary"/> -->
     </div>
     <div class="col-2">
       <q-field
@@ -31,8 +25,7 @@
         :step="1"
         align="center"
         :min="min" 
-        :max="max"
-        @blur="toggleCompute"/>
+        :max="max"/>
       </q-field>
     </div>
   </div>
