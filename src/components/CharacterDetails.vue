@@ -1,5 +1,7 @@
 <template>
-  <q-page class="q-pa-sm col-xs-12 col-sm-6">
+  <div>
+  <chara-profile v-if="showCharaProfLeft"/>
+  <q-page class="q-pa-sm col-xs-12 col-sm-6" v-show="!hidden">
     <!-- Start of chara details UI -->
     <div>
       <div>
@@ -7,7 +9,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-lg-6">
-          <ass-text :content="chosenChara[Consts.NAME]"/>
+          <ass-text :link="chosenChara[Consts.NAME]" @click="overlayProfile"/>
           <ass-text :content="chosenChara[Consts.CODENAME]"/>
         </div>
 
@@ -51,7 +53,8 @@
         class="col-md-3 col-xs-6"
         v-for="stat in Consts.PHYSICAL_PROPERTIES" 
         v-bind:key="stat">
-        <stat :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
+        <stat :chara-index ="charaIndex" 
+            :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
       </div>
     </div>
 
@@ -62,7 +65,7 @@
       </div>
       <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
         v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
-        <stat 
+        <stat :chara-index ="charaIndex" 
             :field-name="Consts.OCCUPATION+i"
             :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
             :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
@@ -76,7 +79,7 @@
       </div>
       <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
         v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
-        <stat 
+        <stat :chara-index ="charaIndex" 
             :field-name="Consts.TALENT+i"
             :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
             :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
@@ -90,7 +93,7 @@
       </div>
       <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
         v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
-        <stat
+        <stat :chara-index ="charaIndex" 
             :field-name="Consts.AFFLICTION+i"
             :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
             :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
@@ -109,6 +112,8 @@
     </div>
 
   </q-page>
+  <chara-profile v-if="showCharaProfRight"/>
+  </div>
 </template>
 
 <script>
@@ -121,6 +126,7 @@ import {
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
 import SectionHeader from "./SectionHeader.vue";
+import CharaProfile from "./CharaProfile.vue"
 
 import { EventBus } from "store/ass-store";
 
@@ -129,7 +135,8 @@ export default {
   components: {
     Stat,
     AssText,
-    SectionHeader
+    SectionHeader,
+    CharaProfile
   },
 
   created() {
@@ -137,8 +144,22 @@ export default {
     this.Gangs = Lookups.GANGS;
   },
 
+  mounted() {
+    EventBus.$on('overlayProfile', charaIndex => {
+      if(charaIndex != this.charaIndex) {
+        this.hidden = true;
+      }
+    });
+
+    EventBus.$on('closeProfile', () => {
+      this.hidden = false;
+    });
+  },
+
   data() {
     return {
+      hidden: false,
+      showCharaProfile: false,
       charaNamesFiltered: null,
       placeholder: null,
       rollResult: {
@@ -164,6 +185,12 @@ export default {
     },
     occupationCount(){
       return this.getCount(Consts.OCCUPATION_ARR);
+    },
+    showCharaProfLeft(){
+      return this.showCharaProfile && this.charaIndex % 2 == 0;
+    },
+    showCharaProfRight(){
+      return this.showCharaProfile && this.charaIndex % 2 != 0;
     }
   },
 
@@ -172,14 +199,21 @@ export default {
     chosenCharaName: {
       type: String,
       default: "Eien Sonzai"
+    },
+    charaIndex: {
+      type: Number,
+      required: true
     }
   },
 
   methods: {
+    overlayProfile: function(){
+      EventBus.$emit('overlayProfile',this.charaIndex);
+    },
     doRoll: function(){
       //provide reference, then collect data from children
       let stats = {};
-      EventBus.$emit('retrieveStats', stats);
+      EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
 
       this.rollResult = Object.assign({},CalcUtils.roll(stats));
     },

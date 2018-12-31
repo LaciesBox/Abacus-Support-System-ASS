@@ -1,9 +1,18 @@
 <template>
   <q-page-container class="row">
-    <character-details/>
-    
-    <character-details chosen-chara-name="Kristine Heilig Pandora"/>
+    <q-btn 
+        round
+        color="primary"
+        @click="doAddChara"
+        icon="add"
+        class="fixed"
+        style="left: 18px; bottom: 18px; z-index:5"
+        />
+    <div v-for="n in charaIndex" v-bind:key="n">
+      <character-details :chara-index="n"/>
+    </div>
   </q-page-container>
+
 </template>
 
 <script>
@@ -23,6 +32,11 @@ export default {
   components: {
     CharacterDetails
   },
+  data(){
+    return {
+      charaIndex: 1
+    }
+  },
   watch: {
       currentPage: 'fetchData'
   },
@@ -30,6 +44,9 @@ export default {
     this.fetchData();
   },
   methods: {
+    doAddChara: function() {
+      this.charaIndex+=1;
+    },
     fetchData: function () {
       var sheetUrl = SheetUtils.buildSheetUrl(SheetUtils.CHARA_HEADERS_SHEET);
       var xhr = new XMLHttpRequest();
