@@ -41,7 +41,6 @@ export default {
 
   mounted() {
     EventBus.$on('retrieveStats', data => {
-      console.log(data.charaIndex);
       if(data.charaIndex != this.charaIndex){
         return;
       }

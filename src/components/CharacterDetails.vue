@@ -1,7 +1,5 @@
 <template>
-  <div>
-  <chara-profile v-if="showCharaProfLeft"/>
-  <q-page class="q-pa-sm col-xs-12 col-sm-6" v-show="!hidden">
+  <div class="q-pa-sm col-xs-12 col-sm-12">
     <!-- Start of chara details UI -->
     <div>
       <div>
@@ -9,7 +7,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12 col-lg-6">
-          <ass-text :link="chosenChara[Consts.NAME]" @click="overlayProfile"/>
+          <ass-text :link="chosenChara[Consts.NAME]" @click="openProfileModal"/>
           <ass-text :content="chosenChara[Consts.CODENAME]"/>
         </div>
 
@@ -111,8 +109,6 @@
       </div>
     </div>
 
-  </q-page>
-  <chara-profile v-if="showCharaProfRight"/>
   </div>
 </template>
 
@@ -126,7 +122,6 @@ import {
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
 import SectionHeader from "./SectionHeader.vue";
-import CharaProfile from "./CharaProfile.vue"
 
 import { EventBus } from "store/ass-store";
 
@@ -135,8 +130,7 @@ export default {
   components: {
     Stat,
     AssText,
-    SectionHeader,
-    CharaProfile
+    SectionHeader
   },
 
   created() {
@@ -144,22 +138,8 @@ export default {
     this.Gangs = Lookups.GANGS;
   },
 
-  mounted() {
-    EventBus.$on('overlayProfile', charaIndex => {
-      if(charaIndex != this.charaIndex) {
-        this.hidden = true;
-      }
-    });
-
-    EventBus.$on('closeProfile', () => {
-      this.hidden = false;
-    });
-  },
-
   data() {
     return {
-      hidden: false,
-      showCharaProfile: false,
       charaNamesFiltered: null,
       placeholder: null,
       rollResult: {
@@ -185,12 +165,6 @@ export default {
     },
     occupationCount(){
       return this.getCount(Consts.OCCUPATION_ARR);
-    },
-    showCharaProfLeft(){
-      return this.showCharaProfile && this.charaIndex % 2 == 0;
-    },
-    showCharaProfRight(){
-      return this.showCharaProfile && this.charaIndex % 2 != 0;
     }
   },
 
@@ -207,15 +181,15 @@ export default {
   },
 
   methods: {
-    overlayProfile: function(){
-      EventBus.$emit('overlayProfile',this.charaIndex);
-    },
     doRoll: function(){
       //provide reference, then collect data from children
       let stats = {};
       EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
 
       this.rollResult = Object.assign({},CalcUtils.roll(stats));
+    },
+    openProfileModal: function(){
+      console.log("hehe");
     },
     getCount: function(field){
       const count = this.chosenChara[field];
