@@ -35,7 +35,10 @@ import {
   QCardSeparator,
   QCardActions,
   QInput,
-  QField
+  QField,
+  QAutocomplete,
+  QModal,
+  QIcon,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -63,7 +66,10 @@ Vue.use(Quasar, {
     QCardSeparator,
     QCardActions,
     QInput,
-    QField
+    QField,
+    QAutocomplete,
+    QModal,
+    QIcon,
   },
   directives: {},
   plugins: {}
