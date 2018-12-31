@@ -39,6 +39,7 @@ import {
   QAutocomplete,
   QModal,
   QIcon,
+  QChip,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -70,6 +71,7 @@ Vue.use(Quasar, {
     QAutocomplete,
     QModal,
     QIcon,
+    QChip,
   },
   directives: {},
   plugins: {}

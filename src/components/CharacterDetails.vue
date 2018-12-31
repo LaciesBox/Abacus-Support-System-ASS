@@ -96,7 +96,7 @@
     <!-- roll -->
     <div class="row q-pr-sm q-pt-sm q-ma-sm">
       <div class="col-2">
-      <q-btn class="full-width" @click="doRoll" size="lg" label="Roll"/>
+      <q-btn class="full-width" @click="doRoll" size="lg" icon="casino"/>
       </div>
       <div class="col-10 q-pl-sm">
           <ass-text label="Roll" :content="rollResult.roll"/>
