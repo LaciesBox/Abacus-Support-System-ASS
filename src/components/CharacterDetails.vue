@@ -99,9 +99,12 @@
       <div class="col-2">
       <q-btn class="full-width" @click="doRoll" size="lg" icon="casino"/>
       </div>
-      <div class="col-10 q-pl-sm">
+      <div class="col-8 q-pl-sm">
           <ass-text label="Roll" :content="rollResult.roll"/>
           <ass-text label="Final Roll" :content="rollResult.finalRoll"/>
+      </div>
+      <div class="col-1" id="delete-button">
+        <q-btn icon="delete" color="red" @click="deleteChara"></q-btn> 
       </div>
     </div>
 
@@ -208,6 +211,9 @@ export default {
         }
         this.charaNamesFiltered = names;
       }
+    },
+    deleteChara: function() {
+      EventBus.$emit('deleteCharacter', this.chosenCharaName);
     }
   }
 };
@@ -222,5 +228,9 @@ export default {
 }
 .inline {
   display: inline;
+}
+#delete-button {
+  position: relative;
+  right: 0em;
 }
 </style>

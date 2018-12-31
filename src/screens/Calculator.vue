@@ -23,6 +23,8 @@
     </div>
     <!--End of character addition UI-->
     <div class="row">
+    <!-- <character-details/>
+    <character-details chosen-chara-name="Kristine Heilig Pandora"/> -->
       <character-details v-for="(chara, index) in charas" v-bind:key="index"
       :chosen-chara-name="chara" :chara-index="index"/>
     </div>
@@ -49,9 +51,15 @@ export default {
   },
   data(){
     return {
-      charas: [],
+      charas: ['Eien Sonzai'],
       chosenChara: ""
     }
+  },
+  mounted(){
+    EventBus.$on('deleteCharacter', chosenChara => {
+      let index = this.charas.indexOf(chosenChara);
+      this.charas.splice(index, 1);
+    });
   },
   watch: {
       currentPage: 'fetchData'
