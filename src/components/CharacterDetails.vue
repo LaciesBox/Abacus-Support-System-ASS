@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-sm col-xs-12 col-sm-6">
+  <div class="q-pa-sm col-xs-12 col-sm-6">
     <!-- Start of chara details UI -->
     <div style="height: 8em;">
       <div>
@@ -47,7 +47,8 @@
         class="col-md-3 col-xs-6"
         v-for="stat in Consts.PHYSICAL_PROPERTIES" 
         v-bind:key="stat">
-        <stat :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
+        <stat :chara-index ="charaIndex" 
+            :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
       </div>
     </div>
 
@@ -58,7 +59,7 @@
       </div>
       <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
         v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
-        <stat 
+        <stat :chara-index ="charaIndex" 
             :field-name="Consts.OCCUPATION+i"
             :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
             :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
@@ -72,7 +73,7 @@
       </div>
       <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
         v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
-        <stat 
+        <stat :chara-index ="charaIndex" 
             :field-name="Consts.TALENT+i"
             :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
             :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
@@ -86,7 +87,7 @@
       </div>
       <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
         v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
-        <stat
+        <stat :chara-index ="charaIndex" 
             :field-name="Consts.AFFLICTION+i"
             :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
             :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
@@ -104,7 +105,7 @@
       </div>
     </div>
 
-  </q-page>
+  </div>
 </template>
 
 <script>
@@ -168,6 +169,10 @@ export default {
     chosenCharaName: {
       type: String,
       default: "Eien Sonzai"
+    },
+    charaIndex: {
+      type: Number,
+      required: true
     }
   },
 
@@ -175,9 +180,12 @@ export default {
     doRoll: function(){
       //provide reference, then collect data from children
       let stats = {};
-      EventBus.$emit('retrieveStats', stats);
+      EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
 
       this.rollResult = Object.assign({},CalcUtils.roll(stats));
+    },
+    openProfileModal: function(){
+      console.log("hehe");
     },
     getCount: function(field){
       const count = this.chosenChara[field];

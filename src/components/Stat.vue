@@ -48,7 +48,11 @@ export default {
 
   mounted() {
     EventBus.$on('retrieveStats', data => {
-      data[this.fieldName] = {
+      if(data.charaIndex != this.charaIndex){
+        return;
+      }
+
+      data.stats[this.fieldName] = {
         add: Number(this.add),
         base: Number(this.value),
         willCalculate: this.willCalculate
@@ -88,6 +92,10 @@ export default {
     max: {
       type: Number,
       default: 5
+    },
+    charaIndex: {
+      type: Number,
+      required: true
     }
   },
 
