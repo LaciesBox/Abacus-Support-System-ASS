@@ -40,6 +40,10 @@ import {
   QModal,
   QIcon,
   QChip,
+  QSlideTransition,
+  QFab,
+  QFabAction,
+  QPageSticky,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -72,6 +76,10 @@ Vue.use(Quasar, {
     QModal,
     QIcon,
     QChip,
+    QSlideTransition,
+    QFab,
+    QFabAction,
+    QPageSticky,
   },
   directives: {},
   plugins: {}
