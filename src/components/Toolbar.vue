@@ -18,7 +18,7 @@
             <div slot="subtitle">Bishamonten</div>
         </q-toolbar-title>
         </q-toolbar>
-        <drawer :drawerOpen="false"/>
+        <drawer :drawerOpen="leftDrawerOpen"/>
     </q-layout-header>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: false
     }
   }
   
