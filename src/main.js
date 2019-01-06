@@ -39,7 +39,7 @@ import {
   QAutocomplete,
   QModal,
   QIcon,
-  QChip,
+  QChip
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -71,7 +71,7 @@ Vue.use(Quasar, {
     QAutocomplete,
     QModal,
     QIcon,
-    QChip,
+    QChip
   },
   directives: {},
   plugins: {}
@@ -81,5 +81,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  data: {color: '#673AB7'}
 }).$mount('#app')

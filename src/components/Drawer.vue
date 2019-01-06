@@ -1,5 +1,5 @@
 <template>
-  <q-layout-drawer v-model="drawerOpen" :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null">
+  <q-layout-drawer v-model="drawerOpen" overlay :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null">
     <q-list no-border link inset-delimiter>
       <q-list no-border link inset-delimiter>
         <q-list-header>Directory</q-list-header>

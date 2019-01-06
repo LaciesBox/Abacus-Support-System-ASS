@@ -1,45 +1,22 @@
 <template>
   <div class="q-pa-sm col-xs-12 col-sm-6">
     <!-- Start of chara details UI -->
-    <div style="height: 8em;">
-      <div>
-        <img class="avatar float-left q-mr-sm" :src="chosenChara.avatar">
-      </div>
-      <div class="row text-center">
-        <div class="col-xs-12 col-lg-12">
-          <q-card inline class="q-ma-sm" style="width: 85%">
-            <q-card-main>
-              <div class="row">
-                <div class="col-xs-12 col-lg-6">
-                  <q-icon name="mdi-account"/>
-                  <ass-text :content="chosenChara[Consts.NAME]" class="inline"/>
-                </div>
-                <div class="col-xs-12 col-lg-6">
-                  <q-icon name="mdi-account-group"/>
-                  <ass-text :content="Gangs[chosenChara[Consts.GANG]]" class="inline" />
-                </div>
-              </div>
-            </q-card-main>
-            <q-card-separator inset />
-            <q-card-main>
-              <div class="row">
-                <div class="col-xs-12 col-lg-6">
-                  <q-icon name="fas fa-user-secret"/>
-                  <ass-text :content="chosenChara[Consts.CODENAME]" class="inline"/>
-                </div>
-                <div class="col-xs-12 col-lg-6">
-                  <q-icon name="fas fa-life-ring"/>
-                  <ass-text :content="chosenChara[Consts.DEVAS]" class="inline"/>
-                </div>
-              </div>
-            </q-card-main>
-          </q-card>
-        </div>
+    <div class="ass-avatar" 
+        :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
+      <center><br>
+        <span class="center chara-name">{{chosenChara.name}}</span><br>
+        <span class="center chara-codename">{{chosenChara.codename}}</span>
+      </center>
+      <div class="chara-stamp absolute-center" :class="stampClass">
+        <strong>
+          <span :class="[kanjiClass]">{{DEVAS[chosenChara.devas.substr(0,1)]}}</span>
+          <span :class="[devasDescClass]">{{DEVAS_DESC[chosenChara.devas]}}</span>
+        </strong>
       </div>
     </div>
 
     <!-- physical properties -->
-    <div class="row q-pr-sm q-pt-sm q-ma-sm">
+    <div class="row q-pr-sm q-pt-sm q-ma-sm q-mt-lg">
       <div class="col-12">
         <section-header content="Physical Properties"/>
       </div>
@@ -131,7 +108,9 @@ export default {
 
   created() {
     this.Consts = Consts;
-    this.Gangs = Lookups.GANGS;
+    this.GANGS = Lookups.GANGS;
+    this.DEVAS = Lookups.DEVAS;
+    this.DEVAS_DESC = Lookups.DEVAS_DESC;
   },
 
   data() {
@@ -147,6 +126,33 @@ export default {
   },
 
   computed: {
+    stampClass(){
+      return {
+        "suzaku-red": this.chosenChara.gang == this.GANGS.SUZAKU,
+        "byakko-black": this.chosenChara.gang == this.GANGS.BYAKKO,
+        "panopticon-grey": this.chosenChara.gang == this.GANGS.PANOPTICON,
+        "genbu-purple": this.chosenChara.gang == this.GANGS.GENBU,
+        "seiryuu-pink": this.chosenChara.gang == this.GANGS.SEIRYUU
+        };
+    },
+    kanjiClass(){
+      return [{
+          "devas": this.chosenChara.gang != this.GANGS.BYAKKO,
+          "devas-light": this.chosenChara.gang == this.GANGS.BYAKKO,
+          "devas-panopticon": this.chosenChara.gang == this.GANGS.PANOPTICON
+        },
+        "absolute-center",
+        "devas-font"
+      ]
+    },
+    devasDescClass(){
+      return [{
+          "devas-desc": this.chosenChara.gang != this.GANGS.PANOPTICON,
+          "devas-desc-dark": this.chosenChara.gang == this.GANGS.PANOPTICON
+        },
+        "absolute-center"
+      ]
+    },
     chosenChara(){
       if(EventBus.characters && this.chosenCharaName){
         return EventBus.characters[this.chosenCharaName];
@@ -161,6 +167,12 @@ export default {
     },
     occupationCount(){
       return this.getCount(Consts.OCCUPATION_ARR);
+    },
+    styles(){
+      return {
+         width: '100px',
+         height: '100px'
+      }
     }
   },
 
@@ -213,14 +225,100 @@ export default {
 };
 </script>
 
-<style scoped>
-.avatar {
+<style lang="stylus" scoped>
+
+@import "~variables"
+
+@font-face 
+  font-family Adobe
+  src url("../assets/fonts/Adobe_Fangsong/AdobeFangsongStd-Regular.otf")
+
+@font-face
+  font-family Luxia
+  src url("../assets/fonts/Luxia/Luxia-Display.otf")
+
+@font-face
+  font-family PT_Sans
+  src url("../assets/fonts/PT_Sans/PT_Sans-Web-Regular.ttf")
+
+.ass-avatar
+  width 100%
+  height $chara-header-height
+  background-size cover
+  background-position center
+  background-repeat no-repeat
+  box-shadow inset 0 0 0 2000px rgba(80,80,80,0.5)
+  position relative
+
+.chara-stamp
+  border-radius 50%
+  border 2px solid white
+  top $chara-header-height
+  width 75px
+  height 75px
+  z-index 5
+
+.devas-font
+  font-family: "Adobe"
+
+.devas
+  color rgba(80,80,80,0.3)
+  font-size 45px
+
+.devas-light
+  color rgba(255,255,255,0.4)
+  font-size 45px
+
+.devas-dark
+  color rgba(80,80,80,0.7)
+  font-size 45px
+
+.devas-panopticon
+  color white
+
+.devas-desc
+  font-size 15px
+  color white
+
+.devas-desc-dark
+  font-size 15px
+  color black
+
+div
+  background-color $ass-app-bg
+
+.avatar
   vertical-align: middle;
-  width: 8em;
-  height: 8em;
+  width: 5em;
+  height: 5em;
   border-radius: 50%;
-}
-.inline {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+
+.inline 
   display: inline;
-}
+
+.suzaku-red
+  background-color $suzaku-red
+
+.byakko-black
+  background-color $byakko-black
+
+.seiryuu-pink
+  background-color $seiryuu-pink
+
+.genbu-purple
+  background-color $genbu-purple
+
+.panopticon-grey
+  background-color $panopticon-grey
+
+.chara-name
+  font-family "Luxia"
+  font-size 40px
+
+.chara-codename
+  font-family "PT_Sans"
+  font-size 18px
 </style>

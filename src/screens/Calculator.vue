@@ -49,7 +49,7 @@ export default {
   },
   data(){
     return {
-      charas: [],
+      charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
       chosenChara: ""
     }
   },
@@ -102,7 +102,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>
-
