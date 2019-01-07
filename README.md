@@ -5,10 +5,10 @@
 1. add to vue.config.js
 ```
 module.exports = {
- baseUrl: ‘/Ass-Bisha/’
+ baseUrl: '/Ass-Bisha/'
 } 
 ```
-2. in .gitignore, comment out '/dist'
+2. in `.gitignore`, comment out `/dist`
 3. Run command 
 ```
 git add dist && git commit -m "Initial dist subtree commit" 
