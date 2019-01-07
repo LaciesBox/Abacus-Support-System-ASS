@@ -262,7 +262,7 @@ export default {
   font-family: "Adobe"
 
 .devas
-  color rgba(80,80,80,0.3)
+  color rgba(40,40,40,0.55)
   font-size 45px
 
 .devas-light
