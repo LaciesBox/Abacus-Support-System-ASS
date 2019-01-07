@@ -9,7 +9,7 @@
 
     <!--Character details-->
     <div class="row">
-      <div class="col-xs-12 col-lg-6" v-for="chara in charas" v-bind:key="chara">
+      <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
         <transition
         appear
         enter-active-class="animated bounceInDown"
@@ -73,10 +73,10 @@ export default {
   },
   data(){
     return {
-      charas: ['Eien Sonzai'],
+      charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
       chosenChara: "",
       addMenuOpen: false,
-      blend: "",
+      blend: ""
     }
   },
   mounted(){
@@ -151,11 +151,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-img {
-  height: 12em;
-  width: auto;
-}
-</style>
-

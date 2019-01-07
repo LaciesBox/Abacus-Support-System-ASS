@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="q-app" view="lHh Lpr lFf">
+  <q-layout id="q-app" view="lHh Lpr lFf" class="bg-color txt-color" >
     <toolbar />
     <router-view></router-view>
   </q-layout>
@@ -17,8 +17,16 @@ export default {
 }
 </script>
 
-<style>
-  img {
-    width: 100%;
-  }
+<style lang="stylus">
+  
+@import '~variables'
+
+.bg-color
+  background-color $ass-app-bg
+
+.txt-color
+  color $secondary
+
+img 
+  width 100%
 </style>
