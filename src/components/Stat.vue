@@ -1,16 +1,18 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
-    <div class="col-7">
+    <div :class="btnClass">
       <q-btn :label="btnLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width q-pl-xs"
+          class="full-width q-pl-xs no-shadow"
           label-width="12"
-          no-wrap
-          :color="btnColor"/>
+          :outline="!willCalculate"
+          color="secondary"
+          :text-color="btnTextColor"
+          no-wrap/>
     </div>
-    <div class="col-3 text-center">
-      <q-chip square :color="statColor" style="height: 2.6em; width: 100%;">
+    <div :class="baseClass">
+      <q-chip square :color="statColor" :text-color="statTextColor" style="height: 2.6em; width: 100%; z-index:5;">
         {{this.value}}
       </q-chip>
     </div>
@@ -24,6 +26,7 @@
         type="number"
         :step="1"
         align="center"
+        color="secondary" class="stat"
         :min="min" 
         :max="max"/>
       </q-field>
@@ -64,8 +67,14 @@ export default {
     btnColor(){
       return this.willCalculate ? "primary" : "secondary";
     },
+    btnTextColor(){
+      return this.willCalculate ? "grey-9" : "secondary";
+    },
     statColor(){
-      return this.willCalculate ? "yellow" : "primary";
+      return this.willCalculate ? "stat" : "grey-5";
+    },
+    statTextColor(){
+      return this.willCalculate ? "stat" : "grey-8";
     },
     btnLabel(){
       return Converter.shorten(this.statName);
@@ -96,6 +105,14 @@ export default {
     charaIndex: {
       type: Number,
       required: true
+    },
+    baseClass: {
+      type: Array,
+      default: () => ["col-3", "text-center"]
+    },
+    btnClass: {
+      type: Array,
+      default: () => ["col-7"]
     }
   },
 
@@ -107,3 +124,16 @@ export default {
 }
 
 </script>
+
+<style lang="stylus">
+
+.stat
+  color: #EEEEEE
+
+.text-stat
+  color: #111111
+
+.bg-stat
+  background: #E5d6b5
+
+</style>

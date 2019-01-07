@@ -43,7 +43,7 @@ import {
   QSlideTransition,
   QFab,
   QFabAction,
-  QPageSticky,
+  QPageSticky
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -79,7 +79,7 @@ Vue.use(Quasar, {
     QSlideTransition,
     QFab,
     QFabAction,
-    QPageSticky,
+    QPageSticky
   },
   directives: {},
   plugins: {}
@@ -89,5 +89,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  data: {color: '#673AB7'}
 }).$mount('#app')

@@ -9,7 +9,7 @@
 
     <!--Character details-->
     <div class="row">
-      <div class="col-xs-12 col-lg-6" v-for="chara in charas" v-bind:key="chara">
+      <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
         <transition
         appear
         enter-active-class="animated bounceInDown"
@@ -41,8 +41,9 @@
     <q-page-sticky position="bottom-right" :offset="[18, 18]" ref="addBtn">
       <q-btn
         round
-        color="primary"
+        :color="fabColor"
         @click="addCharaMenu"
+        :text-color="fabTextColor"
         :class="blend"
       > 
         <div ref="addIcon"><q-icon name="add"></q-icon></div>
@@ -73,10 +74,12 @@ export default {
   },
   data(){
     return {
-      charas: ['Eien Sonzai'],
+      charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
       chosenChara: "",
       addMenuOpen: false,
       blend: "",
+      fabColor: "secondary",
+      fabTextColor: "primary"
     }
   },
   mounted(){
@@ -131,7 +134,10 @@ export default {
         this.doAddChara(item.value);
         this.chosenChara = "";
       }
-      console.log(item, keyboard);
+    },
+    toggleFabColor: function(){
+        this.fabColor = this.fabColor == "primary" ? "secondary" : "primary";
+        this.fabTextColor = this.fabTextColor == "primary" ? "secondary" : "primary";
     },
     addCharaMenu: function() {
       let self = this;
@@ -146,16 +152,9 @@ export default {
         showSearch(this.$refs.search);
         this.addMenuOpen = !this.addMenuOpen;
       }
+      this.toggleFabColor();
       rotatePlus(this.$refs.addIcon);
     }
   }
 }
 </script>
-
-<style scoped>
-img {
-  height: 12em;
-  width: auto;
-}
-</style>
-
