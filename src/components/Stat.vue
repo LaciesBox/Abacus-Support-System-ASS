@@ -12,7 +12,7 @@
           no-wrap/>
     </div>
     <div :class="baseClass">
-      <q-chip square :color="statColor" :text-color="statTextColor" style="height: 2.6em; width: 100%;">
+      <q-chip square :color="statColor" :text-color="statTextColor" style="height: 2.6em; width: 100%; z-index:5;">
         {{this.value}}
       </q-chip>
     </div>

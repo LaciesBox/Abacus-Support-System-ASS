@@ -41,8 +41,9 @@
     <q-page-sticky position="bottom-right" :offset="[18, 18]" ref="addBtn">
       <q-btn
         round
-        color="primary"
+        :color="fabColor"
         @click="addCharaMenu"
+        :text-color="fabTextColor"
         :class="blend"
       > 
         <div ref="addIcon"><q-icon name="add"></q-icon></div>
@@ -76,7 +77,9 @@ export default {
       charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
       chosenChara: "",
       addMenuOpen: false,
-      blend: ""
+      blend: "",
+      fabColor: "secondary",
+      fabTextColor: "primary"
     }
   },
   mounted(){
@@ -131,7 +134,10 @@ export default {
         this.doAddChara(item.value);
         this.chosenChara = "";
       }
-      console.log(item, keyboard);
+    },
+    toggleFabColor: function(){
+        this.fabColor = this.fabColor == "primary" ? "secondary" : "primary";
+        this.fabTextColor = this.fabTextColor == "primary" ? "secondary" : "primary";
     },
     addCharaMenu: function() {
       let self = this;
@@ -146,6 +152,7 @@ export default {
         showSearch(this.$refs.search);
         this.addMenuOpen = !this.addMenuOpen;
       }
+      this.toggleFabColor();
       rotatePlus(this.$refs.addIcon);
     }
   }
