@@ -25,7 +25,8 @@
         v-for="stat in Consts.PHYSICAL_PROPERTIES" 
         v-bind:key="stat">
         <stat :chara-index ="charaIndex" 
-            :base-class="['col-5','text-center']" :btn-class="['col-5']"
+            :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
+            :btn-class="['col-lg-6','col-md-5', 'col-xs-6']"
             :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
       </div>
     </div>
