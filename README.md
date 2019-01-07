@@ -2,7 +2,7 @@
 
 ## How to build
 
-1. add to vue.config.js
+1. add to vue.config.js, in module.exports
 ```
 module.exports = {
  baseUrl: '/Ass-Bisha/'
