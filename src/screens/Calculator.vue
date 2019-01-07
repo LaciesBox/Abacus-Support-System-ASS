@@ -1,31 +1,54 @@
 <template>
   <q-page-container>
-    <!-- <q-btn 
-        round
-        color="primary"
-        @click="doAddChara"
-        icon="add"
-        class="fixed"
-        style="left: 18px; bottom: 18px; z-index:5"
-        />-->
-    <!--Start of character addition UI-->
-    <div class="row q-pr-sm q-pt-sm q-pa-sm">
-      <div class="col-xs-12 col-lg-3">
-        <q-search
-        placeholder="Add Character"
-        icon="face"
-        clearable
-        v-model="chosenChara"
+    <!-- No characters on workspace -->
+    <div class="q-mt-lg text-center text-italic text-grey" v-show="charas.length == 0">
+      Add some characters for some fun-nyan~ <br>
+      Or you can look at my butt~ <br>
+      <img src="../assets/abacus-ass.png" class="q-mt-lg margin-auto"/>
+    </div>
+
+    <!--Character details-->
+    <div class="row">
+      <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
+        <transition
+        appear
+        enter-active-class="animated bounceInDown"
         >
-          <q-autocomplete @search="showCharaList" @selected="selected" />
-        </q-search>
+        <character-details :chosen-chara-name="chara" :chara-index="index"/>
+        </transition>
       </div>
     </div>
-    <!--End of character addition UI-->
-    <div class="row">
-      <character-details v-for="(chara, index) in charas" v-bind:key="index"
-      :chosen-chara-name="chara" :chara-index="index"/>
-    </div>
+
+    <!-- Character add UI -->
+    <q-page-sticky position="bottom-right" :offset="[18, 17]">
+      <div ref="search">
+      <q-search
+        placeholder="Add Character"
+        icon="search"
+        clearable
+        v-model="chosenChara"
+        v-show="addMenuOpen"
+        class="bg-primary"
+        dark
+        style="height: 2.7em; border-radius: 5px; max-width: 14.3em;"
+        >
+          <q-autocomplete @search="showCharaList" @selected="selected" />
+        </q-search> 
+      </div>
+    </q-page-sticky>
+
+    <!-- FABulous toggle -->
+    <q-page-sticky position="bottom-right" :offset="[18, 18]" ref="addBtn">
+      <q-btn
+        round
+        color="primary"
+        @click="addCharaMenu"
+        :class="blend"
+      > 
+        <div ref="addIcon"><q-icon name="add"></q-icon></div>
+      </q-btn>
+    </q-page-sticky>
+    
   </q-page-container>
 
 </template>
@@ -41,6 +64,7 @@ import {
 import { EventBus } from "store/ass-store";
 
 import { CharacterDetails } from "components";
+import {hideSearch, showSearch, rotatePlus} from '../anime.js';
 
 export default {
   name: 'Calculator',
@@ -50,8 +74,16 @@ export default {
   data(){
     return {
       charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
-      chosenChara: ""
+      chosenChara: "",
+      addMenuOpen: false,
+      blend: ""
     }
+  },
+  mounted(){
+    EventBus.$on('deleteCharacter', chosenChara => {
+      let index = this.charas.indexOf(chosenChara);
+      this.charas.splice(index, 1);
+    });
   },
   watch: {
       currentPage: 'fetchData'
@@ -61,7 +93,9 @@ export default {
   },
   methods: {
     doAddChara: function(chara) {
-      this.charas.push(chara);
+      if(!this.charas.includes(chara)) {
+        this.charas.push(chara);
+      }
     },
     fetchData: function () {
       // [banonas] temporary; my internet data is sad 
@@ -98,6 +132,21 @@ export default {
         this.chosenChara = "";
       }
       console.log(item, keyboard);
+    },
+    addCharaMenu: function() {
+      let self = this;
+      if(this.addMenuOpen) { //if open, close
+        this.blend="";
+        hideSearch(this.$refs.search);
+        setTimeout(function() {
+        self.addMenuOpen = !self.addMenuOpen;
+        }, 300);
+      } else {
+        this.blend="no-shadow";
+        showSearch(this.$refs.search);
+        this.addMenuOpen = !this.addMenuOpen;
+      }
+      rotatePlus(this.$refs.addIcon);
     }
   }
 }

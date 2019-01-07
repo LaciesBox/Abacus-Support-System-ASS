@@ -39,7 +39,11 @@ import {
   QAutocomplete,
   QModal,
   QIcon,
-  QChip
+  QChip,
+  QSlideTransition,
+  QFab,
+  QFabAction,
+  QPageSticky
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -71,7 +75,11 @@ Vue.use(Quasar, {
     QAutocomplete,
     QModal,
     QIcon,
-    QChip
+    QChip,
+    QSlideTransition,
+    QFab,
+    QFabAction,
+    QPageSticky
   },
   directives: {},
   plugins: {}

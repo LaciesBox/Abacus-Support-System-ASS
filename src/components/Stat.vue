@@ -1,6 +1,6 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
-    <div class="col-7">
+    <div :class="btnClass">
       <q-btn :label="btnLabel"
           @click="toggleCompute" 
           align="left"
@@ -11,7 +11,7 @@
           :text-color="btnTextColor"
           no-wrap/>
     </div>
-    <div class="col-3 text-center">
+    <div :class="baseClass">
       <q-chip square :color="statColor" :text-color="statTextColor" style="height: 2.6em; width: 100%;">
         {{this.value}}
       </q-chip>
@@ -105,6 +105,14 @@ export default {
     charaIndex: {
       type: Number,
       required: true
+    },
+    baseClass: {
+      type: Array,
+      default: () => ["col-3", "text-center"]
+    },
+    btnClass: {
+      type: Array,
+      default: () => ["col-7"]
     }
   },
 

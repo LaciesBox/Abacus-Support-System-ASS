@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm col-xs-12 col-sm-6">
+  <div class="q-pa-sm col-xs-12 col-sm-6" ref="charaDetails">
     <!-- Start of chara details UI -->
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
@@ -25,6 +25,7 @@
         v-for="stat in Consts.PHYSICAL_PROPERTIES" 
         v-bind:key="stat">
         <stat :chara-index ="charaIndex" 
+            :base-class="['col-5','text-center']" :btn-class="['col-5']"
             :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
       </div>
     </div>
@@ -74,11 +75,16 @@
     <!-- roll -->
     <div class="row q-pr-sm q-pt-sm q-ma-sm">
       <div class="col-2">
-      <q-btn class="full-width" @click="doRoll" size="lg" icon="casino"/>
+      <q-btn class="full-width" @click="doRoll" size="lg">
+        <div ref="dice"><q-icon name="casino"></q-icon></div>
+      </q-btn>
       </div>
-      <div class="col-10 q-pl-sm">
-          <ass-text label="Roll" :content="rollResult.roll"/>
-          <ass-text label="Final Roll" :content="rollResult.finalRoll"/>
+      <div class="col-8 q-pl-sm">
+          <ass-text label="Roll" :content="rollResult.roll" ref="roll"/>
+          <ass-text label="Final Roll" :content="rollResult.finalRoll" ref="finalRoll"/>
+      </div>
+      <div class="col-1" id="delete-button">
+        <q-btn icon="delete" color="red" @click="deleteChara"></q-btn> 
       </div>
     </div>
 
@@ -97,6 +103,8 @@ import AssText from "./AssText.vue";
 import SectionHeader from "./SectionHeader.vue";
 
 import { EventBus } from "store/ass-store";
+
+import {rollDice, rollNumber, sendOffscreenUp} from "../anime.js";
 
 export default {
   name: "CharacterDetails",
@@ -193,8 +201,9 @@ export default {
       //provide reference, then collect data from children
       let stats = {};
       EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
-
-      this.rollResult = Object.assign({},CalcUtils.roll(stats));
+      rollDice(this.$refs.dice);
+      let currRollResult = Object.assign({},CalcUtils.roll(stats));
+      rollNumber(this.rollResult, currRollResult);
     },
     openProfileModal: function(){
       console.log("hehe");
@@ -220,6 +229,13 @@ export default {
         }
         this.charaNamesFiltered = names;
       }
+    },
+    deleteChara: function() {
+      let charaName = this.chosenCharaName;
+      sendOffscreenUp(this.$refs.charaDetails);
+      setTimeout(function() {
+        EventBus.$emit('deleteCharacter', charaName); 
+      }, 250);
     }
   }
 };
@@ -321,4 +337,9 @@ div
 .chara-codename
   font-family "PT_Sans"
   font-size 18px
+
+#delete-button
+  position: relative;
+  right: 0em;
+
 </style>
