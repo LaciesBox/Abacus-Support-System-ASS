@@ -7,6 +7,7 @@
         <span class="center chara-name">{{chosenChara.name}}</span><br>
         <span class="center chara-codename">{{chosenChara.codename}}</span>
       </center>
+      <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
       <div class="chara-stamp absolute-center" :class="stampClass">
         <strong>
           <span :class="[kanjiClass]">{{DEVAS[chosenChara.devas.substr(0,1)]}}</span>
@@ -15,6 +16,22 @@
       </div>
     </div>
 
+    <transition
+    appear
+    enter-active-class="animated bounceInLeft"
+    leave-active-class="animate bounceOutRight"
+    >
+    <div class="character-profile" v-show="!isCalculatorOpen">
+      <character-profile :chosen-chara="chosenChara"></character-profile>
+    </div>
+    </transition>
+
+    <transition
+    appear
+    enter-active-class="animated bounceInLeft"
+    leave-active-class="animate bounceOutRight"
+    >
+    <div class="character-calculator" v-show="isCalculatorOpen">
     <!-- physical properties -->
     <div class="row q-pr-sm q-pt-sm q-ma-sm q-mt-lg">
       <div class="col-12">
@@ -88,7 +105,8 @@
         <q-btn icon="delete" color="red" @click="deleteChara"></q-btn> 
       </div>
     </div>
-
+    </div>
+    </transition>
   </div>
 </template>
 
@@ -102,6 +120,7 @@ import {
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
 import SectionHeader from "./SectionHeader.vue";
+import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
 
@@ -112,9 +131,9 @@ export default {
   components: {
     Stat,
     AssText,
-    SectionHeader
+    SectionHeader,
+    CharacterProfile
   },
-
   created() {
     this.Consts = Consts;
     this.GANGS = Lookups.GANGS;
@@ -130,7 +149,8 @@ export default {
         roll: "",
         finalRoll: "",
         status: ""
-      }
+      },
+      isCalculatorOpen: true,
     };
   },
 
@@ -182,6 +202,9 @@ export default {
          width: '100px',
          height: '100px'
       }
+    },
+    iconToggle() {
+      return this.isCalculatorOpen ? "help" : "fas fa-calculator"
     }
   },
 
@@ -237,6 +260,9 @@ export default {
       setTimeout(function() {
         EventBus.$emit('deleteCharacter', charaName); 
       }, 250);
+    },
+    toggleCalculator: function() {
+      this.isCalculatorOpen = !this.isCalculatorOpen;
     }
   }
 };
