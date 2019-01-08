@@ -5,6 +5,9 @@ Number.prototype.clamp = function(min, max) {
   return Math.min(Math.max(this, min), max);
 };
 
+let buffs = [];
+let debuffs = [];
+
 const PERCENTAGE_MULTIPLIER = .02,
     MAX_ROLL = 20,
     CRITICAL_FAIL = 1,
@@ -13,7 +16,16 @@ const PERCENTAGE_MULTIPLIER = .02,
 const consumeStat = function(stat, multiplier, isPositive){
   if(stat && stat.base && stat.willCalculate){
     multiplier = isPositive ? multiplier : multiplier * -1;
-    return  (stat.add + stat.base) * multiplier;
+
+    const result = (stat.add + stat.base) * multiplier;
+
+    if (isPositive){
+      buffs.push({name:stat.name,value:result});
+    } else {
+      debuffs.push({name:stat.name,value:result});
+    }
+
+    return result;
   }
 
   return 0;
@@ -36,6 +48,9 @@ const computeStats = function(stats, type, multiplier, isPositive, max){
 
 // when player clicks "roll"
 const roll = function(stats) {
+  buffs = [];
+  debuffs = [];
+  
   //randomize
   let rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let finalRollValue = rollValue;
@@ -58,13 +73,17 @@ const roll = function(stats) {
   //compute afflictions
   finalRollValue += computeStats(stats, Consts.AFFLICTION, 1, false, 5);
 
+  finalRollValue = finalRollValue.clamp(1,20);
   //return json object
   return {
     roll: rollValue,
-    finalRoll: finalRollValue.clamp(1,20),
+    finalRoll: finalRollValue,
+    buffs, debuffs,
     status: finalRollValue <= CRITICAL_FAIL ? 
         Consts.CRIT_FAIL_IND : finalRollValue >= CRITICAL_SUCC ? 
-        Consts.CRIT_SUCC_IND : Consts.NORM_ROLL_IND
+        Consts.CRIT_SUCC_IND : Consts.NORM_ROLL_IND,
+    chanceOfDying: (stats.mortalityNumber * 5) + "%",
+    verdict: stats.mortalityNumber > finalRollValue ? "Dead" : "Alive"
   }
 }
 

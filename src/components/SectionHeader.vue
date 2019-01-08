@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pt-sm">
-    {{content}}
+  <div class="q-mt-sm">
+    <strong>{{content}}</strong>
     <hr width="100%">
   </div>
 </template>

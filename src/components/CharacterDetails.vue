@@ -89,17 +89,34 @@
             :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
       </div>
     </div>
+    
+    <!-- mortality number -->
+    <div class="row q-pr-sm q-ma-sm">
+        <strong class="col-5 q-mt-md">MORTALITY NUMBER: </strong>
+        <q-input class="col-1" align="center" v-model="mortalityNumber"/>
+    </div>
 
     <!-- roll -->
     <div class="row q-pr-sm q-pt-sm q-ma-sm">
+      <div class="col-8 q-pl-sm">
+          <ass-text label="Roll" :content="rollResult.roll" ref="roll"/>
+          <ass-text label="Final Roll" :content="valueWithPercent(rollResult.finalRoll)" ref="finalRoll"/>
+          <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+          <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+
+          <div class="row" v-for="buff in rollResult.buffs" :key="buff.name">
+            <div class="col-12">
+            {{buff.name}} {{valueWithPercent(buff.value)}}
+            </div>
+          </div>
+          <div class="row" v-for="debuff in rollResult.debuffs" :key="debuff.name">
+            {{debuff.name}} {{valueWithPercent(debuff.value)}}
+          </div>
+      </div>
       <div class="col-2">
       <q-btn class="full-width" @click="doRoll" size="lg">
         <div ref="dice"><q-icon name="casino"></q-icon></div>
       </q-btn>
-      </div>
-      <div class="col-8 q-pl-sm">
-          <ass-text label="Roll" :content="rollResult.roll" ref="roll"/>
-          <ass-text label="Final Roll" :content="rollResult.finalRoll" ref="finalRoll"/>
       </div>
       <div class="col-1" id="delete-button">
         <q-btn icon="delete" color="red" @click="deleteChara"></q-btn> 
@@ -145,12 +162,17 @@ export default {
     return {
       charaNamesFiltered: null,
       placeholder: null,
+      mortalityNumber: 0,
       rollResult: {
         roll: "",
         finalRoll: "",
-        status: ""
+        status: "",
+        chanceOfDying: "",
+        verdict: "",
+        buffs: [],
+        debuffs: []
       },
-      isCalculatorOpen: true,
+      isCalculatorOpen: true
     };
   },
 
@@ -197,14 +219,8 @@ export default {
     occupationCount(){
       return this.getCount(Consts.OCCUPATION_ARR);
     },
-    styles(){
-      return {
-         width: '100px',
-         height: '100px'
-      }
-    },
     iconToggle() {
-      return this.isCalculatorOpen ? "help" : "fas fa-calculator"
+      return this.isCalculatorOpen ? "help" : "fas fa-calculator";
     }
   },
 
@@ -221,13 +237,26 @@ export default {
   },
 
   methods: {
+    valueWithPercent: function(value){
+      return value + " ("+ value * 5 +"%)";
+    },
     doRoll: function(){
       //provide reference, then collect data from children
       let stats = {};
+      stats.mortalityNumber = this.mortalityNumber;
+
       EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
+      
       rollDice(this.$refs.dice);
+
       let currRollResult = Object.assign({},CalcUtils.roll(stats));
-      rollNumber(this.rollResult, currRollResult);
+
+      //define callback upon complete
+      rollNumber(this.rollResult, currRollResult, () => {
+        this.rollResult.verdict = currRollResult.verdict;
+        this.rollResult.buffs =  currRollResult.buffs;
+        this.rollResult.debuffs =  currRollResult.debuffs;
+      })
     },
     openProfileModal: function(){
       console.log("hehe");
@@ -255,10 +284,10 @@ export default {
       }
     },
     deleteChara: function() {
-      let charaName = this.chosenCharaName;
-      sendOffscreenUp(this.$refs.charaDetails);
-      setTimeout(function() {
-        EventBus.$emit('deleteCharacter', charaName); 
+      //sendOffscreenUp(this.$refs.charaDetails);
+      console.log("hello", this.charaIndex);
+      setTimeout(() => {
+        EventBus.$emit('deleteCharacter', this.charaIndex); 
       }, 250);
     },
     toggleCalculator: function() {

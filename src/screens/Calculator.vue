@@ -83,9 +83,8 @@ export default {
     }
   },
   mounted(){
-    EventBus.$on('deleteCharacter', chosenChara => {
-      let index = this.charas.indexOf(chosenChara);
-      this.charas.splice(index, 1);
+    EventBus.$on('deleteCharacter', charaIndex => {
+      this.charas.splice(charaIndex, 1);
     });
   },
   watch: {
