@@ -31,5 +31,21 @@ export default {
   CRIT_FAIL_IND: 'F',
   NORM_ROLL_IND: 'N',
   LB_GANG: "Gang",
-  LB_DEVAS: "Devas"
+  LB_DEVAS: "Devas",
+  RPER_NAME: "rperName",
+  FACECLAIM: "faceclaim",
+  BIRTHDAY: "birthday",
+  AGE: "age",
+  SEX: "sex",
+  HEIGHT:"height",
+  WEIGHT:"weight",
+  NATIONALITY:"nationality",
+  HISTORY:"history",
+  PERSONALITY:"personality",
+  LIVING_DEPENDENTS:"livingDependentsArr",
+  WEAPONS:"weaponsArr",
+  EYECOLOR:"eyecolor",
+  HAIRCOLOR:"haircolor",
+  GENERAL_APPEAL:"generalAppeal",
+  SKILLS:"skillsArr"
 }
