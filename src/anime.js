@@ -61,13 +61,16 @@ export function rollDice(element) {
     });
 }
 
-export function rollNumber(resultElement, rollResult) {
+export function rollNumber(resultElement, rollResult, callback) {
     anime({
         targets: resultElement,
         roll: rollResult.roll,
         finalRoll: rollResult.finalRoll,
-        easing: 'linear',
-        round: 1
+        chanceOfDying: rollResult.chanceOfDying,
+        easing: 'easeOutExpo',
+        round: 1,
+        duration: 1000,
+        complete: callback
     });
 }
 

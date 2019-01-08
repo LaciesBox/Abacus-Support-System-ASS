@@ -56,6 +56,7 @@ export default {
       }
 
       data.stats[this.fieldName] = {
+        name: this.statName,
         add: Number(this.add),
         base: Number(this.value),
         willCalculate: this.willCalculate
@@ -88,7 +89,7 @@ export default {
     },
     statName: {
       type: String,
-      default: "Stat"
+      required: true
     },
     value: {
       type: [String, Number],

@@ -1,5 +1,6 @@
 <template>
   <q-page-container>
+    {{charas}}
     <!-- No characters on workspace -->
     <div class="q-mt-lg text-center text-italic text-grey" v-show="charas.length == 0">
       Add some characters for some fun-nyan~ <br>
@@ -83,9 +84,8 @@ export default {
     }
   },
   mounted(){
-    EventBus.$on('deleteCharacter', chosenChara => {
-      let index = this.charas.indexOf(chosenChara);
-      this.charas.splice(index, 1);
+    EventBus.$on('deleteCharacter', charaIndex => {
+      this.charas.splice(charaIndex, 1);
     });
   },
   watch: {
