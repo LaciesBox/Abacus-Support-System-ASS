@@ -56,7 +56,7 @@ export default {
       }
 
       data.stats[this.fieldName] = {
-        name: this.statName,
+        name: this.finalDisplayName,
         add: Number(this.add),
         base: Number(this.value),
         willCalculate: this.willCalculate
@@ -65,6 +65,9 @@ export default {
   },
 
   computed: {
+    finalDisplayName(){
+      return this.displayName || this.statName || "";
+    },
     btnColor(){
       return this.willCalculate ? "primary" : "secondary";
     },
@@ -83,6 +86,10 @@ export default {
   },
 
   props: {
+    displayName: {
+      type: String,
+      required: false
+    },
     fieldName: {
       type: String,
       required: true

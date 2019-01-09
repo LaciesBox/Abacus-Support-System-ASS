@@ -8,7 +8,7 @@ Number.prototype.clamp = function(min, max) {
 let buffs = [];
 let debuffs = [];
 
-const PERCENTAGE_MULTIPLIER = .02,
+const PERCENTAGE_MULTIPLIER = 5,
     MAX_ROLL = 20,
     CRITICAL_FAIL = 1,
     CRITICAL_SUCC = 20;
@@ -46,11 +46,23 @@ const computeStats = function(stats, type, multiplier, isPositive, max){
   return sum;
 }
 
+const getPercentageValue = function(value){
+  return value * PERCENTAGE_MULTIPLIER;
+}
+
+const getStrPercentageValue = function(value){
+  return getPercentageValue(value) +"%";
+}
+
+const appendPercentageToValue = function(value){
+  return value + " (" + getStrPercentageValue(value) + ")";
+}
+
 // when player clicks "roll"
 const roll = function(stats) {
   buffs = [];
   debuffs = [];
-  
+
   //randomize
   let rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let finalRollValue = rollValue;
@@ -89,6 +101,9 @@ const roll = function(stats) {
 
 export default {
   roll,
+  getPercentageValue,
+  getStrPercentageValue,
+  appendPercentageToValue,
   PERCENTAGE_MULTIPLIER,
   MAX_ROLL,
   CRITICAL_FAIL,

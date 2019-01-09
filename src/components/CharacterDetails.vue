@@ -43,7 +43,7 @@
         v-bind:key="stat">
         <stat :chara-index ="charaIndex" 
             :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
-            :btn-class="['col-lg-6','col-md-5', 'col-xs-6']"
+            :btn-class="['col-lg-6','col-md-5', 'col-xs-6']" :display-name="Consts[stat+'Display']"
             :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
       </div>
     </div>
@@ -92,34 +92,35 @@
     
     <!-- mortality number -->
     <div class="row q-pr-sm q-ma-sm">
-        <strong class="col-5 q-mt-md">MORTALITY NUMBER: </strong>
-        <q-input class="col-1" align="center" v-model="mortalityNumber"/>
+      <strong class="col-auto q-mt-md q-mr-sm">MORTALITY NUMBER: </strong>
+      <q-input class="col-1" align="center" v-model="mortalityNumber"/>
     </div>
 
     <!-- roll -->
     <div class="row q-pr-sm q-pt-sm q-ma-sm">
-      <div class="col-8 q-pl-sm">
-          <ass-text label="Roll" :content="rollResult.roll" ref="roll"/>
-          <ass-text label="Final Roll" :content="valueWithPercent(rollResult.finalRoll)" ref="finalRoll"/>
-          <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-          <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
-
-          <div class="row" v-for="buff in rollResult.buffs" :key="buff.name">
-            <div class="col-12">
-            {{buff.name}} {{valueWithPercent(buff.value)}}
-            </div>
-          </div>
-          <div class="row" v-for="debuff in rollResult.debuffs" :key="debuff.name">
-            {{debuff.name}} {{valueWithPercent(debuff.value)}}
-          </div>
-      </div>
       <div class="col-2">
       <q-btn class="full-width" @click="doRoll" size="lg">
         <div ref="dice"><q-icon name="casino"></q-icon></div>
       </q-btn>
       </div>
-      <div class="col-1" id="delete-button">
-        <q-btn icon="delete" color="red" @click="deleteChara"></q-btn> 
+      <div class="col-10 q-pl-sm">
+          <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
+          <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
+            <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
+          </ass-text>
+          <q-slide-transition>
+            <div v-show="showBreakdown">
+              <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+                   and total when color has been decided on -->
+              <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
+              <stat-breakdown :buffs="rollResult.buffs" />
+              <stat-breakdown :buffs="rollResult.debuffs"/>
+              <hr width="100%">
+              <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+            </div>
+          </q-slide-transition>
+          <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+          <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
       </div>
     </div>
     </div>
@@ -137,6 +138,7 @@ import {
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
 import SectionHeader from "./SectionHeader.vue";
+import StatBreakdown from './StatBreakdown.vue';
 import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
@@ -149,6 +151,7 @@ export default {
     Stat,
     AssText,
     SectionHeader,
+    StatBreakdown,
     CharacterProfile
   },
   created() {
@@ -156,6 +159,7 @@ export default {
     this.GANGS = Lookups.GANGS;
     this.DEVAS = Lookups.DEVAS;
     this.DEVAS_DESC = Lookups.DEVAS_DESC;
+    this.appendPercentageToValue = CalcUtils.appendPercentageToValue;
   },
 
   data() {
@@ -172,7 +176,8 @@ export default {
         buffs: [],
         debuffs: []
       },
-      isCalculatorOpen: true
+      isCalculatorOpen: true,
+      showBreakdown: false
     };
   },
 
@@ -237,8 +242,8 @@ export default {
   },
 
   methods: {
-    valueWithPercent: function(value){
-      return value + " ("+ value * 5 +"%)";
+    toggleBreakdown: function(){
+      this.showBreakdown = !this.showBreakdown;
     },
     doRoll: function(){
       //provide reference, then collect data from children
@@ -257,9 +262,6 @@ export default {
         this.rollResult.buffs =  currRollResult.buffs;
         this.rollResult.debuffs =  currRollResult.debuffs;
       })
-    },
-    openProfileModal: function(){
-      console.log("hehe");
     },
     getCount: function(field){
       const count = this.chosenChara[field];
@@ -285,7 +287,6 @@ export default {
     },
     deleteChara: function() {
       //sendOffscreenUp(this.$refs.charaDetails);
-      console.log("hello", this.charaIndex);
       setTimeout(() => {
         EventBus.$emit('deleteCharacter', this.charaIndex); 
       }, 250);
@@ -393,6 +394,15 @@ div
 .chara-codename
   font-family "PT_Sans"
   font-size 18px
+
+.text-align-right
+  text-align right
+
+.subtext
+  font-size 12px
+
+a
+  cursor pointer
 
 #delete-button
   position: relative;
