@@ -286,11 +286,8 @@ export default {
       }
     },
     deleteChara: function() {
-      //sendOffscreenUp(this.$refs.charaDetails);
-      console.log("hello", this.charaIndex);
-      setTimeout(() => {
-        EventBus.$emit('deleteCharacter', this.charaIndex); 
-      }, 250);
+      //TODO: Chara delete animation.
+      EventBus.$emit('deleteCharacter', this.charaIndex);
     },
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
