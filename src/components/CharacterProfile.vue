@@ -108,7 +108,7 @@
             <div class="row">
             <div class="col-12"><section-subheader content="Living Dependents"></section-subheader></div>
             <div class="col-xs-12 col-lg-12">
-            <character-profile-row :center-content="chosenChara[Consts.LIVING_DEPENDENTS]"></character-profile-row>
+            <character-profile-row :center-content="chosenChara[Consts.LIVING_DEPENDENTS]" icon="group"></character-profile-row>
             </div>
             </div>
             <div class="row">
@@ -134,24 +134,27 @@
             <div class="row">
             <div class="col-12"><section-subheader content="Weapons"></section-subheader></div>
             <div class="col-12">
-            <character-profile-row :center-content="chosenChara[Consts.WEAPONS]"></character-profile-row>
+            <character-profile-row :center-content="chosenChara[Consts.WEAPONS]" icon="fas fa-khanda"></character-profile-row>
             </div>
             </div>
             <div class="row">
             <div class="col-12"><section-subheader content="Skills"></section-subheader></div>
             <div class="col-xs-12 col-lg-12">
-            <character-profile-row :center-content="chosenChara[Consts.SKILLS]"></character-profile-row>
+            <character-profile-row :center-content="chosenChara[Consts.SKILLS]" 
+            :content-description="chosenChara[Consts.SKILLS_DESC]" icon="fas fa-cogs"></character-profile-row>
             </div>
             </div><div class="row">
             <div class="col-12"><section-subheader content="Occupation"></section-subheader></div>
             <div class="col-12">
-            <character-profile-row :center-content="chosenChara[Consts.OCCUPATION_ARR]"></character-profile-row>
+            <character-profile-row :center-content="chosenChara[Consts.OCCUPATION_ARR]"
+            :content-level="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR]" icon="fab fa-joomla"></character-profile-row>
             </div>
             </div>
             <div class="row">
             <div class="col-12"><section-subheader content="Talents"></section-subheader></div>
             <div class="col-xs-12 col-lg-12">
-            <character-profile-row :center-content="chosenChara[Consts.TALENT_ARR]"></character-profile-row>
+            <character-profile-row :center-content="chosenChara[Consts.TALENT_ARR]"
+            :content-level="chosenChara[Consts.TALENT_PROFICIENCY_ARR]" icon="star"></character-profile-row>
             </div>
             </div>
             </q-scroll-area>
@@ -187,6 +190,10 @@ export default {
     this.Consts = Consts;
   },
   watch: {
+    chosenChara() {
+      console.log(Consts.SKILLS_DESC);
+      console.log(chosenChara[Consts.SKILLS_DESC]);
+    }
   },
   computed: {
     profile() {

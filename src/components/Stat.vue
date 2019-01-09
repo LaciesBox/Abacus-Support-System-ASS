@@ -26,7 +26,7 @@
         type="number"
         :step="1"
         align="center"
-        color="secondary" class="stat"
+        color="secondary" v-bind:class="{'stat': true, 'bg-amber-4': willCalculate}"
         :min="min" 
         :max="max"/>
       </q-field>

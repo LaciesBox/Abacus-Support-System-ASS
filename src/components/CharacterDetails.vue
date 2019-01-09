@@ -1,5 +1,6 @@
 <template>
-  <div class="q-pa-sm col-xs-12 col-sm-6" ref="charaDetails">
+  <div v-bind:class="{'q-pa-xs': isDesktop, 'col-xs-12': true,
+   'col-sm-6': true,}" ref="charaDetails">
     <!-- Start of chara details UI -->
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
@@ -8,6 +9,7 @@
         <span class="center chara-codename">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
+        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense></q-btn> 
       <div class="chara-stamp absolute-center" :class="stampClass">
         <strong>
           <span :class="[kanjiClass]">{{DEVAS[chosenChara.devas.substr(0,1)]}}</span>
@@ -100,29 +102,28 @@
     <div class="row q-pr-sm q-pt-sm q-ma-sm">
       <div class="col-2">
       <q-btn class="full-width" @click="doRoll" size="lg">
-        <div ref="dice"><q-icon name="casino"></q-icon></div>
+        <div ref="dice"><q-icon name="casino" class=""></q-icon></div>
       </q-btn>
       </div>
       <div class="col-10 q-pl-sm">
-          <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
-          <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
-            <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
-          </ass-text>
-          <q-slide-transition>
-            <div v-show="showBreakdown">
-              <!-- apply subtle color changes between Base Roll, buffs, debuffs,
-                   and total when color has been decided on -->
-              <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
-              <stat-breakdown :buffs="rollResult.buffs" />
-              <stat-breakdown :buffs="rollResult.debuffs"/>
-              <hr width="100%">
-              <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
-            </div>
-          </q-slide-transition>
-          <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-          <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+        <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
+        <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
+          <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
+        </ass-text>
+        <q-slide-transition>
+          <div v-show="showBreakdown">
+            <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+                 and total when color has been decided on -->
+            <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
+            <stat-breakdown :buffs="rollResult.buffs" />
+            <stat-breakdown :buffs="rollResult.debuffs"/>
+            <hr width="100%">
+            <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+          </div>
+        </q-slide-transition>
+        <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+        <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
       </div>
-    </div>
     </div>
     </transition>
   </div>
@@ -177,7 +178,8 @@ export default {
         debuffs: []
       },
       isCalculatorOpen: true,
-      showBreakdown: false
+      showBreakdown: false,
+      isDesktop: this.$q.platform.is.desktop
     };
   },
 
@@ -286,10 +288,8 @@ export default {
       }
     },
     deleteChara: function() {
-      //sendOffscreenUp(this.$refs.charaDetails);
-      setTimeout(() => {
-        EventBus.$emit('deleteCharacter', this.charaIndex); 
-      }, 250);
+      //TODO: Chara delete animation.
+      EventBus.$emit('deleteCharacter', this.charaIndex);
     },
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
