@@ -112,17 +112,18 @@
         </ass-text>
         <q-slide-transition>
           <div v-show="showBreakdown">
-            <!-- apply subtle color changes between Base Roll, buffs, debuffs,
-                 and total when color has been decided on -->
-            <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
-            <stat-breakdown :buffs="rollResult.buffs" />
-            <stat-breakdown :buffs="rollResult.debuffs"/>
-            <hr width="100%">
-            <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
-          </div>
-        </q-slide-transition>
-        <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-        <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+              <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+                  and total when color has been decided on -->
+              <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
+              <stat-breakdown :buffs="rollResult.buffs" />
+              <stat-breakdown :buffs="rollResult.debuffs"/>
+              <hr width="100%">
+              <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+            </div>
+          </q-slide-transition>
+          <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+          <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+        </div>  
       </div>
     </div>
     </transition>
