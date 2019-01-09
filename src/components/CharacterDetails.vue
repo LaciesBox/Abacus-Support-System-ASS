@@ -1,5 +1,6 @@
 <template>
-  <div class="q-pa-sm col-xs-12 col-sm-6" ref="charaDetails">
+  <div v-bind:class="{'q-pa-xs': isDesktop, 'col-xs-12': true,
+   'col-sm-6': true,}" ref="charaDetails">
     <!-- Start of chara details UI -->
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
@@ -115,7 +116,7 @@
       </div>
       <div class="col-2">
       <q-btn class="full-width" @click="doRoll" size="lg">
-        <div ref="dice"><q-icon name="casino"></q-icon></div>
+        <div ref="dice"><q-icon name="casino" class=""></q-icon></div>
       </q-btn>
       </div>
       <div class="col-1" id="delete-button">
@@ -172,7 +173,8 @@ export default {
         buffs: [],
         debuffs: []
       },
-      isCalculatorOpen: true
+      isCalculatorOpen: true,
+      isDesktop: this.$q.platform.is.desktop,
     };
   },
 
