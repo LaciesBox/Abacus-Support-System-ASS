@@ -9,6 +9,7 @@
         <span class="center chara-codename">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
+        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense></q-btn> 
       <div class="chara-stamp absolute-center" :class="stampClass">
         <strong>
           <span :class="[kanjiClass]">{{DEVAS[chosenChara.devas.substr(0,1)]}}</span>
@@ -118,9 +119,6 @@
       <q-btn class="full-width" @click="doRoll" size="lg">
         <div ref="dice"><q-icon name="casino" class=""></q-icon></div>
       </q-btn>
-      </div>
-      <div class="col-1" id="delete-button">
-        <q-btn icon="delete" color="red" @click="deleteChara"></q-btn> 
       </div>
     </div>
     </div>
