@@ -47,5 +47,6 @@ export default {
   EYECOLOR:"eyecolor",
   HAIRCOLOR:"haircolor",
   GENERAL_APPEAL:"generalAppeal",
-  SKILLS:"skillsArr"
+  SKILLS:"skillsArr",
+  SKILLS_DESC: "skillsDescArr",
 }
