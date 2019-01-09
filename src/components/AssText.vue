@@ -6,6 +6,7 @@
     <span v-else>
       <strong>{{finalLabel}}</strong> {{content || "-"}}
     </span>
+    <slot/>
   </div>
 </template>
 
