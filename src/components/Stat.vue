@@ -1,26 +1,16 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
     <div :class="btnClass">
-      <!-- Original button code is here. -->
-      <!-- <q-btn :label="btnLabel"
-          @click="toggleCompute" 
-          align="left"
-          class="full-width q-pl-xs no-shadow"
-          label-width="12"
-          :outline="!willCalculate"
-          color="secondary"
-          :text-color="btnTextColor"
-          no-wrap/> -->
       <q-btn :label="btnLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width q-pl-xs no-shadow"
+          class="full-width"
           label-width="12"
           color="primary"
           no-wrap/>
     </div>
     <div :class="baseClass">
-      <q-chip square :color="statColor" :text-color="statTextColor" style="height: 2.6em; width: 100%; z-index:5;">
+      <q-chip class="chip" square :color="statColor" :text-color="statTextColor">
         {{this.value}}
       </q-chip>
     </div>
@@ -34,7 +24,7 @@
         type="number"
         :step="1"
         align="center"
-        color="secondary" v-bind:class="{'stat': true, 'bg-amber-4': willCalculate}"
+        color="secondary" v-bind:class="{'stat': true, 'bg-ass-gold': willCalculate}"
         :min="min" 
         :max="max"/>
       </q-field>
@@ -141,7 +131,9 @@ export default {
 
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+
+@import '~variables'
 
 .stat
   color: #EEEEEE
@@ -150,6 +142,11 @@ export default {
   color: #111111
 
 .bg-stat
-  background: #E5d6b5
+  background #E5d6b5
+
+.chip
+  height: 2.6em
+  width: 100% 
+  z-index: 5
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="row text-black">
-    <div class="col-12 q-pa-none">
+    <div class="col-12">
       <q-card class="bg-grey-2">
         <q-card-title class="q-pa-sm q-pl-lg">
           <!-- TODO Change font -->
