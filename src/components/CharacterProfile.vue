@@ -7,7 +7,7 @@
         </q-card-title>
         <q-card-separator />
         <q-card-main class="q-pa-none">
-          <q-list dense sparse separator>
+          <q-list separator>
             <!-- Biometrics COLLAPSIBLE -->
             <q-collapsible icon="memory" label="Biometrics" :group="profile" 
             :opened="isDesktop" @hide="hide('biometrics')" ref="biometrics">
@@ -25,31 +25,31 @@
             </div>
             <div class="row">
             <div class="col-12">
-            <character-profile-row label="Name" :content="chosenChara[Consts.NAME]"></character-profile-row>
+            <character-profile-row label="Name:" :center-content="chosenChara[Consts.NAME]"></character-profile-row>
             </div>
             <div class="col-12">
-            <character-profile-row label="Codename" :content="chosenChara[Consts.CODENAME]"></character-profile-row>
+            <character-profile-row label="Codename:" :center-content="chosenChara[Consts.CODENAME]"></character-profile-row>
             </div>
             <div class="col-12">
-            <character-profile-row label="RPer Name" :content="chosenChara[Consts.RPER_NAME]"></character-profile-row>
+            <character-profile-row label="RPer Name:" :center-content="chosenChara[Consts.RPER_NAME]"></character-profile-row>
             </div>
             </div>
             <div class="row">
             <div class="col-xs-8 col-lg-6">
-            <character-profile-row label="Birthday" :content="chosenChara[Consts.BIRTHDAY]"></character-profile-row>
+            <character-profile-row label="Birthday:" :center-content="chosenChara[Consts.BIRTHDAY]"></character-profile-row>
             </div>
             <div class="col-lg-1"></div>
             <div class="col-xs-4 col-lg-5">
-            <character-profile-row label="Age" :content="chosenChara[Consts.AGE]"></character-profile-row>
+            <character-profile-row label="Age:" :center-content="chosenChara[Consts.AGE]"></character-profile-row>
             </div>
             </div>
             <div class="row">
             <div class="col-xs-8 col-lg-6">
-            <character-profile-row label="Nationality" :content="chosenChara[Consts.NATIONALITY]"></character-profile-row>
+            <character-profile-row label="Nationality:" :center-content="chosenChara[Consts.NATIONALITY]"></character-profile-row>
             </div>
             <div class="col-lg-1"></div>
             <div class="col-xs-4 col-lg-5">
-            <character-profile-row label="Sex" :content="chosenChara[Consts.SEX]"></character-profile-row>
+            <character-profile-row label="Sex:" :center-content="chosenChara[Consts.SEX]"></character-profile-row>
             </div>
             </div>
 
@@ -59,23 +59,23 @@
             </div>
             <div class="row">
             <div class="col-12">
-            <character-profile-row label="Faceclaim" :content="chosenChara[Consts.FACECLAIM]"></character-profile-row>
+            <character-profile-row label="Faceclaim:" :center-content="chosenChara[Consts.FACECLAIM]"></character-profile-row>
             </div>
             </div>
             <div class="row">
             <div class="col-xs-6 col-lg-6">
-            <character-profile-row label="Eye Color" :content="chosenChara[Consts.EYECOLOR]"></character-profile-row>
+            <character-profile-row label="Eye Color:" :center-content="chosenChara[Consts.EYECOLOR]"></character-profile-row>
             </div>
             <div class="col-xs-6 col-lg-6">
-            <character-profile-row label="Hair Color" :content="chosenChara[Consts.HAIRCOLOR]"></character-profile-row>
+            <character-profile-row label="Hair Color:" :center-content="chosenChara[Consts.HAIRCOLOR]"></character-profile-row>
             </div>
             </div>
             <div class="row">
             <div class="col-xs-6 col-lg-6">
-            <character-profile-row label="Height" :content="chosenChara[Consts.HEIGHT]"></character-profile-row>
+            <character-profile-row label="Height:" :center-content="chosenChara[Consts.HEIGHT]"></character-profile-row>
             </div>
             <div class="col-xs-6 col-lg-6">
-            <character-profile-row label="Weight" :content="chosenChara[Consts.WEIGHT]"></character-profile-row>
+            <character-profile-row label="Weight:" :center-content="chosenChara[Consts.WEIGHT]"></character-profile-row>
             </div>
             </div>
             <div class="row">
