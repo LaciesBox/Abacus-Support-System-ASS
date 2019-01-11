@@ -61,7 +61,6 @@ export default {
       return Array.isArray(this.centerContent);
     },
     descriptionIsList() {
-      console.log(this.contentDescription);
       return Array.isArray(this.contentDescription);
     }
   }

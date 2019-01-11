@@ -191,10 +191,6 @@ export default {
     this.Consts = Consts;
   },
   watch: {
-    chosenChara() {
-      console.log(Consts.SKILLS_DESC);
-      console.log(chosenChara[Consts.SKILLS_DESC]);
-    }
   },
   computed: {
     profile() {
