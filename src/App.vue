@@ -33,6 +33,9 @@ export default {
   font-family PT_Sans
   src url("./assets/fonts/PT_Sans/PT_Sans-Web-Regular.ttf")
 
+@font-face 
+  font-family Nova-Mono
+  src url("./assets/fonts/Nova_Mono/NovaMono.ttf")
 
 .bg-color
   background-color $ass-app-bg
@@ -60,6 +63,15 @@ export default {
 
 .panopticon-grey
   background-color $panopticon-grey
+
+.unselectable 
+  -webkit-user-select: none;        
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+.nova
+  font-family "Nova-Mono"
 
 .luxia-lg
   font-family "Luxia"

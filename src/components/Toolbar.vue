@@ -2,7 +2,7 @@
     <q-layout-header>
         <q-toolbar
         color="primary"
-        height=300px
+        style="height: 4em;"
         >
         <q-btn
             flat
@@ -10,12 +10,10 @@
             round
             @click="leftDrawerOpen = !leftDrawerOpen"
             aria-label="Menu"
-            icon="menu"
-        />
+        ><q-icon name="menu" color="secondary"></q-icon></q-btn>
 
-        <q-toolbar-title>
-            毘沙門天
-            <div slot="subtitle">Bishamonten</div>
+        <q-toolbar-title class="nova absolute-center text-secondary">
+            <span style="font-size: 30px;" class="unselectable">ABACUS</span>
         </q-toolbar-title>
         </q-toolbar>
         <drawer :drawerOpen="leftDrawerOpen"/>
@@ -39,5 +37,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
 </style>
