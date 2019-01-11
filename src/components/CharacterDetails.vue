@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="{'q-pa-xs': isDesktop, 'col-xs-12': true,
    'col-sm-6': true,}" ref="charaDetails">
-    <!-- Start of chara details UI -->
+    <!-- Header UI -->
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
       <center><br>
@@ -18,6 +18,7 @@
       </div>
     </div>
 
+    <!-- Character Profile UI -->
     <transition
     appear
     enter-active-class="animated bounceInLeft"
@@ -28,6 +29,7 @@
     </div>
     </transition>
 
+    <!-- Character Calculator UI -->
     <transition
     appear
     enter-active-class="animated bounceInLeft"
@@ -35,96 +37,101 @@
     >
     <div class="character-calculator" v-show="isCalculatorOpen">
     <!-- physical properties -->
-    <div class="row q-pr-sm q-pt-sm q-ma-sm q-mt-lg">
-      <div class="col-12">
-        <section-header content="Physical Properties"/>
-      </div>
-      <div
-        class="col-md-3 col-xs-6"
-        v-for="stat in Consts.PHYSICAL_PROPERTIES" 
-        v-bind:key="stat">
-        <stat :chara-index ="charaIndex" 
-            :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
-            :btn-class="['col-lg-6','col-md-5', 'col-xs-6']" :display-name="Consts[stat+'Display']"
-            :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
-      </div>
-    </div>
-
-    <!-- occupation -->
-    <div class="row q-pr-sm q-pt-sm q-ma-sm" v-if="occupationCount > 0 ">
-      <div class="col-12">
-        <section-header content="Occupations"/>
-      </div>
-      <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
-        v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
-        <stat :chara-index ="charaIndex" 
-            :field-name="Consts.OCCUPATION+i"
-            :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
-            :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
-      </div>
-    </div>
-
-    <!-- talents -->
-    <div class="row q-pr-sm q-pt-sm q-ma-sm" v-if="talentCount > 0 ">
-      <div class="col-12">
-        <section-header content="Talents"/>
-      </div>
-      <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
-        v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
-        <stat :chara-index ="charaIndex" 
-            :field-name="Consts.TALENT+i"
-            :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
-            :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
-      </div>
-    </div>
-
-    <!-- afflictions -->
-    <div class="row q-pr-sm q-pt-sm q-ma-sm" v-if="afflictionCount > 0 ">
-      <div class="col-12">
-        <section-header content="Afflictions"/>
-      </div>
-      <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
-        v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
-        <stat :chara-index ="charaIndex" 
-            :field-name="Consts.AFFLICTION+i"
-            :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
-            :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
-      </div>
-    </div>
-    
-    <!-- mortality number -->
-    <div class="row q-pr-sm q-ma-sm">
-      <strong class="col-auto q-mt-md q-mr-sm">MORTALITY NUMBER: </strong>
-      <q-input class="col-1" align="center" v-model="mortalityNumber"/>
-    </div>
-
-    <!-- roll -->
-    <div class="row q-pr-sm q-pt-sm q-ma-sm">
-      <div class="col-2">
-      <q-btn class="full-width" @click="doRoll" size="lg">
-        <div ref="dice"><q-icon name="casino" class=""></q-icon></div>
-      </q-btn>
-      </div>
-      <div class="col-10 q-pl-sm">
-        <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
-        <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
-          <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
-        </ass-text>
-        <q-slide-transition>
-          <div v-show="showBreakdown">
-              <!-- apply subtle color changes between Base Roll, buffs, debuffs,
-                  and total when color has been decided on -->
-              <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
-              <stat-breakdown :buffs="rollResult.buffs" />
-              <stat-breakdown :buffs="rollResult.debuffs"/>
-              <hr width="100%">
-              <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+    <q-card class="bg-grey-2 text-black">
+      <q-card-title class="bg-grey-2 text-black q-pa-sm q-pl-lg">
+        Dice Roller
+      </q-card-title>
+      <q-card-separator class="bg-grey-4"/>
+      <q-card-main class="bg-grey-2 text-black q-pa-none">
+        <q-list separator>
+          <!-- Physical Properties COLLAPSIBLE -->
+          <q-collapsible icon="ion-ios-body" label="Physical Properties" opened>
+            <div class="row q-pa-none">
+              <div
+                class="col-md-3 col-xs-6"
+                v-for="stat in Consts.PHYSICAL_PROPERTIES" 
+                v-bind:key="stat">
+                <stat :chara-index ="charaIndex" 
+                    :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
+                    :btn-class="['col-lg-6','col-md-5', 'col-xs-6']" :display-name="Consts[stat+'Display']"
+                    :field-name="stat" :stat-name="stat.substr(0,3)" :value="chosenChara[stat]"/>
+              </div>
             </div>
-          </q-slide-transition>
-          <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-          <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
-        </div>  
-      </div>
+          </q-collapsible>
+          <!-- Occupation COLLAPSIBLE -->
+          <q-collapsible icon="fas fa-user-secret" label="Occupation" opened>
+            <div class="row q-pa-none">
+              <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
+                  v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
+                  <stat :chara-index ="charaIndex" 
+                      :field-name="Consts.OCCUPATION+i"
+                      :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
+                      :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
+              </div>
+            </div>
+          </q-collapsible>
+          <!-- Talents COLLAPSIBLE -->
+          <q-collapsible icon="star" label="Talents" opened>
+            <div class="row q-pa-none">
+              <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
+                v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
+                <stat :chara-index ="charaIndex" 
+                    :field-name="Consts.TALENT+i"
+                    :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
+                    :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
+              </div>
+            </div>
+          </q-collapsible>
+          <!-- Afflictions COLLAPSIBLE -->
+          <q-collapsible icon="fas fa-heartbeat" label="Afflictions" opened>
+            <div class="row q-pa-none">
+              <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
+                v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
+                <stat :chara-index ="charaIndex" 
+                    :field-name="Consts.AFFLICTION+i"
+                    :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
+                    :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
+              </div>
+            </div>
+          </q-collapsible>
+          <q-item>
+          <q-item-main>
+            <!-- Roll -->
+            <div class="row q-pr-sm q-ma-sm">
+              <strong class="col-auto q-mt-md q-mr-sm">MORTALITY NUMBER: </strong>
+              <q-input class="col-1" align="center" v-model="mortalityNumber"/>
+            </div>
+            <div class="row q-pr-sm q-pt-sm q-ma-sm">
+              <div class="col-2">
+              <q-btn class="full-width" @click="doRoll" size="lg">
+                <div ref="dice"><q-icon name="casino" class=""></q-icon></div>
+              </q-btn>
+              </div>
+              <div class="col-10 q-pl-sm">
+                <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
+                <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
+                  <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
+                </ass-text>
+                <q-slide-transition>
+                  <div v-show="showBreakdown">
+                      <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+                          and total when color has been decided on -->
+                      <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
+                      <stat-breakdown :buffs="rollResult.buffs" />
+                      <stat-breakdown :buffs="rollResult.debuffs"/>
+                      <hr width="100%">
+                      <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+                    </div>
+                  </q-slide-transition>
+                  <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+                  <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+                </div>  
+              </div>
+          </q-item-main>
+          </q-item>
+        </q-list>
+      </q-card-main>
+    </q-card>
     </div>
     </transition>
   </div>
@@ -260,6 +267,7 @@ export default {
       let currRollResult = Object.assign({},CalcUtils.roll(stats));
 
       //define callback upon complete
+      this.rollResult.verdict = "...";
       rollNumber(this.rollResult, currRollResult, () => {
         this.rollResult.verdict = currRollResult.verdict;
         this.rollResult.buffs =  currRollResult.buffs;
@@ -357,9 +365,8 @@ export default {
 .devas-desc-dark
   font-size 15px
   color black
-
-div
-  background-color $ass-app-bg
+// div
+//   background-color $ass-app-bg
 
 .avatar
   vertical-align: middle;

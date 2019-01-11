@@ -1,7 +1,8 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
     <div :class="btnClass">
-      <q-btn :label="btnLabel"
+      <!-- Original button code is here. -->
+      <!-- <q-btn :label="btnLabel"
           @click="toggleCompute" 
           align="left"
           class="full-width q-pl-xs no-shadow"
@@ -9,6 +10,13 @@
           :outline="!willCalculate"
           color="secondary"
           :text-color="btnTextColor"
+          no-wrap/> -->
+      <q-btn :label="btnLabel"
+          @click="toggleCompute" 
+          align="left"
+          class="full-width q-pl-xs no-shadow"
+          label-width="12"
+          color="primary"
           no-wrap/>
     </div>
     <div :class="baseClass">

@@ -1,8 +1,9 @@
 <template>
   <div class="row text-black">
-    <div class="col-12 q-pa-none q-ma-none">
-      <q-card class="transition-generic bg-grey-2">
-        <q-card-title>
+    <div class="col-12 q-pa-none">
+      <q-card class="bg-grey-2">
+        <q-card-title class="q-pa-sm q-pl-lg">
+          <!-- TODO Change font -->
           Character Profile
         </q-card-title>
         <q-card-separator />
