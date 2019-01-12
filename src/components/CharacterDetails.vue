@@ -2,6 +2,10 @@
   <div :class="{'q-pa-xs': isDesktop, 'col-xs-12': true,
    'col-sm-6': true,}" ref="charaDetails">
     <!-- Header UI -->
+    <transition
+    appear
+    enter-active-class="animated fadeInLeft"
+    >
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
       <center><br>
@@ -17,12 +21,12 @@
         </strong>
       </div>
     </div>
+    </transition>
 
     <!-- Character Profile UI -->
     <transition
     appear
-    enter-active-class="animated bounceInLeft"
-    leave-active-class="animate bounceOutRight"
+    enter-active-class="animated fadeInLeft"
     >
       <div class="character-profile" v-show="!isCalculatorOpen">
         <character-profile :chosen-chara="chosenChara" />
@@ -32,8 +36,7 @@
     <!-- Character Calculator UI -->
     <transition
     appear
-    enter-active-class="animated bounceInLeft"
-    leave-active-class="animate bounceOutRight"
+    enter-active-class="animated fadeInLeft"
     >
     <div class="character-calculator" v-show="isCalculatorOpen">
     <!-- physical properties -->
@@ -300,7 +303,6 @@ export default {
       }
     },
     deleteChara: function() {
-      //TODO: Chara delete animation.
       EventBus.$emit('deleteCharacter', this.charaIndex);
     },
     toggleCalculator: function() {

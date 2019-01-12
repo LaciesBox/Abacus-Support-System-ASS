@@ -12,9 +12,9 @@
       <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
         <transition
         appear
-        enter-active-class="animated bounceInDown"
+        leave-active-class="animated fadeOutLeft"
         >
-        <character-details :chosen-chara-name="chara" :chara-index="index"/>
+        <character-details :class="chara" :chosen-chara-name="chara" :chara-index="index" v-show="charasShown.includes(chara)"/>
         </transition>
       </div>
     </div>
@@ -75,6 +75,7 @@ export default {
   data(){
     return {
       charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
+      charasShown: ["Eien Sonzai", "Kristine Heilig Pandora"],
       chosenChara: "",
       addMenuOpen: false,
       blend: "",
@@ -84,11 +85,15 @@ export default {
   },
   mounted(){
     EventBus.$on('deleteCharacter', charaIndex => {
-      this.charas.splice(charaIndex, 1);
+      this.charasShown.splice(charaIndex, 1);
+      let self = this;
+      setTimeout(function() {
+        self.charas.splice(charaIndex, 1);
+      }, 1000); 
     });
   },
   watch: {
-      currentPage: 'fetchData'
+      currentPage: 'fetchData',
   },
   created: function () {
     this.fetchData();
@@ -97,6 +102,7 @@ export default {
     doAddChara: function(chara) {
       if(!this.charas.includes(chara)) {
         this.charas.push(chara);
+        this.charasShown.push(chara);
       }
     },
     fetchData: function () {
@@ -154,7 +160,7 @@ export default {
       }
       this.toggleFabColor();
       rotatePlus(this.$refs.addIcon);
-    }
+    },
   }
 }
 </script>
