@@ -48,7 +48,7 @@
       <q-card-main class="q-pa-none">
         <q-list separator>
           <!-- Physical Properties COLLAPSIBLE -->
-          <q-collapsible icon="ion-ios-body" label="Physical Properties" opened>
+          <q-collapsible icon="ion-ios-body" label="Physical Properties" opened highlight>
             <div class="row">
               <div
                 class="col-md-3 col-xs-6"
@@ -64,7 +64,7 @@
             </div>
           </q-collapsible>
           <!-- Occupation COLLAPSIBLE -->
-          <q-collapsible icon="fas fa-user-secret" label="Occupation" opened>
+          <q-collapsible icon="fas fa-user-secret" label="Occupation" opened highlight>
             <div class="row">
               <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
@@ -76,7 +76,7 @@
             </div>
           </q-collapsible>
           <!-- Talents COLLAPSIBLE -->
-          <q-collapsible icon="star" label="Talents" opened>
+          <q-collapsible icon="star" label="Talents" opened highlight>
             <div class="row">
               <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
@@ -88,7 +88,7 @@
             </div>
           </q-collapsible>
           <!-- Afflictions COLLAPSIBLE -->
-          <q-collapsible icon="fas fa-heartbeat" label="Afflictions" opened>
+          <q-collapsible icon="fas fa-heartbeat" label="Afflictions" opened highlight>
             <div class="row">
               <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
