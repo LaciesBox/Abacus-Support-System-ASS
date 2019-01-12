@@ -15,7 +15,7 @@ module.exports = {
 ```
 git add dist && git commit -m "Initial dist subtree commit" 
 ```
-IMPORTANT: Make sure you don’t commited the vue.config.js and .gitignore files.
+IMPORTANT: Make sure you don’t commit the vue.config.js and .gitignore files.
 
 6. Run the command: 
 ```
