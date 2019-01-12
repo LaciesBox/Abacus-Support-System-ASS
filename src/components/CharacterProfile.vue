@@ -11,7 +11,7 @@
           <q-list separator>
             <!-- Biometrics COLLAPSIBLE -->
             <q-collapsible icon="memory" label="Biometrics" :group="profile" 
-            :opened="isDesktop" @hide="hide('biometrics')" ref="biometrics">
+            :opened="isDesktop" @hide="hide('biometrics')" ref="biometrics" highlight>
             <q-scroll-area style="height: 30em;" :thumb-style="{
               right: '4px',
               borderRadius: '5px',
@@ -86,7 +86,7 @@
 
             <!-- About me COLLAPSIBLE-->
             <q-collapsible icon="fas fa-address-book" label="About Me" 
-            :group="profile" @hide="hide('aboutMe')" ref="aboutMe">
+            :group="profile" @hide="hide('aboutMe')" ref="aboutMe" highlight>
             <q-scroll-area style="height: 30em;" :thumb-style="{
               right: '4px',
               borderRadius: '5px',
@@ -123,7 +123,7 @@
 
             <!-- Talents and Proficiencies COLLAPSIBLE-->
             <q-collapsible icon="security" label="Talents & Proficiencies" 
-            :group="profile" @hide="hide('talents')" ref="talents">
+            :group="profile" @hide="hide('talents')" ref="talents" highlight>
             <q-scroll-area style="height: 30em;" :thumb-style="{
               right: '4px',
               borderRadius: '5px',
