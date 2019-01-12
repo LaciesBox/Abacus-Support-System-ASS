@@ -7,7 +7,8 @@ Vue.use(VueRouter);
 import {
   MainPage,
   EasterEgg,
-  Calculator
+  Calculator,
+  P001EienSonzai
 } from "screens";
 
 //add imported screen here
@@ -27,6 +28,11 @@ export default new VueRouter({
       name: 'EasterEgg',
       path: '/easteregg/:egg_id',
       component: EasterEgg
+    },
+    {
+      name: "P001EienSonzai",
+      path: "/eien-sonzai-1",
+      component: P001EienSonzai
     }
   ]
 })
