@@ -46,6 +46,7 @@ import {
   QPageSticky,
   QCollapsible,
   QScrollArea,
+  QTooltip,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -84,6 +85,7 @@ Vue.use(Quasar, {
     QPageSticky,
     QCollapsible,
     QScrollArea,
+    QTooltip,
   },
   directives: {},
   plugins: {}
