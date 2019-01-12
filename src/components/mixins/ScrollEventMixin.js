@@ -1,13 +1,17 @@
 export default {
-  methods: {
-    handleScroll: function(event) {
-      // Any code to be executed when the window is scrolled
+  data(){
+    return {
+      scrollPercentage:0
     }
   },
-  created () {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.handleScroll);
+  computed:{
+    maxScrollHeight(){
+      return Math.max(document.body.scrollHeight, document.body.offsetHeight, 
+                   document.documentElement.clientHeight, document.documentElement.scrollHeight, 
+                   document.documentElement.offsetHeight);
+    },
+    scrollHeight(){
+      return this.maxScrollHeight - window.innerHeight;
+    }
   }
 }
