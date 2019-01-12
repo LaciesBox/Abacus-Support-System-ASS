@@ -4,7 +4,7 @@
       <q-btn :label="shortenedLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width"
+          class="full-width no-shadow"
           label-width="12"
           color="primary"
           no-wrap>
