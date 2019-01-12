@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'q-pa-xs': isDesktop, 'col-xs-12': true,
+  <div :class="{'q-pa-sm': isDesktop, 'col-xs-12': true,
    'col-sm-6': true,}" ref="charaDetails">
     <!-- Header UI -->
     <transition
