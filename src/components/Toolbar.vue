@@ -1,5 +1,5 @@
 <template>
-    <q-layout-header :class="{'no-shadow': isLanding, 'lb-bg': isLanding}"
+    <q-layout-header :class="{'no-shadow': isLanding,}"
     >
       <div>
         <q-toolbar
@@ -52,8 +52,9 @@ export default {
   },
   methods: {
     land: function() {
-      shrinkToolbar(this.$refs.toolbar);
-      shrinkToolbarLabel(this.$refs.abacusLabel);
+      // TODO: Animate Land
+      // shrinkToolbar(this.$refs.toolbar);
+      // shrinkToolbarLabel(this.$refs.abacusLabel);
     }
   },
   watch: {
@@ -76,6 +77,7 @@ export default {
 
 .toolbar
   height 4em;
+  
 .abacus-label
   font-size 40px;
 </style>

@@ -5,7 +5,6 @@ Vue.use(VueRouter);
 
 //import screens here
 import {
-  MainPage,
   EasterEgg,
   Calculator,
   P001EienSonzai,
@@ -16,13 +15,8 @@ import {
 export default new VueRouter({
   routes: [
     {
-      name: 'MainPage',
-      path: '*', 
-      component: MainPage 
-    },
-    {
       name: 'LandingPage',
-      path: '/landingpage', 
+      path: '*', 
       component: LandingPage 
     },
     {
