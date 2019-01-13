@@ -116,7 +116,6 @@ export default {
       xhr.open('GET', sheetUrl );
       xhr.onload = function () {
         const response  = JSON.parse(xhr.responseText);
-        console.log(Converter.gsxToAss(response.feed.entry));
         EventBus.setCharacters(Converter.gsxToAss(response.feed.entry));
       }
       xhr.send()
