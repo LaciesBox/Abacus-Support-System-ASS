@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .abacus {
   height: 60%;
   position: absolute;

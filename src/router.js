@@ -8,7 +8,8 @@ import {
   MainPage,
   EasterEgg,
   Calculator,
-  P001EienSonzai
+  P001EienSonzai,
+  LandingPage,
 } from "screens";
 
 //add imported screen here
@@ -16,12 +17,17 @@ export default new VueRouter({
   routes: [
     {
       name: 'MainPage',
-      path: '/mainpage', 
+      path: '*', 
       component: MainPage 
     },
     {
+      name: 'LandingPage',
+      path: '/landingpage', 
+      component: LandingPage 
+    },
+    {
       name: 'Calculator',
-      path: '*', 
+      path: '/abacus', 
       component: Calculator 
     },
     {
