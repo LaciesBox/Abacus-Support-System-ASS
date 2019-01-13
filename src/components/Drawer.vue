@@ -1,5 +1,5 @@
 <template>
-  <q-layout-drawer v-model="drawerOpen" overlay :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null">
+  <q-layout-drawer v-model="drawerOpen" overlay :content-class="$q.theme === 'mat' ? 'bg-primary' : null">
     <q-list no-border link inset-delimiter>
       <q-list no-border link inset-delimiter>
         <q-list-header>Directory</q-list-header>
@@ -17,8 +17,8 @@
         </q-item>
       </q-list>
     </q-list>
-    <!--TODO: Make the image unselectable -->
-    <img class="abacus" src="../assets/abacus-standing.png" alt="Abacus">
+    
+    <img class="abacus" src="../assets/abacus-walking.png" alt="Abacus">
   </q-layout-drawer>
 </template>
 
@@ -37,8 +37,10 @@ export default {
 
 <style scoped>
 .abacus {
-  height: 60%;
+  height: 10em;
+  width: auto;
   position: absolute;
+
   bottom: 0px;
 }
 </style>
