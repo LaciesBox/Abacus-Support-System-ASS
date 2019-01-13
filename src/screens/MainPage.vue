@@ -60,6 +60,7 @@ import {
 
 import { EventBus } from "store/ass-store";
 import { showSpeech } from "../anime.js";
+import { openURL } from "quasar";
 
 export default {
   name: 'MainPage',
@@ -100,6 +101,7 @@ export default {
   components: {
   },
   methods: {
+    openURL,
     land: function() {
       let self = this;
       this.isLanding = false;
