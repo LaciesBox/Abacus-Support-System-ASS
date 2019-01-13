@@ -22,14 +22,21 @@ export default {
   name: 'LayoutDefault',
   data() {
     return {
-      isLanding: this.$route.path != "/abacus" && this.$route.path != "/eien-sonzai-1"
-      ? true : false,
+      isLanding: null,
     }
   },
   mounted(){
+    this.isLanding = this.$route.path != "/abacus" 
+      && this.$route.path != "/eien-sonzai-1" ? true : false;
     EventBus.$on('land', () => {
       this.isLanding = false;
     });
+  },
+  watch: {
+    '$route.path'() {
+      this.isLanding = this.$route.path != "/abacus" 
+        && this.$route.path != "/eien-sonzai-1" ? true : false;
+    }
   },
   components: {
     Toolbar

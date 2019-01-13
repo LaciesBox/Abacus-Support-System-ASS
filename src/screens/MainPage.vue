@@ -9,7 +9,7 @@
         appear
         leave-active-class="animated fadeOut"
       >
-      <div class="lato-l text-center" key="trans1" v-show="isLanding">
+      <div class="lato-l text-center unselectable" key="trans1" v-show="isLanding">
         <div class="inline-block" v-for="(word, index) in speech" :key="index">
           <div class="speech" v-for="(chara, index) in word" :key="index">
             {{chara}}

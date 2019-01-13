@@ -57,11 +57,6 @@ export default {
     }
   },
   watch: {
-    isLanding() {
-      if(this.isLanding == false) {
-        this.land();
-      }
-    }
   }
 }
 </script>
