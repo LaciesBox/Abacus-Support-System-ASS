@@ -1,6 +1,5 @@
 <template>
-  <div :class="{'q-pa-sm': isDesktop, 'col-xs-12': true,
-   'col-sm-6': true,}" ref="charaDetails">
+  <div :class="{'q-pa-sm': isDesktop, 'col-xs-12 col-sm-6 lato-r': true,}" ref="charaDetails">
     <!-- Header UI -->
     <transition
     appear

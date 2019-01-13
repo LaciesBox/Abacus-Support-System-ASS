@@ -67,6 +67,10 @@ export default {
   font-family Lato-L
   src url("./assets/fonts/Lato/Lato-Light.ttf")
 
+@font-face 
+  font-family Lato-R
+  src url("./assets/fonts/Lato/Lato-Regular.ttf")
+
 .bg-color
   background-color $ass-app-bg
 
@@ -108,6 +112,9 @@ export default {
 
 .lato-l
   font-family "Lato-L"
+  
+.lato-r
+  font-family "Lato-R"
 
 .luxia-lg
   font-family "Luxia"
