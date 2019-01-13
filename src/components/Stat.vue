@@ -1,16 +1,21 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
-    <div class="col-7">
-      <q-btn :label="btnLabel"
+    <div :class="btnClass">
+      <q-btn :label="shortenedLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width q-pl-xs"
+          class="full-width no-shadow"
           label-width="12"
-          no-wrap
-          :color="btnColor"/>
+          color="primary"
+          no-wrap>
+          <q-tooltip delay="300" anchor="top middle" 
+            self="bottom middle" :offset="[10, 3]" v-show="btnLabel.length >= 10">
+            <strong>{{btnLabel}}</strong>
+          </q-tooltip>
+      </q-btn>
     </div>
-    <div class="col-3 text-center">
-      <q-chip square :color="statColor" style="height: 2.6em; width: 100%;">
+    <div :class="baseClass">
+      <q-chip class="chip" square :color="statColor" :text-color="statTextColor">
         {{this.value}}
       </q-chip>
     </div>
@@ -24,6 +29,7 @@
         type="number"
         :step="1"
         align="center"
+        color="secondary" v-bind:class="{'stat': true, 'bg-ass-gold': willCalculate}"
         :min="min" 
         :max="max"/>
       </q-field>
@@ -53,6 +59,7 @@ export default {
       }
 
       data.stats[this.fieldName] = {
+        name: this.finalDisplayName,
         add: Number(this.add),
         base: Number(this.value),
         willCalculate: this.willCalculate
@@ -61,25 +68,41 @@ export default {
   },
 
   computed: {
+    finalDisplayName(){
+      return this.displayName || this.statName || "";
+    },
     btnColor(){
       return this.willCalculate ? "primary" : "secondary";
     },
+    btnTextColor(){
+      return this.willCalculate ? "grey-9" : "secondary";
+    },
     statColor(){
-      return this.willCalculate ? "yellow" : "primary";
+      return this.willCalculate ? "stat" : "grey-5";
+    },
+    statTextColor(){
+      return this.willCalculate ? "stat" : "grey-8";
     },
     btnLabel(){
+      return this.statName;
+    },
+    shortenedLabel(){
       return Converter.shorten(this.statName);
     }
   },
 
   props: {
+    displayName: {
+      type: String,
+      required: false
+    },
     fieldName: {
       type: String,
       required: true
     },
     statName: {
       type: String,
-      default: "Stat"
+      required: true
     },
     value: {
       type: [String, Number],
@@ -96,6 +119,14 @@ export default {
     charaIndex: {
       type: Number,
       required: true
+    },
+    baseClass: {
+      type: Array,
+      default: () => ["col-3", "text-center"]
+    },
+    btnClass: {
+      type: Array,
+      default: () => ["col-7"]
     }
   },
 
@@ -107,3 +138,23 @@ export default {
 }
 
 </script>
+
+<style lang="stylus" scoped>
+
+@import '~variables'
+
+.stat
+  color: #EEEEEE
+
+.text-stat
+  color: #111111
+
+.bg-stat
+  background #E5d6b5
+
+.chip
+  height: 2.6em
+  width: 100% 
+  z-index: 5
+
+</style>

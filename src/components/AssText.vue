@@ -1,11 +1,12 @@
 <template>
   <div class="q-pt-xs">
     <span v-if="link">
-      {{finalLabel}} <a href="#" @click="click"> {{link || "-"}} </a>
+      <strong>{{finalLabel}}</strong><a href="#" @click="click"> {{link || "-"}} </a>
     </span>
     <span v-else>
-      {{finalLabel}} {{content || "-"}}
+      <strong>{{finalLabel}}</strong> {{content || "-"}}
     </span>
+    <slot/>
   </div>
 </template>
 

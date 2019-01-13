@@ -40,6 +40,13 @@ import {
   QModal,
   QIcon,
   QChip,
+  QSlideTransition,
+  QFab,
+  QFabAction,
+  QPageSticky,
+  QCollapsible,
+  QScrollArea,
+  QTooltip,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -72,6 +79,13 @@ Vue.use(Quasar, {
     QModal,
     QIcon,
     QChip,
+    QSlideTransition,
+    QFab,
+    QFabAction,
+    QPageSticky,
+    QCollapsible,
+    QScrollArea,
+    QTooltip,
   },
   directives: {},
   plugins: {}
@@ -81,5 +95,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  data: {color: '#673AB7'}
 }).$mount('#app')
