@@ -1,13 +1,18 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
     <div :class="btnClass">
-      <q-btn :label="btnLabel"
+      <q-btn :label="shortenedLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width"
+          class="full-width no-shadow"
           label-width="12"
           color="primary"
-          no-wrap/>
+          no-wrap>
+          <q-tooltip delay="300" anchor="top middle" 
+            self="bottom middle" :offset="[10, 3]" v-show="btnLabel.length >= 10">
+            <strong>{{btnLabel}}</strong>
+          </q-tooltip>
+      </q-btn>
     </div>
     <div :class="baseClass">
       <q-chip class="chip" square :color="statColor" :text-color="statTextColor">
@@ -79,6 +84,9 @@ export default {
       return this.willCalculate ? "stat" : "grey-8";
     },
     btnLabel(){
+      return this.statName;
+    },
+    shortenedLabel(){
       return Converter.shorten(this.statName);
     }
   },

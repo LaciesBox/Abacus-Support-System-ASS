@@ -1,18 +1,47 @@
 <template>
-  <q-layout id="q-app" view="lHh Lpr lFf" class="bg-color txt-color" >
-    <toolbar />
+  <q-layout id="q-app" view="lHh Lpr lFf" 
+  class="bg-color txt-color" >
+    <toolbar :is-landing="isLanding" ref="toolbar"></toolbar>
     <router-view></router-view>
   </q-layout>
 </template>
 
 <script>
-import { openURL } from 'quasar'
-import { Toolbar } from 'components'
+import { 
+  Consts,
+  CalcUtils,
+  SheetUtils,
+  Converter
+} from "utils";
+import { EventBus } from "store/ass-store";
+import { openURL } from 'quasar';
+import { Toolbar } from 'components';
+import { shrink } from './anime.js';
 
 export default {
   name: 'LayoutDefault',
+  data() {
+    return {
+      isLanding: null,
+    }
+  },
+  mounted(){
+    this.isLanding = this.$route.path != "/abacus" 
+      && this.$route.path != "/eien-sonzai-1" ? true : false;
+    EventBus.$on('land', () => {
+      this.isLanding = false;
+    });
+  },
+  watch: {
+    '$route.path'() {
+      this.isLanding = this.$route.path != "/abacus" 
+        && this.$route.path != "/eien-sonzai-1" ? true : false;
+    }
+  },
   components: {
     Toolbar
+  },
+  methods: {
   }
 }
 </script>
@@ -36,6 +65,18 @@ export default {
 @font-face 
   font-family Nova-Mono
   src url("./assets/fonts/Nova_Mono/NovaMono.ttf")
+
+@font-face 
+  font-family Lato-BI
+  src url("./assets/fonts/Lato/Lato-BoldItalic.ttf")
+  
+@font-face 
+  font-family Lato-L
+  src url("./assets/fonts/Lato/Lato-Light.ttf")
+
+@font-face 
+  font-family Lato-R
+  src url("./assets/fonts/Lato/Lato-Regular.ttf")
 
 .bg-color
   background-color $ass-app-bg
@@ -72,6 +113,15 @@ export default {
 
 .nova
   font-family "Nova-Mono"
+
+.lato-bi
+  font-family "Lato-BI"
+
+.lato-l
+  font-family "Lato-L"
+  
+.lato-r
+  font-family "Lato-R"
 
 .luxia-lg
   font-family "Luxia"
