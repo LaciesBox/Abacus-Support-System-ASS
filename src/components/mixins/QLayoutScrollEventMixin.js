@@ -1,10 +1,4 @@
 export default {
-  created () {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.handleScroll);
-  },
   data(){
     return {
       scrollPercentage:0
@@ -18,11 +12,6 @@ export default {
     },
     scrollHeight(){
       return this.maxScrollHeight - window.innerHeight;
-    }
-  },
-  methods: {
-    handleScroll (event) {
-      this.scrollPercentage = window.pageYOffset / this.scrollHeight;
     }
   }
 }

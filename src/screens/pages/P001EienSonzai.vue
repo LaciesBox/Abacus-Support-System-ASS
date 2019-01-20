@@ -62,7 +62,7 @@
 <script>
 
 import {
-  ScrollEventMixin
+  QLayoutScrollEventMixin
 } from "components";
 
 import anime from 'animejs';
@@ -233,7 +233,7 @@ let anims = [
 
 export default {
   name: "P001EienSonzai",
-  mixins:[ScrollEventMixin],
+  mixins:[QLayoutScrollEventMixin],
   created(){
     this.$nextTick(()=>{
       this.tongue = displayShortly(this.$refs.tongue);

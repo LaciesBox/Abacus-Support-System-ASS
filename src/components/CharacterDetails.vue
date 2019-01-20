@@ -6,7 +6,9 @@
     enter-active-class="animated fadeInLeft"
     >
     <div class="ass-avatar" 
-        :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
+        :style="{ 'background-image': 'url(' + chosenChara.avatar + ')',
+                  'background-position': '0px ' + parallaxBgOffset
+         }">
       <center><br>
         <span class="center luxia-lg">{{chosenChara.name}}</span><br>
         <span class="center ptsans-sm">{{chosenChara.codename}}</span>
@@ -149,6 +151,10 @@ import {
   Lookups
 } from "utils";
 
+import {
+  ScrollEventMixin
+} from "mixins";
+
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
 import SectionHeader from "./SectionHeader.vue";
@@ -161,6 +167,7 @@ import {rollDice, rollNumber,} from "../anime.js";
 
 export default {
   name: "CharacterDetails",
+  mixins: [ScrollEventMixin],
   components: {
     Stat,
     AssText,
@@ -241,6 +248,9 @@ export default {
     },
     iconToggle() {
       return this.isCalculatorOpen ? "help" : "casino";
+    },
+    parallaxBgOffset(){
+      return (this.scrollPercentage * 100) + "%";
     }
   },
 
@@ -325,7 +335,6 @@ a
   width 100%
   height $chara-header-height
   background-size cover
-  background-position center
   background-repeat no-repeat
   box-shadow inset 0 0 0 2000px rgba(80,80,80,0.5)
   position relative
