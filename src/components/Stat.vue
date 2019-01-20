@@ -4,11 +4,12 @@
       <q-btn :label="shortenedLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width no-shadow"
+          class="full-width no-shadow q-pl-xs"
           label-width="12"
           color="primary"
+          :outline="!willCalculate"
           no-wrap>
-          <q-tooltip delay="300" anchor="top middle" 
+          <q-tooltip :delay="300" anchor="top middle" 
             self="bottom middle" :offset="[10, 3]" v-show="btnLabel.length >= 10">
             <strong>{{btnLabel}}</strong>
           </q-tooltip>
