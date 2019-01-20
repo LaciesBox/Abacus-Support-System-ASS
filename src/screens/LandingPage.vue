@@ -63,7 +63,7 @@ import { showSpeech } from "../anime.js";
 import { openURL } from "quasar";
 
 export default {
-  name: 'MainPage',
+  name: 'LandingPage',
   data () {
     return{
       speech: [""],

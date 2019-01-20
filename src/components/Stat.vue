@@ -1,18 +1,21 @@
 <template>
   <div class="row q-pr-sm q-pt-sm">
     <div :class="btnClass">
-      <q-btn :label="btnLabel"
+      <q-btn :label="shortenedLabel"
           @click="toggleCompute" 
           align="left"
-          class="full-width q-pl-xs no-shadow"
+          class="full-width no-shadow"
           label-width="12"
-          :outline="!willCalculate"
-          color="secondary"
-          :text-color="btnTextColor"
-          no-wrap/>
+          color="primary"
+          no-wrap>
+          <q-tooltip delay="300" anchor="top middle" 
+            self="bottom middle" :offset="[10, 3]" v-show="btnLabel.length >= 10">
+            <strong>{{btnLabel}}</strong>
+          </q-tooltip>
+      </q-btn>
     </div>
     <div :class="baseClass">
-      <q-chip square :color="statColor" :text-color="statTextColor" style="height: 2.6em; width: 100%; z-index:5;">
+      <q-chip class="chip" square :color="statColor" :text-color="statTextColor">
         {{this.value}}
       </q-chip>
     </div>
@@ -26,7 +29,7 @@
         type="number"
         :step="1"
         align="center"
-        color="secondary" class="stat"
+        color="secondary" v-bind:class="{'stat': true, 'bg-ass-gold': willCalculate}"
         :min="min" 
         :max="max"/>
       </q-field>
@@ -56,6 +59,7 @@ export default {
       }
 
       data.stats[this.fieldName] = {
+        name: this.finalDisplayName,
         add: Number(this.add),
         base: Number(this.value),
         willCalculate: this.willCalculate
@@ -64,6 +68,9 @@ export default {
   },
 
   computed: {
+    finalDisplayName(){
+      return this.displayName || this.statName || "";
+    },
     btnColor(){
       return this.willCalculate ? "primary" : "secondary";
     },
@@ -77,18 +84,25 @@ export default {
       return this.willCalculate ? "stat" : "grey-8";
     },
     btnLabel(){
+      return this.statName;
+    },
+    shortenedLabel(){
       return Converter.shorten(this.statName);
     }
   },
 
   props: {
+    displayName: {
+      type: String,
+      required: false
+    },
     fieldName: {
       type: String,
       required: true
     },
     statName: {
       type: String,
-      default: "Stat"
+      required: true
     },
     value: {
       type: [String, Number],
@@ -125,7 +139,9 @@ export default {
 
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+
+@import '~variables'
 
 .stat
   color: #EEEEEE
@@ -134,6 +150,11 @@ export default {
   color: #111111
 
 .bg-stat
-  background: #E5d6b5
+  background #E5d6b5
+
+.chip
+  height: 2.6em
+  width: 100% 
+  z-index: 5
 
 </style>

@@ -32,6 +32,24 @@ export function sendOffscreenUp(element) {
     });
 }
 
+export function shrinkToolbar(element) {
+    anime({
+        targets: element,
+        height: '4em',
+        duration: 1500,
+        easing: 'easeInOutQuad'
+    });
+}
+
+export function shrinkToolbarLabel(element) {
+    anime({
+        targets: element,
+        fontSize: 40,
+        duration: 1500,
+        easing: 'easeInOutQuad'
+    });
+}
+
 export function fadeIn(element) {
     anime({
         targets: element,
@@ -61,13 +79,16 @@ export function rollDice(element) {
     });
 }
 
-export function rollNumber(resultElement, rollResult) {
+export function rollNumber(resultElement, rollResult, callback) {
     anime({
         targets: resultElement,
         roll: rollResult.roll,
         finalRoll: rollResult.finalRoll,
-        easing: 'linear',
-        round: 1
+        chanceOfDying: rollResult.chanceOfDying,
+        easing: 'easeOutExpo',
+        round: 1,
+        duration: 1000,
+        complete: callback
     });
 }
 
@@ -78,5 +99,28 @@ export function rotatePlus(element) {
             value: ['+=45'],
             duration: '300'
         }
+    });
+}
+
+export function showSpeech() {
+    anime.timeline()
+    .add({
+        targets: '.speech',
+        translateY: ["1.1em", 0],
+        translateX: ["0.55em", 0],
+        translateZ: 0,
+        opacity: 1,
+        rotateZ: [180, 0],
+        duration: 500,
+        easing: "easeOutExpo",
+        delay: function(el, i) {
+        return 50 * i;
+        }
+    }).add({
+        targets: '.speech',
+        opacity: 0,
+        duration: 500,
+        easing: "easeOutExpo",
+        delay: 1000
     });
 }

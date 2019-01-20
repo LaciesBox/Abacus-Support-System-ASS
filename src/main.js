@@ -43,7 +43,10 @@ import {
   QSlideTransition,
   QFab,
   QFabAction,
-  QPageSticky
+  QPageSticky,
+  QCollapsible,
+  QScrollArea,
+  QTooltip,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -79,7 +82,10 @@ Vue.use(Quasar, {
     QSlideTransition,
     QFab,
     QFabAction,
-    QPageSticky
+    QPageSticky,
+    QCollapsible,
+    QScrollArea,
+    QTooltip,
   },
   directives: {},
   plugins: {}
