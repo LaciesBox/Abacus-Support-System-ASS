@@ -121,8 +121,8 @@ export default {
   },
   data(){
     return {
-      charas: ["Eien Sonzai", "Kristine Heilig Pandora"],
-      charasShown: ["Eien Sonzai", "Kristine Heilig Pandora"],
+      charas: [],
+      charasShown: [],
       chosenChara: "",
       addMenuOpen: false,
       blend: "",
