@@ -50,8 +50,8 @@
       </q-btn>
     </q-page-sticky>
 
-    <!-- FABulous dice roll -->
-    <q-page-sticky position="bottom-right" :offset="[18, 72]" ref="addBtn">
+    <!-- FABulous d20 roll -->
+    <q-page-sticky position="bottom-right" :offset="[18, 72]">
       <q-btn
         round
         color="primary"
@@ -74,6 +74,28 @@
         </q-tooltip> -->
       </q-btn>
     </q-page-sticky>
+
+    <!-- Temporary fight roll -->
+    <q-page-sticky position="bottom-right" :offset="[18, 126]">
+      <q-btn
+        round
+        color="primary"
+        @click="fight"
+        text-color="ass-gold"
+      > 
+        <div><q-icon name="fas fa-bolt"></q-icon></div>
+      </q-btn>
+    </q-page-sticky>
+    
+    <!-- Fight result modal -->
+    <q-modal v-model="showFightResult" minimized ref="modalRef">
+      <div style="padding: 50px">
+        <div class="q-display-1 q-mb-md">Fight Result</div>
+        <p v-for="result in fightResult" :key="result">{{result}}</p>
+        <q-btn color="red" @click="hideFightResult" label="Close" />
+      </div>
+    </q-modal>
+
     
   </q-page-container>
 
@@ -107,6 +129,8 @@ export default {
       fabColor: "secondary",
       fabTextColor: "primary",
       rollHistory: [],
+      showFightResult: false,
+      fightResult: [],
     }
   },
   mounted(){
@@ -198,6 +222,31 @@ export default {
         this.rollHistory.push(rollResult);
       }
       rollDice(this.$refs.d20Dice);
+    },
+    fight: function() {
+      let teams = [];
+      let team1 = {};
+      team1.name = "1";
+      team1.members = [];
+      let team2 = {};
+      team2.name = "2";
+      team2.members = [];
+      let team3 = {};
+      team3.name = "3";
+      team3.members = [];
+      let team4 = {};
+      team4.name = "4";
+      team4.members = [];
+      let team5 = {};
+      team5.name = "5";
+      team5.members = [];
+      teams.push(team1, team2, team3, team4, team5);
+      EventBus.$emit('getFighters', teams);
+      this.fightResult = CalcUtils.pvpRoll(teams);
+      this.showFightResult = true;
+    },
+    hideFightResult: function() {
+      this.showFightResult = false;
     }
   }
 }

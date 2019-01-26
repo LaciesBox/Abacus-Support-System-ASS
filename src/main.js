@@ -47,6 +47,8 @@ import {
   QCollapsible,
   QScrollArea,
   QTooltip,
+  QToggle,
+  QSelect,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -86,6 +88,8 @@ Vue.use(Quasar, {
     QCollapsible,
     QScrollArea,
     QTooltip,
+    QToggle,
+    QSelect,
   },
   directives: {},
   plugins: {}
