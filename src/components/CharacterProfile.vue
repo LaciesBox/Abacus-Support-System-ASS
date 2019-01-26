@@ -11,7 +11,7 @@
           <q-list separator>
             <!-- Biometrics COLLAPSIBLE -->
             <q-collapsible icon="memory" label="Biometrics" :group="profile" 
-            :opened="isDesktop" @hide="hide('biometrics')" ref="biometrics" highlight>
+            ref="biometrics" highlight>
             <q-scroll-area style="height: 30em;" :thumb-style="{
               right: '4px',
               borderRadius: '5px',

@@ -58,6 +58,12 @@ const appendPercentageToValue = function(value){
   return value + " (" + getStrPercentageValue(value) + ")";
 }
 
+const d20 = function() {
+  let min = Math.ceil(1);
+  let max = Math.floor(20);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // when player clicks "roll"
 const roll = function(stats) {
   buffs = [];
@@ -100,6 +106,7 @@ const roll = function(stats) {
 }
 
 export default {
+  d20,
   roll,
   getPercentageValue,
   getStrPercentageValue,

@@ -49,6 +49,31 @@
         <div ref="addIcon"><q-icon name="add"></q-icon></div>
       </q-btn>
     </q-page-sticky>
+
+    <!-- FABulous dice roll -->
+    <q-page-sticky position="bottom-right" :offset="[18, 72]" ref="addBtn">
+      <q-btn
+        round
+        color="primary"
+        @click="d20Roll"
+        text-color="ass-gold"
+      > 
+        <div ref="d20Dice"><q-icon name="casino"></q-icon></div>
+        <q-tooltip :delay="300" anchor="top middle" 
+            self="bottom middle" :offset="[10, 5]" v-show="true">
+            <strong>Roll: {{rollHistory[rollHistory.length - 1]}}</strong>
+          </q-tooltip>
+        <!-- TODO: Implement caching of rolls -->
+        <!-- <q-tooltip :delay="300" anchor="top middle"  
+              v-show="rollHistory.length > 0"
+              v-for="(roll, index) in rollHistory"
+              :key="index"
+              self="bottom middle" :offset="[0, (index * 40) + 5]"
+              :ref="'dice' + index">
+              <strong>Roll: {{rollHistory[index]}}</strong>
+        </q-tooltip> -->
+      </q-btn>
+    </q-page-sticky>
     
   </q-page-container>
 
@@ -65,7 +90,7 @@ import {
 import { EventBus } from "store/ass-store";
 
 import { CharacterDetails } from "components";
-import {hideSearch, showSearch, rotatePlus} from '../anime.js';
+import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
 
 export default {
   name: 'Calculator',
@@ -80,7 +105,8 @@ export default {
       addMenuOpen: false,
       blend: "",
       fabColor: "secondary",
-      fabTextColor: "primary"
+      fabTextColor: "primary",
+      rollHistory: [],
     }
   },
   mounted(){
@@ -160,6 +186,19 @@ export default {
       this.toggleFabColor();
       rotatePlus(this.$refs.addIcon);
     },
+    d20Roll: function() {
+      let rollResult = CalcUtils.d20();
+      if(rollResult < 10) {
+        rollResult = "0" + rollResult;
+      }
+      if(this.rollHistory.length < 5) {
+        this.rollHistory.push(rollResult);
+      } else {
+        this.rollHistory.shift();
+        this.rollHistory.push(rollResult);
+      }
+      rollDice(this.$refs.d20Dice);
+    }
   }
 }
 </script>
