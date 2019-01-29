@@ -193,16 +193,28 @@ export default {
   },
   mounted() {
     EventBus.$on('getFighters', teams => {
-      teams.forEach(team => {
-        if(team.name == this.select && this.pvpCheck) {
-          let member = {};
-          let stats = {};
-          EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
-          member.name = this.chosenCharaName; 
-          member.strength = CalcUtils.getStrength(stats);
+      if(this.select && this.pvpCheck) {
+        let member = {};
+        let stats = {};
+        let isNewTeam = true;
+        EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
+        member.name = this.chosenCharaName; 
+        member.strength = CalcUtils.getStrength(stats);
+        teams.forEach(team => {
+          if(team.name == this.select) {
+            team.members.push(member);
+            isNewTeam = false;
+          }
+        });
+
+        if(isNewTeam) {
+          let team = {};
+          team.members = [];
+          team.name = this.select;
           team.members.push(member);
+          teams.push(team);
         }
-      });
+      }
     });
   },
   data() {

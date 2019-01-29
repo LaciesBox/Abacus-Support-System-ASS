@@ -225,22 +225,6 @@ export default {
     },
     fight: function() {
       let teams = [];
-      let team1 = {};
-      team1.name = "1";
-      team1.members = [];
-      let team2 = {};
-      team2.name = "2";
-      team2.members = [];
-      let team3 = {};
-      team3.name = "3";
-      team3.members = [];
-      let team4 = {};
-      team4.name = "4";
-      team4.members = [];
-      let team5 = {};
-      team5.name = "5";
-      team5.members = [];
-      teams.push(team1, team2, team3, team4, team5);
       EventBus.$emit('getFighters', teams);
       this.fightResult = CalcUtils.pvpRoll(teams);
       this.showFightResult = true;
