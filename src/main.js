@@ -49,6 +49,7 @@ import {
   QTooltip,
   QToggle,
   QSelect,
+  Notify
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -90,6 +91,7 @@ Vue.use(Quasar, {
     QTooltip,
     QToggle,
     QSelect,
+    Notify
   },
   directives: {},
   plugins: {}

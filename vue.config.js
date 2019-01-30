@@ -7,6 +7,7 @@ module.exports = {
         "components": path.resolve(__dirname, 'src/components'),
         "pages": path.resolve(__dirname, 'src/components/pages'),
         "mixins": path.resolve(__dirname, 'src/components/mixins'),
+        "modals": path.resolve(__dirname, 'src/modals'),
         "utils": path.resolve(__dirname, 'src/utils'),
         "assets": path.resolve(__dirname, 'src/assets'),
         "screens": path.resolve(__dirname, 'src/screens'),
