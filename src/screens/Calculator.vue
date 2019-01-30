@@ -6,8 +6,14 @@
       Or you can look at my butt~ <br>
       <img src="../assets/abacus-ass.png" class="q-mt-lg margin-auto"/>
     </div>
-
+    {{chosenCharas}}
+    <div class="row">
+      <div class="col-xs-6 col-sm-4 col-md-2 card-padding" v-for="(chara,index) in charas" v-bind:key="index">
+        <character-card :class="chara" :chosen-chara-name="chara" :chara-index="index" @select="addToChosenCharas"/>
+      </div>
+    </div>
     <!--Character details-->
+    <!--
     <div class="row">
       <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
         <transition
@@ -17,7 +23,7 @@
         <character-details :class="chara" :chosen-chara-name="chara" :chara-index="index" v-show="charasShown.includes(chara)"/>
         </transition>
       </div>
-    </div>
+    </div>-->
 
     <!-- Character add UI -->
     <q-page-sticky position="bottom-right" :offset="[18, 17]">
@@ -87,6 +93,9 @@
       </q-btn>
     </q-page-sticky>
     
+    <!-- battle modal -->
+    <battle-modal :show="showBattleModal" :chosen-charas="chosenCharas" @close-handler="battleModalCloseHandler"/>
+
     <!-- Fight result modal -->
     <q-modal v-model="showFightResult" minimized ref="modalRef">
       <div style="padding: 50px">
@@ -111,17 +120,23 @@ import {
 
 import { EventBus } from "store/ass-store";
 
-import { CharacterDetails } from "components";
+import { BattleModal } from "modals";
+
+import { CharacterCard, CharacterDetails } from "components";
 import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
 
 export default {
   name: 'Calculator',
   components: {
+    BattleModal,
+    CharacterCard,
     CharacterDetails
   },
   data(){
     return {
-      charas: [],
+      showBattleModal: false,
+      charas: ["Eien Sonzai", "Kristine Heilig Pandora", "Hanekawa Tsubasa", "Hachi Dorne"],
+      chosenCharas: [],
       charasShown: [],
       chosenChara: "",
       addMenuOpen: false,
@@ -149,6 +164,19 @@ export default {
     this.fetchData();
   },
   methods: {
+    addToChosenCharas: function(chara, selected){
+      //this method is called when user clicks on a card
+      //therefore, if a card is selected already, chara will
+      //have to be removed from the chosenCharas array
+      if(selected){
+        const index = this.chosenCharas.indexOf(chara);
+        if (index > -1) {
+          this.chosenCharas.splice(index, 1);
+        }
+      } else{
+        this.chosenCharas.push(chara);
+      }
+    },
     doAddChara: function(chara) {
       if(!this.charas.includes(chara)) {
         this.charas.push(chara);
@@ -224,23 +252,33 @@ export default {
       rollDice(this.$refs.d20Dice);
     },
     fight: function() {
-      let teams = [];
-      EventBus.$emit('getFighters', teams);
-      this.fightResult = CalcUtils.pvpRoll(teams);
-      this.showFightResult = true;
+      if(this.chosenCharas.length > 0){
+        this.showBattleModal = true;
+      } else {
+        this.$q.notify("No characters selected.");
+      }
+      //let teams = [];
+      //EventBus.$emit('getFighters', teams);
+      //this.fightResult = CalcUtils.pvpRoll(teams);
+      //this.showFightResult = true;
     },
     hideFightResult: function() {
       this.showFightResult = false;
+    },
+    battleModalCloseHandler: function(){
+      this.showBattleModal = false;
     }
   }
 }
 </script>
 
-<style scoped>
-img {
-  height: 12em;
-  width: auto;
-}
+<style lang="stylus" scoped>
+img
+  height 12em
+  width auto
+
+.card-padding
+  padding 5px 5px 5px
 </style>
 
 <style>

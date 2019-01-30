@@ -13,12 +13,14 @@
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
         <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense></q-btn> 
-      <div class="chara-stamp absolute-center" :class="stampClass">
+      
+      <!--stamp removed! commenting out just in case it will be used in the future-->
+      <!--<div class="chara-stamp absolute-center" :class="stampClass">
         <strong>
           <span :class="[kanjiClass]">{{DEVAS[chosenChara.devas.substr(0,1)]}}</span>
           <span :class="[devasDescClass]">{{DEVAS_DESC[chosenChara.devas]}}</span>
         </strong>
-      </div>
+      </div>-->
     </div>
     </transition>
 
@@ -39,7 +41,7 @@
     >
     <div class="character-calculator" v-show="isCalculatorOpen">
     <q-card class="bg-grey-3 text-black">
-      <q-card-title class="q-pa-sm q-pl-lg">
+      <!-- <q-card-title class="q-pa-sm q-pl-lg">
       <div class="row q-pa-none q-pa-none">
         <div class="col-9">
         <q-toggle
@@ -58,7 +60,7 @@
         />
         </div>
       </div>  
-      </q-card-title>
+      </q-card-title>-->
       <q-card-separator class="bg-grey-7"/>
       <q-card-main class="q-pa-none">
         <q-list separator>
@@ -114,42 +116,10 @@
               </div>
             </div>
           </q-collapsible>
-          <q-item v-show="!pvpCheck">
-          <q-item-main>
-          <!-- Roll -->
           <div class="row q-pa-sm">
             <strong class="col-auto q-pt-md">MORTALITY NUMBER: </strong>
             <q-input class="col-1" align="center" v-model="mortalityNumber"/>
           </div>
-          <div class="row">
-            <div class="col-2">
-            <q-btn class="full-width full-height" @click="doRoll" 
-              size="lg">
-              <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
-            </q-btn>
-            </div>
-            <div class="col-10 q-pl-sm">
-              <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
-              <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
-                <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
-              </ass-text>
-              <q-slide-transition>
-                <div v-show="showBreakdown">
-                  <!-- apply subtle color changes between Base Roll, buffs, debuffs,
-                      and total when color has been decided on -->
-                  <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
-                  <stat-breakdown :buffs="rollResult.buffs" />
-                  <stat-breakdown :buffs="rollResult.debuffs"/>
-                  <hr width="100%">
-                  <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
-                </div>
-              </q-slide-transition>
-                <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-                <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
-              </div>  
-            </div>
-          </q-item-main>
-          </q-item>
         </q-list>
       </q-card-main>
     </q-card>
@@ -234,29 +204,6 @@ export default {
       isCalculatorOpen: true,
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
-      pvpCheck: false,
-      options: [
-        {
-          label: 'Team 1',
-          value: '1'
-        },
-        {
-          label: 'Team 2',
-          value: '2'
-        },
-        {
-          label: 'Team 3',
-          value: '3'
-        },
-        {
-          label: 'Team 4',
-          value: '4'
-        },
-        {
-          label: 'Team 5',
-          value: '5'
-        }
-      ],
       select: "1",
     };
   },
@@ -330,25 +277,6 @@ export default {
   methods: {
     toggleBreakdown: function(){
       this.showBreakdown = !this.showBreakdown;
-    },
-    doRoll: function(){
-      //provide reference, then collect data from children
-      let stats = {};
-      stats.mortalityNumber = this.mortalityNumber;
-
-      EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
-      
-      rollDice(this.$refs.dice);
-
-      let currRollResult = Object.assign({},CalcUtils.roll(stats));
-
-      //define callback upon complete
-      this.rollResult.verdict = "...";
-      rollNumber(this.rollResult, currRollResult, () => {
-        this.rollResult.verdict = currRollResult.verdict;
-        this.rollResult.buffs =  currRollResult.buffs;
-        this.rollResult.debuffs =  currRollResult.debuffs;
-      })
     },
     getCount: function(field){
       const count = this.chosenChara[field];
