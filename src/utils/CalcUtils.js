@@ -59,9 +59,29 @@ const appendPercentageToValue = function(value){
 }
 
 const d20 = function() {
-  let min = Math.ceil(1);
-  let max = Math.floor(20);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.ceil(Math.random() * 20);
+}
+
+const precedenceRoll = function(charas){
+  let sortedCharas = [];
+  charas.forEach(chara => {
+    sortedCharas.push({
+      name: charas.name,
+      agility: charas.agility,
+      roll: chara.agility + d20()
+    });
+    
+  })
+  sortedCharas.sort((x, y) => {
+    let n = x.roll - y.roll;
+    if (n !== 0) {
+        return n;
+    }
+
+    return x.agility - y.agility;
+  });
+
+  return sortedCharas;
 }
 
 const pvpRoll = function(teams) {
@@ -157,6 +177,7 @@ const roll = function(stats) {
 }
 
 export default {
+  precedenceRoll,
   d20,
   getStrength,
   pvpRoll,
