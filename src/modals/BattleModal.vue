@@ -3,11 +3,13 @@
   {{chosenCharaIndex}}
     <h4>Basic Modal</h4>
     <q-btn
+      v-show="!selfOnly && !duelOnly"
       color="primary"
       @click="doAddChosenCharaIndex(-1)"
       label="Previous"
     />
     <q-btn
+      v-show="!selfOnly && !duelOnly"
       color="primary"
       @click="doAddChosenCharaIndex(1)"
       label="Next"
@@ -25,8 +27,8 @@
         <character-details :chosen-chara-name="charaInPlay" :chara-index="0"/>
       </div>
       <div class="col-xs-12 col-sm-6">
-        <q-select v-model="chosenEnemy" radio :options="enemyOptions"/>
-        <character-details  v-show="chosenEnemy" :chosen-chara-name="chosenEnemy" :chara-index="1"/>
+        <q-select v-show="!selfOnly && !duelOnly" v-model="chosenEnemy" radio :options="enemyOptions"/>
+        <character-details  v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1"/>
       </div>
     </div>
     <!--<div class="row">
@@ -93,6 +95,16 @@ export default {
     }
   },
   computed: {
+    selfOnly(){
+      return this.chosenCharas.length == 1;
+    },
+    duelOnly(){
+      const bool = this.chosenCharas.length == 2;
+      if(bool){
+        this.chosenEnemy = this.chosenCharas[1];
+      }
+      return bool;
+    },
     charaInPlay(){
       return this.chosenCharas[this.chosenCharaIndex];
     },
@@ -113,9 +125,14 @@ export default {
     doAddChosenCharaIndex: function(increment){
       this.chosenCharaIndex+=increment;
       this.chosenCharaIndex = this.chosenCharaIndex.clamp(0,this.chosenCharas.length-1);
+      this.chosenEnemy = "";
     },
     closeHandler: function(){
+      this.reset();
       this.$emit("close-handler");
+    },
+    reset: function(){
+      this.chosenEnemy = "";
     },
     doRoll: function(){
       //provide reference, then collect data from children
