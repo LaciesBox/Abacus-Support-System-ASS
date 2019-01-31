@@ -255,7 +255,8 @@ export default {
       if(this.chosenCharas.length > 0){
         this.showBattleModal = true;
       } else {
-        this.$q.notify("No characters selected.");
+        //notify when no chara is selected. code below doesnt work
+        //this.$q.notify("No characters selected.");
       }
       //let teams = [];
       //EventBus.$emit('getFighters', teams);
