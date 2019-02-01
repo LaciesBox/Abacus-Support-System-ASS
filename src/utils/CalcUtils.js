@@ -84,85 +84,54 @@ const precedenceRoll = function(charas){
   return sortedCharas;
 }
 
-const pvpRoll = function(teams) {
-  let winnerArr = [];
-  for(let i = 0; i < teams.length - 1; i++) {
-    if(teams[i].members.length <= 0) {continue;}
-    for(let x = i + 1; x < teams.length; x++) {
-      if(teams[x].members.length <= 0 ) {continue;}
-      let firstTeam = teams[i];
-      let secondTeam = teams[x];
-      let firstTeamStrength = 0;
-      let secondTeamStrength = 0;
-      firstTeam.members.forEach(member => {
-        firstTeamStrength += member.strength;
-      })
-      secondTeam.members.forEach(member => {
-        secondTeamStrength += member.strength;
-      })
-      let disparityInStrength = firstTeamStrength - secondTeamStrength;
-      let rollResult = d20();
-      if(10 + disparityInStrength >= rollResult) {
-        winnerArr.push(`Team ${firstTeam.name} has triumphed over Team ${secondTeam.name}!`);
-      } else {
-        winnerArr.push(`Team ${secondTeam.name} has triumphed over Team ${firstTeam.name}!`);
-      }
-    }
-  }
-  if(winnerArr.length <= 0) {
-    winnerArr.push(`No teams have fought!`)
-  }
-  return winnerArr;
-}
-
-const getStrength = function(stats) {
-  let strength = 0;
+const getTotalStats = function(stats) {
+  let totalStats = 0;
   let stat = {};
   Consts.PHYSICAL_PROPERTIES.forEach(property =>{
     stat = stats[property];
 
-    strength += consumeStat(stat, 1, true);
+    totalStats += consumeStat(stat, 1, true);
   });
 
   //compute occupations
-  strength += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
+  totalStats += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
 
   //compute talents
-  strength += computeStats(stats, Consts.TALENT, 1, true, 5);
+  totalStats += computeStats(stats, Consts.TALENT, 1, true, 5);
 
   //compute afflictions
-  strength += computeStats(stats, Consts.AFFLICTION, 1, false, 5);
-  return strength;
+  totalStats += computeStats(stats, Consts.AFFLICTION, 1, false, 5);
+  return totalStats;
+}
+
+const pvpRoll = function(duelists) {
+  const rollValue = Math.ceil(Math.random() * MAX_ROLL);
+  let stats = [];
+
+  duelists.forEach((duelist, index)=> {
+    stats[index] = getTotalStats(duelist);
+  })
+  const statDiff = stats[0] - stats[1];
+
+  // winner attribute: if rollValue is less than or equal to duelist 1's roll chance,
+  // duelist 1 wins; otherwise, duelist 2. Returns 0 for duelist 1, 1 for duelist 2.
+  return {
+    winner: rollValue <= 10 + statDiff ? 0 : 1,
+    roll: rollValue,
+    statDiff: statDiff
+  }
 }
 
 // when player clicks "roll"
 const roll = function(stats) {
-  buffs = [];
-  debuffs = [];
-
   //randomize
   let rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let finalRollValue = rollValue;
 
-  let stat = {};
-
-  //compute physical properties
-  Consts.PHYSICAL_PROPERTIES.forEach(property =>{
-    stat = stats[property];
-
-    finalRollValue += consumeStat(stat, 1, true);
-  });
-
-  //compute occupations
-  finalRollValue += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
-
-  //compute talents
-  finalRollValue += computeStats(stats, Consts.TALENT, 1, true, 5);
-
-  //compute afflictions
-  finalRollValue += computeStats(stats, Consts.AFFLICTION, 1, false, 5);
+  finalRollValue += getTotalStats(stats);
 
   finalRollValue = finalRollValue.clamp(1,20);
+
   //return json object
   return {
     roll: rollValue,
@@ -179,7 +148,7 @@ const roll = function(stats) {
 export default {
   precedenceRoll,
   d20,
-  getStrength,
+  getTotalStats,
   pvpRoll,
   roll,
   getPercentageValue,

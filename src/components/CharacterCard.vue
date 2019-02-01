@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     click: function(){
-      console.log("click");
       this.$emit("select",this.chosenCharaName, this.selected);
       this.selected = !this.selected;
     }

@@ -143,8 +143,6 @@ import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
 
-import {rollDice, rollNumber,} from "../anime.js";
-
 export default {
   name: "CharacterDetails",
   components: {
@@ -192,15 +190,6 @@ export default {
       charaNamesFiltered: null,
       placeholder: null,
       mortalityNumber: 0,
-      rollResult: {
-        roll: "",
-        finalRoll: "",
-        status: "",
-        chanceOfDying: "",
-        verdict: "",
-        buffs: [],
-        debuffs: []
-      },
       isCalculatorOpen: true,
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
