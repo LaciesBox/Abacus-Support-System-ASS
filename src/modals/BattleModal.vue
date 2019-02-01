@@ -1,5 +1,5 @@
 <template>
-  <q-modal maximized v-model="show">
+  <q-modal maximized v-model="show" @show="showHandler">
   {{chosenCharaIndex}}
     <h4>Basic Modal</h4>
     <q-btn
@@ -19,9 +19,8 @@
       @click="closeHandler"
       label="Close"
     />
-    <div class="row">
-      
-    </div>
+
+    <!-- duelists, side by side -->
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <character-details :chosen-chara-name="charaInPlay" :chara-index="0"/>
@@ -31,6 +30,16 @@
         <character-details  v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1"/>
       </div>
     </div>
+    
+    <!-- roll -->
+    <div class="row">
+      <q-btn class="full-width full-height" @click="performRoll" 
+      size="lg" :disable="!chosenEnemy && !selfOnly">
+      <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
+    </q-btn>
+    </div>
+
+    <!-- DONT DELETE! THIS IS ALSO CODE FOR SINGLE-ROLL. -->
     <!--<div class="row">
     <div class="col-2">
     <q-btn class="full-width full-height" @click="doRoll" 
@@ -72,6 +81,8 @@ import {
 
 import { EventBus } from "store/ass-store";
 
+import { rollDice, rollNumber } from "../anime.js";
+
 export default {
   name: "BattleModal",
   components: {
@@ -81,7 +92,16 @@ export default {
     return {
       //chosenCharaIndex increments when next is clicked
       chosenCharaIndex: 0,
-      chosenEnemy: ""
+      chosenEnemy: "",
+      rollResult: {
+        roll: "",
+        finalRoll: "",
+        status: "",
+        chanceOfDying: "",
+        verdict: "",
+        buffs: [],
+        debuffs: []
+      },
     }
   },
   props: {
@@ -99,11 +119,7 @@ export default {
       return this.chosenCharas.length == 1;
     },
     duelOnly(){
-      const bool = this.chosenCharas.length == 2;
-      if(bool){
-        this.chosenEnemy = this.chosenCharas[1];
-      }
-      return bool;
+      return this.chosenCharas.length == 2;
     },
     charaInPlay(){
       return this.chosenCharas[this.chosenCharaIndex];
@@ -122,6 +138,12 @@ export default {
     }
   },
   methods: {
+    showHandler: function(){
+      // this method runs when the modal opens
+      if(this.duelOnly){
+        this.chosenEnemy = this.chosenCharas[1];
+      }
+    },
     doAddChosenCharaIndex: function(increment){
       this.chosenCharaIndex+=increment;
       this.chosenCharaIndex = this.chosenCharaIndex.clamp(0,this.chosenCharas.length-1);
@@ -133,15 +155,30 @@ export default {
     },
     reset: function(){
       this.chosenEnemy = "";
+      this.chosenCharaIndex = 0;
+    },
+    performRoll: function(){
+      if(this.selfOnly){
+        this.doRoll();
+      } else {
+        this.doPvpRoll();
+      }
+    },
+    doPvpRoll: function(){
+      let duelistA = {}, duelistB = {};
+      EventBus.$emit('retrieveStats', {charaIndex: 0, stats: duelistA});
+      EventBus.$emit('retrieveStats', {charaIndex: 1, stats: duelistB});
+
+      rollDice(this.$refs.dice);
+
+      let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));
+      console.log(currRollResult);
     },
     doRoll: function(){
       //provide reference, then collect data from children
-      let stats = [];
+      let stats = {};
       //stats.mortalityNumber = this.mortalityNumber;
-      chosenCharas.forEach((chara,index)=>{
-        EventBus.$emit('retrieveStats', {charaIndex: index, stats});
-      })
-      
+      EventBus.$emit('retrieveStats', {charaIndex: 0, stats});
       
       rollDice(this.$refs.dice);
 
