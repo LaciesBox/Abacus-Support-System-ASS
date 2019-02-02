@@ -6,11 +6,14 @@
       Or you can look at my butt~ <br>
       <img src="../assets/abacus-ass.png" class="q-mt-lg margin-auto"/>
     </div>
+    
+    <!-- Duel View -->
     <div class="row">
       <div class="col-xs-6 col-sm-4 col-md-2 card-padding" v-for="(chara,index) in charas" v-bind:key="index">
         <character-card :class="chara" :chosen-chara-name="chara" :chara-index="index" @select="addToPvpList"/>
       </div>
     </div>
+
     <!--Character details-->
     <div class="row">
       <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
@@ -45,9 +48,9 @@
     <q-page-sticky position="bottom-right" :offset="[18, 18]" ref="addBtn">
       <q-btn
         round
-        :color="[addMenuOpen ? 'primary' : 'secondary']"
+        :color="addMenuOpen ? 'primary' : 'secondary'"
         @click="addCharaMenu"
-        :text-color="[addMenuOpen ? 'secondary' : 'primary']"
+        :text-color="addMenuOpen ? 'secondary' : 'primary'"
         :class="{'no-shadow': addMenuOpen}"
       > 
         <div ref="addIcon"><q-icon name="add"></q-icon></div>

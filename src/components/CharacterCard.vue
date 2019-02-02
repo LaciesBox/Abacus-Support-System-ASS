@@ -1,9 +1,9 @@
 <template>
-  <a @click="click">
+  <a @click="togglePvpStatus"
+  class="">
     <q-card class="wrapper">
       <q-card-media>
-        <img :class="{'card-img':true,'selected':selected}" :src="chosenChara.avatar">
-
+        <img :class="{'card-img':true,'selected': inPvp}" :src="chosenChara.avatar">
         <q-card-title slot="overlay">
           <span slot="subtitle">{{chosenChara.name}}</span>
         </q-card-title>
@@ -18,7 +18,7 @@ import { EventBus } from "store/ass-store";
 export default {
   data(){
     return {
-      selected: false
+      inPvp: false
     }
   },
   computed: {
@@ -40,9 +40,9 @@ export default {
     }
   },
   methods: {
-    click: function(){
-      this.$emit("select",this.chosenCharaName, this.selected);
-      this.selected = !this.selected;
+    togglePvpStatus: function(){
+      this.$emit("select",this.chosenCharaName, this.inPvp);
+      this.inPvp = !this.inPvp;
     }
   }
 }
@@ -60,6 +60,6 @@ export default {
   height 175px
 
 .selected
-  padding 7px 7px 7px
-  background-color $blue
+  padding 4px 4px 4px
+  background-color $ass-gold
 </style>
