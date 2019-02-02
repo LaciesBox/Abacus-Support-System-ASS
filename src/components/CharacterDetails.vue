@@ -41,26 +41,9 @@
     >
     <div class="character-calculator" v-show="isCalculatorOpen">
     <q-card class="bg-grey-3 text-black">
-      <!-- <q-card-title class="q-pa-sm q-pl-lg">
-      <div class="row q-pa-none q-pa-none">
-        <div class="col-9">
-        <q-toggle
-        v-model="pvpCheck"
-        checked-icon="sentiment very satisfied"
-        unchecked-icon="sentiment very dissatisfied"
-        :color="pvpColor"
-        class="q-mr-sm" />
-        <span v-if="pvpCheck">PVP</span><span v-else>Dice</span> Roller
-        </div>
-        <div class="col-3" v-show="pvpCheck">
-        <q-select
-          v-model="select"
-          radio
-          :options="options"
-        />
-        </div>
-      </div>  
-      </q-card-title>-->
+      <q-card-title class="q-pa-sm q-pl-lg">
+      Dice Roller
+      </q-card-title>
       <q-card-separator class="bg-grey-7"/>
       <q-card-main class="q-pa-none">
         <q-list separator>

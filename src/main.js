@@ -94,7 +94,7 @@ Vue.use(Quasar, {
     Notify
   },
   directives: {},
-  plugins: {}
+  plugins: {Notify}
 })
 
 Vue.config.productionTip = false
