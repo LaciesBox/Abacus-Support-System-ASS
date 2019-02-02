@@ -133,4 +133,7 @@ export default {
 
 img 
   width 100%
+
+.vertical-aligned
+  margin auto 0
 </style>

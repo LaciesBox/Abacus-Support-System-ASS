@@ -12,7 +12,7 @@
       <div class="row justify-center">
         <div class="col-12">
         <q-chip color="red-4" square 
-          class="no-shadow full-width text-center q-display-1 lato-bi"
+          class="no-shadow full-width text-center q-display-1 lato-bi unselectable"
           text-color="primary">
           PVP Arena
         </q-chip>
@@ -213,7 +213,7 @@ export default {
     },
     addCharaMenu: function() {
       let self = this;
-      if(this.addMenuOpen) { //if open, close
+      if(this.addMenuOpen) {
         hideSearch(this.$refs.search);
         setTimeout(function() {
         self.addMenuOpen = !self.addMenuOpen;
@@ -234,6 +234,14 @@ export default {
     },
     fight: function() {
       if(this.charasInPvp.length > 1){
+        let charaWithAgiArr = [];
+        this.charasInPvp.forEach(charaInPvp => {
+          let chara = {};
+          chara.name = charaInPvp;
+          chara.agility = EventBus.characters[charaInPvp][Consts.AGILITY];
+          charaWithAgiArr.push(chara);
+        })
+        this.charasInPvp = CalcUtils.precedenceRoll(charaWithAgiArr);
         this.showBattleModal = true;
       } else {
         this.$q.notify({

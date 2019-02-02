@@ -1,7 +1,5 @@
 <template>
-  <q-modal maximized v-model="show" @show="showHandler">
-  {{chosenCharaIndex}}
-    <h4>Basic Modal</h4>
+  <q-modal maximized v-model="show" @show="showHandler" class="text-secondary">
     <q-btn
       v-show="!selfOnly && !duelOnly"
       color="primary"
@@ -22,10 +20,11 @@
 
     <!-- duelists, side by side -->
     <div class="row">
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-5">
         <character-details :chosen-chara-name="charaInPlay" :chara-index="0"/>
       </div>
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-2 q-display-4 text-center vertical-aligned">VS</div>
+      <div class="col-xs-12 col-sm-5">
         <q-select v-show="!selfOnly && !duelOnly" v-model="chosenEnemy" radio :options="enemyOptions"/>
         <character-details  v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1"/>
       </div>
