@@ -1,6 +1,6 @@
 <template>
   <a @click="togglePvpStatus"
-  class="">
+  class="lato-bi">
     <q-card class="wrapper">
       <q-card-media>
         <img :class="{'card-img':true,'selected': inPvp}" :src="chosenChara.avatar">

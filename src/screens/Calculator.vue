@@ -6,12 +6,29 @@
       Or you can look at my butt~ <br>
       <img src="../assets/abacus-ass.png" class="q-mt-lg margin-auto"/>
     </div>
-    
+
     <!-- Duel View -->
-    <div class="row">
+    <div class="bg-grey-9" v-show="charas.length > 0">
+      <div class="row justify-center">
+        <div class="col-12">
+        <q-chip color="red-4" square 
+          class="no-shadow full-width text-center q-display-1 lato-bi"
+          text-color="primary">
+          PVP Arena
+        </q-chip>
+        </div>
+      </div>
+      <div class="row justify-center">
       <div class="col-xs-6 col-sm-4 col-md-2 card-padding" v-for="(chara,index) in charas" v-bind:key="index">
         <character-card :class="chara" :chosen-chara-name="chara" :chara-index="index" @select="addToPvpList"/>
       </div>
+      </div>
+      <div class="row justify-center">
+        <q-btn color="red-10" class="q-ma-sm justify-center"
+        @click="fight">
+          BRAWL!
+        </q-btn>
+      </div> 
     </div>
 
     <!--Character details-->
@@ -73,18 +90,6 @@
       </q-btn>
     </q-page-sticky>
 
-    <!-- Temporary fight roll -->
-    <q-page-sticky position="bottom-right" :offset="[18, 126]">
-      <q-btn
-        round
-        color="primary"
-        @click="fight"
-        text-color="ass-gold"
-      > 
-        <div><q-icon name="fas fa-bolt"></q-icon></div>
-      </q-btn>
-    </q-page-sticky>
-    
     <!-- battle modal -->
     <battle-modal :show="showBattleModal" :chosen-charas="charasInPvp" @close-handler="battleModalCloseHandler"/>
 
@@ -228,11 +233,11 @@ export default {
       rollDice(this.$refs.d20Dice);
     },
     fight: function() {
-      if(this.charasInPvp.length > 0){
+      if(this.charasInPvp.length > 1){
         this.showBattleModal = true;
       } else {
         this.$q.notify({
-          message: "No characters selected for PVP!",
+          message: "Must select 2 or more characters for PVP!",
           timeout: 300,});
       }
     },
@@ -252,7 +257,7 @@ img
   width auto
 
 .card-padding
-  padding 5px 5px 5px
+  padding 0.7em 0.7em 0.7em
 </style>
 
 <style>
