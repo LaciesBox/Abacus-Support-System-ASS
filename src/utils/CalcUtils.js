@@ -66,13 +66,12 @@ const precedenceRoll = function(charas){
   let sortedCharas = [];
   charas.forEach(chara => {
     sortedCharas.push({
-      name: charas.name,
-      agility: charas.agility,
-      roll: chara.agility + d20()
+      name: chara.name,
+      agility: chara.agility,
+      roll: parseFloat(chara.agility) + d20()
     });
-    
   })
-  sortedCharas.sort((x, y) => {
+  sortedCharas.sort((y, x) => {
     let n = x.roll - y.roll;
     if (n !== 0) {
         return n;
@@ -81,7 +80,12 @@ const precedenceRoll = function(charas){
     return x.agility - y.agility;
   });
 
-  return sortedCharas;
+  let returnedSort = [];
+  sortedCharas.forEach(chara => {
+    returnedSort.push(chara.name);
+  });
+
+  return returnedSort;
 }
 
 const getTotalStats = function(stats) {

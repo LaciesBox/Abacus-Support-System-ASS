@@ -49,7 +49,9 @@ import {
   QTooltip,
   QToggle,
   QSelect,
-  Notify
+  Notify,
+  QBtnDropdown,
+  Dialog,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -91,10 +93,12 @@ Vue.use(Quasar, {
     QTooltip,
     QToggle,
     QSelect,
-    Notify
+    Notify,
+    QBtnDropdown,
+    Dialog,
   },
   directives: {},
-  plugins: {}
+  plugins: {Notify, Dialog}
 })
 
 Vue.config.productionTip = false

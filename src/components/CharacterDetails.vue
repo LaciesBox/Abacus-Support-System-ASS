@@ -12,7 +12,7 @@
         <span class="center ptsans-sm">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
-        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense></q-btn> 
+        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense v-show="!isInModal"></q-btn> 
       
       <!--stamp removed! commenting out just in case it will be used in the future-->
       <!--<div class="chara-stamp absolute-center" :class="stampClass">
@@ -41,26 +41,9 @@
     >
     <div class="character-calculator" v-show="isCalculatorOpen">
     <q-card class="bg-grey-3 text-black">
-      <!-- <q-card-title class="q-pa-sm q-pl-lg">
-      <div class="row q-pa-none q-pa-none">
-        <div class="col-9">
-        <q-toggle
-        v-model="pvpCheck"
-        checked-icon="sentiment very satisfied"
-        unchecked-icon="sentiment very dissatisfied"
-        :color="pvpColor"
-        class="q-mr-sm" />
-        <span v-if="pvpCheck">PVP</span><span v-else>Dice</span> Roller
-        </div>
-        <div class="col-3" v-show="pvpCheck">
-        <q-select
-          v-model="select"
-          radio
-          :options="options"
-        />
-        </div>
-      </div>  
-      </q-card-title>-->
+      <q-card-title class="q-pa-sm q-pl-lg">
+      Dice Roller
+      </q-card-title>
       <q-card-separator class="bg-grey-7"/>
       <q-card-main class="q-pa-none">
         <q-list separator>
@@ -260,6 +243,10 @@ export default {
     charaIndex: {
       type: Number,
       required: true
+    },
+    isInModal: {
+      type: Boolean,
+      default: false,
     }
   },
 
