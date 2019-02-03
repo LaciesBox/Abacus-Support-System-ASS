@@ -2,11 +2,19 @@
   <q-modal maximized v-model="show" @show="showHandler" content-classes="bg-primary text-secondary">
     <div class="row justify-center">
       <div class="col-12">
-      <q-chip color="primary" square 
-        class="no-shadow full-width text-center q-display-1 lato-bi unselectable q-pa-sm"
-        text-color="secondary">
-        {{chosenCharas[chosenCharaIndex]}}'s Turn
-      </q-chip>
+      <div v-for="chara in chosenCharas" :key="chara">
+        <transition
+        appear
+        enter-active-class="animated fadeInDown">
+          <q-chip color="primary" square 
+          class="no-shadow full-width text-center q-display-1 lato-bi unselectable q-pa-sm"
+          text-color="secondary"
+          v-show="chara == charaInPlay"
+          >
+            <span>{{chara}}'s Turn</span>
+          </q-chip>
+        </transition>
+      </div>
       </div>
     </div>
     <!-- Exit out of modal -->
@@ -29,7 +37,14 @@
     <div class="row">
       <!-- Character in Play -->
       <div class="col-xs-12 col-sm-5 q-pa-lg">
-        <character-details :chosen-chara-name="charaInPlay" :chara-index="0" :is-in-modal="true"/>
+      <div v-for="chara in chosenCharas" :key="chara">
+        <transition-group
+          appear
+          enter-active-class="animated fadeInUp"
+        >
+        <character-details v-show="chara == charaInPlay" :chosen-chara-name="charaInPlay" :chara-index="0" :is-in-modal="true" :key="chara"/>
+        </transition-group>
+      </div>
       </div>
       <!-- Enemy Duelist -->
       <div class="col-xs-12 col-sm-2 text-center vertical-aligned text-red-10">
@@ -41,7 +56,13 @@
         </q-btn>
       </div>
       <div class="col-xs-12 col-sm-5 q-pa-lg">
+        <transition
+        appear
+        enter-active-class="animated fadeInUp"
+        leave-active-class="animated fadeOutUp"
+        >
         <character-details v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
+        </transition>
       </div>
     </div>
 
@@ -60,7 +81,7 @@
       </ass-text>
       <q-slide-transition>
         <div v-show="showBreakdown">
-          <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+          <! apply subtle color changes between Base Roll, buffs, debuffs,
               and total when color has been decided on
           <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
           <stat-breakdown :buffs="rollResult.buffs" />
@@ -241,10 +262,10 @@ export default {
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " has won!",
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is on a killing spree!",
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is dominating!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , mega kill!",
+        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + ", mega kill!",
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is unstoppable!",
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is wicked sick!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , meow-nster kill!!!",
+        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + ", meow-nster kill!!!",
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is Godlike!",
         (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is beyond Godlike!",
       ]
