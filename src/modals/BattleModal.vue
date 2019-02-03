@@ -89,6 +89,20 @@ import { EventBus } from "store/ass-store";
 
 import { rollDice, rollNumber } from "../anime.js";
 
+//moved here so that it wont be instantiated all the time
+//inside the method.
+const WINNING_OPTIONS = [
+  " has won!",
+  " is on a killing spree!",
+  " is dominating!",
+  " , mega kill!",
+  " is unstoppable!",
+  " is wicked sick!",
+  " , meow-nster kill!!!",
+  " is Godlike!",
+  " is beyond Godlike!"
+]
+
 export default {
   name: "BattleModal",
   components: {
@@ -198,6 +212,7 @@ export default {
       EventBus.$emit('retrieveStats', {charaIndex: 0, stats: duelistA});
       EventBus.$emit('retrieveStats', {charaIndex: 1, stats: duelistB});
 
+      console.log(duelistA);
       rollDice(this.$refs.dice);
 
       let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));
@@ -237,19 +252,8 @@ export default {
       })
     },
     generateWinningMessage: function(currRollResult) {
-      let winningOptions = [
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " has won!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is on a killing spree!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is dominating!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , mega kill!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is unstoppable!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is wicked sick!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , meow-nster kill!!!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is Godlike!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is beyond Godlike!",
-      ]
-
-      return winningOptions[Math.ceil(Math.random() * (winningOptions.length - 1))];
+      const winner = currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy;
+      return winner + WINNING_OPTIONS[Math.ceil(Math.random() * (WINNING_OPTIONS.length - 1))];
     }
   }
 }
