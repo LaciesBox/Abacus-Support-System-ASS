@@ -218,24 +218,8 @@ export default {
       })
     },
     generateWinningMessage: function(currRollResult) {
-<<<<<<< HEAD
       const winner = currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy;
       return winner + WINNING_OPTIONS[Math.ceil(Math.random() * (WINNING_OPTIONS.length - 1))];
-=======
-      let winningOptions = [
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " has won!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is on a killing spree!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is dominating!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , mega kill!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is unstoppable!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is wicked sick!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , meow-nster kill!!!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is Godlike!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is beyond Godlike!",
-      ]
-
-      return winningOptions[Math.ceil(Math.random() * (winningOptions.length - 1))];
->>>>>>> origin/develop
     }
   }
 }
