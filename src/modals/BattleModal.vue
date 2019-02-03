@@ -175,9 +175,8 @@ export default {
       let duelistB =  this.$refs.chosenEnemy.getStats();
       console.log(duelistA);
       console.log(duelistB);
-      //EventBus.$emit('retrieveStats', {charaIndex: 0, stats: duelistA});
-      //EventBus.$emit('retrieveStats', {charaIndex: 1, stats: duelistB});
-
+      debugger;
+      
       rollDice(this.$refs.dice);
 
       let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));

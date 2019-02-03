@@ -131,11 +131,9 @@ export default {
       })
     },
     add: function(){
-      console.log("add");
       EventBus.storeStat(this.charaName, this.fieldName, "add", this.add);
     },
     willCalculate: function(){
-      console.log("willCalculate",this.willCalculate);
       EventBus.storeStat(this.charaName, this.fieldName, "willCalculate", this.willCalculate);
     },
     charaName: function(){

@@ -33,7 +33,8 @@
         <character-profile :chosen-chara="chosenChara" />
       </div>
     </transition>
-
+    
+      {{storedStats}}
     <!-- Character Calculator UI -->
     <transition
     appear
@@ -51,7 +52,7 @@
           <q-collapsible icon="ion-ios-body" label="Physical Properties" highlight>
             <div class="row">
               <div
-                class="col-md-3 col-xs-6"
+                class="col-xs-6 col-sm-12 col-md-6 col-lg-6"
                 v-for="stat in Consts.PHYSICAL_PROPERTIES" 
                 v-bind:key="stat">
                 <stat :chara-name ="chosenCharaName"
@@ -68,7 +69,7 @@
           <!-- Occupation COLLAPSIBLE -->
           <q-collapsible icon="fas fa-user-secret" label="Occupation" highlight>
             <div class="row">
-              <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
+              <div class="col-xs-12 col-lg-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
                   <stat :chara-name ="chosenCharaName"
                       :roll-listener="rollListener"
@@ -82,7 +83,7 @@
           <!-- Talents COLLAPSIBLE -->
           <q-collapsible icon="star" label="Talents" highlight>
             <div class="row">
-              <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
+              <div class="col-xs-12 col-lg-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
                 <stat :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
@@ -96,7 +97,7 @@
           <!-- Afflictions COLLAPSIBLE -->
           <q-collapsible icon="fas fa-heartbeat" label="Afflictions" highlight>
             <div class="row">
-              <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
+              <div class="col-xs-12 col-lg-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
                 <stat :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
@@ -173,6 +174,7 @@ export default {
     CharacterProfile
   },
   created() {
+    this.storedStats = EventBus.storedStats[this.charaName];
     this.Consts = Consts;
     this.GANGS = Lookups.GANGS;
     this.DEVAS = Lookups.DEVAS;
@@ -198,7 +200,7 @@ export default {
       },
       rollListener: true,
       stats: {
-        mortalityNumber:0
+        mortalityNumber: EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0
       }
     };
   },
@@ -277,6 +279,15 @@ export default {
     }
   },
 
+  watch: {
+    "stats.mortalityNumber": function(){
+      EventBus.storeStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber", this.stats.mortalityNumber);
+    },
+    chosenCharaName: function(){
+      this.stats.mortalityNumber = EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0;
+    }
+  },
+  
   methods: {
     getStats: function(){
       this.rollListener = !this.rollListener;
