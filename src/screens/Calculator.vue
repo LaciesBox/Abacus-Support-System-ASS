@@ -24,7 +24,7 @@
       </div>
       </div>
       <div class="row justify-center">
-        <q-btn color="red-10" class="q-ma-sm justify-center"
+        <q-btn color="red-10" class="q-ma-sm"
         @click="fight">
           BRAWL!
         </q-btn>

@@ -12,7 +12,7 @@
         <span class="center ptsans-sm">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
-        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense></q-btn> 
+        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense v-show="!isInModal"></q-btn> 
       
       <!--stamp removed! commenting out just in case it will be used in the future-->
       <!--<div class="chara-stamp absolute-center" :class="stampClass">
@@ -243,6 +243,10 @@ export default {
     charaIndex: {
       type: Number,
       required: true
+    },
+    isInModal: {
+      type: Boolean,
+      default: false,
     }
   },
 
