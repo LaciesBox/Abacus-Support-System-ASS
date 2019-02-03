@@ -10,17 +10,28 @@ export const EventBus = new Vue({
     setCharacters: function(chars){
       this.characters = Object.assign({}, chars);
     },
-    storeStat: function(charaName, statName, statValue){
+    storeStat: function(charaName, statName, statAttribName, statAttribValue){
+      if(charaName == ""){
+        return;
+      }
       if(!this.storedStats[charaName]){
         this.storedStats[charaName] = {}
       }
-      this.storedStats[charaName][statName] = statValue;
+      if(!this.storedStats[charaName][statName]){
+        this.storedStats[charaName][statName] = {}
+      }
+
+      this.storedStats[charaName][statName][statAttribName] = statAttribValue;
     },
-    getStoredStat: function(charaName, statName){
-      if(!this.storedStats[charaName]){
+    getStoredStat: function(charaName, statName, statAttribName){
+      if(charaName == ""){
+        return;
+      }
+
+      if(!this.storedStats[charaName] || !this.storedStats[charaName][statName]){
         return null;
       }
-      return this.storedStats[charaName][statName];
+      return this.storedStats[charaName][statName][statAttribName];
     }
   }
 }

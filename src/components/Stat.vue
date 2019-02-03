@@ -48,19 +48,11 @@ export default {
 
   data() {
     return {
-      willCalculate: EventBus.getStoredStat(this.charaName, "willCalculate") || false,
-      add: EventBus.getStoredStat(this.charaName, "add") || 0
+      willCalculate: EventBus.getStoredStat(this.charaName, this.fieldName, "willCalculate") || false,
+      add: EventBus.getStoredStat(this.charaName, this.fieldName, "add") || 0
     }
   },
-  
-  watch: {
-    add: function(){
-      EventBus.storeStat(this.charaName, "add", this.add);
-    },
-    willCalculate: function(){
-      EventBus.storeStat(this.charaName, "willCalculate", this.willCalculate);
-    }
-  },
+
   computed: {
     finalDisplayName(){
       return this.displayName || this.statName || "";
@@ -127,12 +119,7 @@ export default {
       default: () => ["col-7"]
     }
   },
-
-  methods: {
-    toggleCompute: function(){
-      this.willCalculate = !this.willCalculate;
-    }
-  },
+  
 
   watch: {
     rollListener: function(){
@@ -142,6 +129,24 @@ export default {
         base: Number(this.value),
         willCalculate: this.willCalculate
       })
+    },
+    add: function(){
+      console.log("add");
+      EventBus.storeStat(this.charaName, this.fieldName, "add", this.add);
+    },
+    willCalculate: function(){
+      console.log("willCalculate",this.willCalculate);
+      EventBus.storeStat(this.charaName, this.fieldName, "willCalculate", this.willCalculate);
+    },
+    charaName: function(){
+      this.willCalculate = EventBus.getStoredStat(this.charaName, this.fieldName, "willCalculate") || false;
+      this.add = EventBus.getStoredStat(this.charaName, this.fieldName, "add") || 0;
+    }
+  },
+  
+  methods: {
+    toggleCompute: function(){
+      this.willCalculate = !this.willCalculate;
     }
   }
 }
