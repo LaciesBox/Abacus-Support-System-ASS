@@ -48,24 +48,9 @@ export default {
 
   data() {
     return {
-      willCalculate: false,
-      add: 0
+      willCalculate: EventBus.getStoredStat(this.charaName, this.fieldName, "willCalculate") || false,
+      add: EventBus.getStoredStat(this.charaName, this.fieldName, "add") || 0
     }
-  },
-
-  mounted() {
-    EventBus.$on('retrieveStats', data => {
-      if(data.charaIndex != this.charaIndex){
-        return;
-      }
-
-      data.stats[this.fieldName] = {
-        name: this.finalDisplayName,
-        add: Number(this.add),
-        base: Number(this.value),
-        willCalculate: this.willCalculate
-      }
-    });
   },
 
   computed: {
@@ -93,6 +78,14 @@ export default {
   },
 
   props: {
+    rollListener: {
+      type: Boolean,
+      required: true
+    },
+    charaName: {
+      type: String,
+      required: true
+    },
     displayName: {
       type: String,
       required: false
@@ -117,10 +110,6 @@ export default {
       type: Number,
       default: 5
     },
-    charaIndex: {
-      type: Number,
-      required: true
-    },
     baseClass: {
       type: Array,
       default: () => ["col-3", "text-center"]
@@ -130,7 +119,29 @@ export default {
       default: () => ["col-7"]
     }
   },
+  
 
+  watch: {
+    rollListener: function(){
+      this.$emit('stat-data-handler', this.fieldName, {
+        name: this.finalDisplayName,
+        add: Number(this.add),
+        base: Number(this.value),
+        willCalculate: this.willCalculate
+      })
+    },
+    add: function(){
+      EventBus.storeStat(this.charaName, this.fieldName, "add", this.add);
+    },
+    willCalculate: function(){
+      EventBus.storeStat(this.charaName, this.fieldName, "willCalculate", this.willCalculate);
+    },
+    charaName: function(){
+      this.willCalculate = EventBus.getStoredStat(this.charaName, this.fieldName, "willCalculate") || false;
+      this.add = EventBus.getStoredStat(this.charaName, this.fieldName, "add") || 0;
+    }
+  },
+  
   methods: {
     toggleCompute: function(){
       this.willCalculate = !this.willCalculate;

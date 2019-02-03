@@ -38,7 +38,7 @@
         appear
         leave-active-class="animated fadeOutLeft"
         >
-        <character-details :class="chara" :chosen-chara-name="chara" :chara-index="index" v-show="charasShown.includes(chara)"/>
+        <character-details show-roller :class="chara" :chosen-chara-name="chara" :chara-index="index" v-show="charasShown.includes(chara)"/>
         </transition>
       </div>
     </div>

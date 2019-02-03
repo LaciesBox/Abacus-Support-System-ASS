@@ -29,7 +29,7 @@
     <div class="row">
       <!-- Character in Play -->
       <div class="col-xs-12 col-sm-5 q-pa-lg">
-        <character-details :chosen-chara-name="charaInPlay" :chara-index="0" :is-in-modal="true"/>
+        <character-details ref="charaInPlay" :chosen-chara-name="charaInPlay" :chara-index="0" :is-in-modal="true"/>
       </div>
       <!-- Enemy Duelist -->
       <div class="col-xs-12 col-sm-2 text-center vertical-aligned text-red-10">
@@ -41,38 +41,9 @@
         </q-btn>
       </div>
       <div class="col-xs-12 col-sm-5 q-pa-lg">
-        <character-details v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
+        <character-details ref="chosenEnemy" v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
       </div>
     </div>
-
-    <!-- DONT DELETE! THIS IS ALSO CODE FOR SINGLE-ROLL. -->
-    <!--<div class="row">
-    <div class="col-2">
-    <q-btn class="full-width full-height" @click="doRoll" 
-      size="lg">
-      <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
-    </q-btn>
-    </div>
-    <div class="col-10 q-pl-sm">
-      <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
-      <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
-        <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
-      </ass-text>
-      <q-slide-transition>
-        <div v-show="showBreakdown">
-          <!-- apply subtle color changes between Base Roll, buffs, debuffs,
-              and total when color has been decided on
-          <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
-          <stat-breakdown :buffs="rollResult.buffs" />
-          <stat-breakdown :buffs="rollResult.debuffs"/>
-          <hr width="100%">
-          <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
-        </div>
-      </q-slide-transition>
-        <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-        <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
-      </div>
-    </div>-->
   </q-modal>
 </template>
 
@@ -89,6 +60,20 @@ import { EventBus } from "store/ass-store";
 
 import { rollDice, rollNumber } from "../anime.js";
 
+//moved here so that it wont be instantiated all the time
+//inside the method.
+const WINNING_OPTIONS = [
+  " has won!",
+  " is on a killing spree!",
+  " is dominating!",
+  " , mega kill!",
+  " is unstoppable!",
+  " is wicked sick!",
+  " , meow-nster kill!!!",
+  " is Godlike!",
+  " is beyond Godlike!"
+]
+
 export default {
   name: "BattleModal",
   components: {
@@ -99,15 +84,6 @@ export default {
       //chosenCharaIndex increments when next is clicked
       chosenCharaIndex: 0,
       chosenEnemy: "",
-      rollResult: {
-        roll: "",
-        finalRoll: "",
-        status: "",
-        chanceOfDying: "",
-        verdict: "",
-        buffs: [],
-        debuffs: [],
-      },
       turnOption: "",
     }
   },
@@ -194,10 +170,13 @@ export default {
       }
     },
     doPvpRoll: function(){
-      let duelistA = {}, duelistB = {};
-      EventBus.$emit('retrieveStats', {charaIndex: 0, stats: duelistA});
-      EventBus.$emit('retrieveStats', {charaIndex: 1, stats: duelistB});
-
+      console.log(this.$refs);
+      let duelistA = this.$refs.charaInPlay.getStats();
+      let duelistB =  this.$refs.chosenEnemy.getStats();
+      console.log(duelistA);
+      console.log(duelistB);
+      debugger;
+      
       rollDice(this.$refs.dice);
 
       let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));
@@ -237,19 +216,8 @@ export default {
       })
     },
     generateWinningMessage: function(currRollResult) {
-      let winningOptions = [
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " has won!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is on a killing spree!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is dominating!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , mega kill!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is unstoppable!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is wicked sick!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " , meow-nster kill!!!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is Godlike!",
-        (currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy) + " is beyond Godlike!",
-      ]
-
-      return winningOptions[Math.ceil(Math.random() * (winningOptions.length - 1))];
+      const winner = currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy;
+      return winner + WINNING_OPTIONS[Math.ceil(Math.random() * (WINNING_OPTIONS.length - 1))];
     }
   }
 }
