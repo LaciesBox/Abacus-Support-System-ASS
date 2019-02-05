@@ -108,6 +108,8 @@
               </div>
             </div>
           </q-collapsible>
+          <q-item>
+          <q-item-main>
           <div class="row q-pa-sm">
             <strong class="col-auto q-pt-md">MORTALITY NUMBER: </strong>
             <q-input class="col-1" align="center" v-model="stats.mortalityNumber"/>
@@ -139,6 +141,36 @@
                 <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
               </div>
           </div>
+          <!-- ROLL -->
+          <div class="row" v-show="!isInModal">
+            <div class="col-2">
+            <q-btn class="full-width full-height" @click="doRoll" 
+              size="lg">
+              <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
+            </q-btn>
+            </div>
+            <div class="col-10 q-pl-sm">
+              <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
+              <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
+                <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
+              </ass-text>
+              <q-slide-transition>
+                <div v-show="showBreakdown">
+                  <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+                      and total when color has been decided on -->
+                  <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
+                  <stat-breakdown :buffs="rollResult.buffs" />
+                  <stat-breakdown :buffs="rollResult.debuffs"/>
+                  <hr width="100%">
+                  <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+                </div>
+              </q-slide-transition>
+                <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+                <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+              </div>  
+            </div>
+          </q-item-main>
+          </q-item>
         </q-list>
       </q-card-main>
     </q-card>
@@ -161,6 +193,7 @@ import StatBreakdown from './StatBreakdown.vue';
 import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
+import { rollDice, rollNumber, } from "../anime.js";
 
 import { rollDice, rollNumber } from "../anime.js";
 
@@ -185,6 +218,16 @@ export default {
     return {
       charaNamesFiltered: null,
       placeholder: null,
+      mortalityNumber: 0,
+      rollResult: {
+        roll: "",
+        finalRoll: "",
+        status: "",
+        chanceOfDying: "",
+        verdict: "",
+        buffs: [],
+        debuffs: []
+      },
       isCalculatorOpen: true,
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
@@ -295,6 +338,22 @@ export default {
     },
     toggleBreakdown: function(){
       this.showBreakdown = !this.showBreakdown;
+    },
+    doRoll: function(){
+      //provide reference, then collect data from children
+      let stats = {};
+      stats.mortalityNumber = this.mortalityNumber;
+      EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
+      
+      rollDice(this.$refs.dice);
+      let currRollResult = Object.assign({},CalcUtils.roll(stats));
+      //define callback upon complete
+      this.rollResult.verdict = "...";
+      rollNumber(this.rollResult, currRollResult, () => {
+        this.rollResult.verdict = currRollResult.verdict;
+        this.rollResult.buffs =  currRollResult.buffs;
+        this.rollResult.debuffs =  currRollResult.debuffs;
+      })
     },
     getCount: function(field){
       const count = this.chosenChara[field];

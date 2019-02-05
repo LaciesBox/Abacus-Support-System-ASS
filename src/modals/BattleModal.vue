@@ -35,13 +35,13 @@
       <div class="col-xs-12 col-sm-2 text-center vertical-aligned text-red-10">
         <span class="q-display-4">VS</span>
         <q-select class="text-red-10" color="red-10" float-label="Select an opponent" v-model="chosenEnemy" radio :options="enemyOptions" dark/>
-        <q-btn class="full-width full-height" @click="performRoll" 
-        size="lg" :disable="!chosenEnemy && !selfOnly">
+        <q-btn class="full-width full-height" @click="doPvpRoll" 
+        size="lg" :disable="!chosenEnemy">
           <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
         </q-btn>
       </div>
       <div class="col-xs-12 col-sm-5 q-pa-lg">
-        <character-details ref="chosenEnemy" v-show="chosenEnemy && !selfOnly" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
+        <character-details v-show="chosenEnemy" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
       </div>
     </div>
   </q-modal>
@@ -98,9 +98,6 @@ export default {
     }
   },
   computed: {
-    selfOnly(){
-      return this.chosenCharas.length == 1;
-    },
     duelOnly(){
       return this.chosenCharas.length == 2;
     },
@@ -162,13 +159,6 @@ export default {
       this.chosenEnemy = "";
       this.chosenCharaIndex = 0;
     },
-    performRoll: function(){
-      if(this.selfOnly){
-        this.doRoll();
-      } else {
-        this.doPvpRoll();
-      }
-    },
     doPvpRoll: function(){
       console.log(this.$refs);
       let duelistA = this.$refs.charaInPlay.getStats();
@@ -195,24 +185,6 @@ export default {
           message: 'Resetting turn...',
           timeout: 500,
         })
-      })
-    },
-    doRoll: function(){
-      //provide reference, then collect data from children
-      let stats = {};
-      //stats.mortalityNumber = this.mortalityNumber;
-      EventBus.$emit('retrieveStats', {charaIndex: 0, stats});
-      
-      rollDice(this.$refs.dice);
-
-      let currRollResult = Object.assign({},CalcUtils.roll(stats));
-
-      //define callback upon complete
-      this.rollResult.verdict = "...";
-      rollNumber(this.rollResult, currRollResult, () => {
-        this.rollResult.verdict = currRollResult.verdict;
-        this.rollResult.buffs =  currRollResult.buffs;
-        this.rollResult.debuffs =  currRollResult.debuffs;
       })
     },
     generateWinningMessage: function(currRollResult) {
