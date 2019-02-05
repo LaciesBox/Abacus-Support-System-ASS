@@ -59,7 +59,7 @@
                     :roll-listener="rollListener"
                     @stat-data-handler="statDataHandler"
                     :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
-                    :btn-class="['col-lg-6','col-md-5', 'col-xs-6']" 
+                    :btn-class="['col-lg-8','col-md-7', 'col-xs-8']" 
                     :display-name="Consts[stat+'Display']"
                     :field-name="stat" :stat-name="stat.substr(0,3)" 
                     :value="chosenChara[stat]"/>
