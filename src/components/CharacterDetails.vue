@@ -52,7 +52,7 @@
           <q-collapsible icon="ion-ios-body" label="Physical Properties" highlight>
             <div class="row">
               <div
-                class="col-xs-6 col-sm-12 col-md-6 col-lg-3"
+                class="col-xs-6 col-lg-3"
                 v-for="stat in Consts.PHYSICAL_PROPERTIES" 
                 v-bind:key="stat">
                 <stat
@@ -72,7 +72,7 @@
           <!-- Occupation COLLAPSIBLE -->
           <q-collapsible icon="fas fa-user-secret" label="Occupation" highlight>
             <div class="row">
-              <div class="col-xs-6 col-lg-4" v-for="i in occupationCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
                   <stat 
                       :chara-name ="chosenCharaName"
@@ -89,7 +89,7 @@
           <!-- Talents COLLAPSIBLE -->
           <q-collapsible icon="star" label="Talents" highlight>
             <div class="row">
-              <div class="col-xs-6 col-lg-4" v-for="i in talentCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
                 <stat
                     :chara-name ="chosenCharaName"
@@ -106,7 +106,7 @@
           <!-- Afflictions COLLAPSIBLE -->
           <q-collapsible icon="fas fa-heartbeat" label="Afflictions" highlight>
             <div class="row">
-              <div class="col-xs-6 col-lg-4" v-for="i in afflictionCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
                 <stat 
                     :chara-name ="chosenCharaName"
