@@ -13,12 +13,11 @@
             self="bottom middle" :offset="[10, 3]" v-show="btnLabel.length >= 10">
             <strong>{{btnLabel}}</strong>
           </q-tooltip>
+          <q-chip class="chip text-center" square floating
+           :color="statColor" :text-color="statTextColor">
+            {{this.value}}
+          </q-chip>
       </q-btn>
-    </div>
-    <div :class="baseClass">
-      <q-chip class="chip" square :color="statColor" :text-color="statTextColor">
-        {{this.value}}
-      </q-chip>
     </div>
     <div class="col-2">
       <q-field
@@ -110,13 +109,13 @@ export default {
       type: Number,
       default: 5
     },
-    baseClass: {
-      type: Array,
-      default: () => ["col-3", "text-center"]
+    charaIndex: {
+      type: Number,
+      required: true
     },
     btnClass: {
       type: Array,
-      default: () => ["col-7"]
+      default: () => ["col-10"]
     }
   },
   
@@ -163,10 +162,5 @@ export default {
 
 .bg-stat
   background #E5d6b5
-
-.chip
-  height: 2.6em
-  width: 100% 
-  z-index: 5
 
 </style>
