@@ -132,9 +132,9 @@ export default {
   data(){
     return {
       showBattleModal: false,
-      charas: ["Eien Sonzai", "Hanekawa Tsubasa"],
+      charas: [],
       charasInPvp: [],
-      charasShown: ["Eien Sonzai", "Hanekawa Tsubasa"],
+      charasShown: [],
       chosenChara: "",
       d20RollResult: "",
       addMenuOpen: false,

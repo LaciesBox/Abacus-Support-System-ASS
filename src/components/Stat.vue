@@ -92,10 +92,6 @@ export default {
   },
 
   props: {
-    rollListener: {
-      type: Boolean,
-      required: true
-    },
     charaName: {
       type: String,
       required: true
@@ -140,14 +136,6 @@ export default {
   
 
   watch: {
-    rollListener: function(){
-      this.$emit('stat-data-handler', this.fieldName, {
-        name: this.finalDisplayName,
-        add: Number(this.add),
-        base: Number(this.value),
-        willCalculate: this.willCalculate
-      })
-    },
     add: function(){
       EventBus.storeStat(this.charaName, this.fieldName, "add", this.add);
     },

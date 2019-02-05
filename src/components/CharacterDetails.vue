@@ -57,8 +57,6 @@
                 v-bind:key="stat">
                 <stat
                     :chara-name ="chosenCharaName"
-                    :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler" 
                     :chara-index ="charaIndex"
                     :unique-identifier="uniqueIdentifier"
                     :base-class="['col-lg-4','col-md-4','col-xs-4','text-center']" 
@@ -76,8 +74,6 @@
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
                   <stat 
                       :chara-name ="chosenCharaName"
-                      :roll-listener="rollListener"
-                      @stat-data-handler="statDataHandler"
                       :chara-index ="charaIndex" 
                       :unique-identifier="uniqueIdentifier"
                       :field-name="Consts.OCCUPATION+i"
@@ -93,8 +89,6 @@
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
                 <stat
                     :chara-name ="chosenCharaName"
-                    :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler" 
                     :chara-index ="charaIndex" 
                     :unique-identifier="uniqueIdentifier"
                     :field-name="Consts.TALENT+i"
@@ -110,8 +104,6 @@
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
                 <stat 
                     :chara-name ="chosenCharaName"
-                    :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler"
                     :chara-index ="charaIndex" 
                     :unique-identifier="uniqueIdentifier"
                     :field-name="Consts.AFFLICTION+i"
@@ -173,7 +165,6 @@ import {
 
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
-import SectionHeader from "./SectionHeader.vue";
 import StatBreakdown from './StatBreakdown.vue';
 import CharacterProfile from './CharacterProfile.vue';
 
@@ -185,7 +176,6 @@ export default {
   components: {
     Stat,
     AssText,
-    SectionHeader,
     StatBreakdown,
     CharacterProfile
   },
@@ -224,7 +214,6 @@ export default {
     });
 
     EventBus.$on('retrieveModalID', (data, entity) => {
-      console.log(this.chosenCharaName + ": " + this.isInModal);
       if(data.chara == this.chosenCharaName && data.inModal == this.isInModal) {
         entity.id = this.uniqueIdentifier;
       }
@@ -248,16 +237,6 @@ export default {
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
       select: "1",
-      rollResult: {
-        roll: "",
-        finalRoll: "",
-        status: "",
-        chanceOfDying: "",
-        verdict: "",
-        buffs: [],
-        debuffs: [],
-      },
-      rollListener: true,
       stats: {
         mortalityNumber: EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0
       },
@@ -350,7 +329,6 @@ export default {
   
   methods: {
     getStats: function(){
-      this.rollListener = !this.rollListener;
       return this.stats;
     },
     toggleBreakdown: function(){
@@ -399,24 +377,6 @@ export default {
     },
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
-    },
-    doRoll: function(){
-      this.rollListener = !this.rollListener;
-
-      rollDice(this.$refs.dice);
-
-      let currRollResult = Object.assign({},CalcUtils.roll(this.stats));
-
-      //define callback upon complete
-      this.rollResult.verdict = "...";
-      rollNumber(this.rollResult, currRollResult, () => {
-        this.rollResult.verdict = currRollResult.verdict;
-        this.rollResult.buffs =  currRollResult.buffs;
-        this.rollResult.debuffs =  currRollResult.debuffs;
-      })
-    },
-    statDataHandler: function(statName, statData){
-      this.stats[statName] = statData;
     },
     makeUniqueID: function() {
       return Math.random().toString(36).substring(7);
