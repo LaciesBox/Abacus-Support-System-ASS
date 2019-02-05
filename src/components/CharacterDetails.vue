@@ -55,11 +55,18 @@
                 class="col-xs-6 col-sm-12 col-md-6 col-lg-6"
                 v-for="stat in Consts.PHYSICAL_PROPERTIES" 
                 v-bind:key="stat">
+<<<<<<< HEAD
                 <stat :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
                     @stat-data-handler="statDataHandler"
                     :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
                     :btn-class="['col-lg-8','col-md-7', 'col-xs-8']" 
+=======
+                <stat :chara-index ="charaIndex"
+                    :unique-identifier="uniqueIdentifier"
+                    :base-class="['col-lg-4','col-md-4','col-xs-4','text-center']" 
+                    :btn-class="['col-lg-8','col-md-8', 'col-xs-8']" 
+>>>>>>> Fixed chara-index duplication bugging the rolls.
                     :display-name="Consts[stat+'Display']"
                     :field-name="stat" :stat-name="stat.substr(0,3)" 
                     :value="chosenChara[stat]"/>
@@ -71,9 +78,14 @@
             <div class="row">
               <div class="col-xs-12 col-lg-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
+<<<<<<< HEAD
                   <stat :chara-name ="chosenCharaName"
                       :roll-listener="rollListener"
                       @stat-data-handler="statDataHandler"
+=======
+                  <stat :chara-index ="charaIndex" 
+                      :unique-identifier="uniqueIdentifier"
+>>>>>>> Fixed chara-index duplication bugging the rolls.
                       :field-name="Consts.OCCUPATION+i"
                       :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
                       :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
@@ -85,9 +97,14 @@
             <div class="row">
               <div class="col-xs-12 col-lg-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
+<<<<<<< HEAD
                 <stat :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
                     @stat-data-handler="statDataHandler"
+=======
+                <stat :chara-index ="charaIndex" 
+                    :unique-identifier="uniqueIdentifier"
+>>>>>>> Fixed chara-index duplication bugging the rolls.
                     :field-name="Consts.TALENT+i"
                     :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
                     :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
@@ -99,9 +116,14 @@
             <div class="row">
               <div class="col-xs-12 col-lg-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
+<<<<<<< HEAD
                 <stat :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
                     @stat-data-handler="statDataHandler"
+=======
+                <stat :chara-index ="charaIndex" 
+                    :unique-identifier="uniqueIdentifier"
+>>>>>>> Fixed chara-index duplication bugging the rolls.
                     :field-name="Consts.AFFLICTION+i"
                     :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
                     :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
@@ -214,6 +236,38 @@ export default {
     this.DEVAS_DESC = Lookups.DEVAS_DESC;
     this.appendPercentageToValue = CalcUtils.appendPercentageToValue;
   },
+  mounted() {
+    EventBus.$on('getFighters', teams => {
+      if(this.select && this.pvpCheck) {
+        let member = {};
+        let stats = {};
+        let isNewTeam = true;
+        EventBus.$emit('retrieveStats', {uniqueIdentifier: this.uniqueIdentifier, stats});
+        member.name = this.chosenCharaName; 
+        member.strength = CalcUtils.getStrength(stats);
+        teams.forEach(team => {
+          if(team.name == this.select) {
+            team.members.push(member);
+            isNewTeam = false;
+          }
+        });
+
+        if(isNewTeam) {
+          let team = {};
+          team.members = [];
+          team.name = this.select;
+          team.members.push(member);
+          teams.push(team);
+        }
+      }
+    });
+
+    EventBus.$on('retrieveModalID', (data, entity) => {
+      if(data.chara == this.chosenCharaName && data.inModal == this.isInModal) {
+        entity.id = this.uniqueIdentifier;
+      }
+    });
+  },
   data() {
     return {
       charaNamesFiltered: null,
@@ -232,6 +286,7 @@ export default {
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
       select: "1",
+<<<<<<< HEAD
       rollResult: {
         roll: "",
         finalRoll: "",
@@ -245,6 +300,9 @@ export default {
       stats: {
         mortalityNumber: EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0
       }
+=======
+      uniqueIdentifier: this.makeUniqueID(),
+>>>>>>> Fixed chara-index duplication bugging the rolls.
     };
   },
 
@@ -343,7 +401,7 @@ export default {
       //provide reference, then collect data from children
       let stats = {};
       stats.mortalityNumber = this.mortalityNumber;
-      EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
+      EventBus.$emit('retrieveStats', {uniqueIdentifier: this.uniqueIdentifier, stats});
       
       rollDice(this.$refs.dice);
       let currRollResult = Object.assign({},CalcUtils.roll(stats));
@@ -383,6 +441,7 @@ export default {
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
     },
+<<<<<<< HEAD
     doRoll: function(){
       //EventBus.$emit('retrieveStats', {charaIndex: 0, stats});
       
@@ -404,6 +463,10 @@ export default {
     },
     statDataHandler(statName, statData){
       this.stats[statName] = statData;
+=======
+    makeUniqueID: function() {
+      return Math.random().toString(36).substring(7);
+>>>>>>> Fixed chara-index duplication bugging the rolls.
     }
   }
 };

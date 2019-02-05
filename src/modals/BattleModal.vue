@@ -95,7 +95,7 @@ export default {
     chosenCharas: {
       type: Array,
       required: true
-    }
+    },
   },
   computed: {
     duelOnly(){
@@ -160,13 +160,12 @@ export default {
       this.chosenCharaIndex = 0;
     },
     doPvpRoll: function(){
-      console.log(this.$refs);
-      let duelistA = this.$refs.charaInPlay.getStats();
-      let duelistB =  this.$refs.chosenEnemy.getStats();
-      console.log(duelistA);
-      console.log(duelistB);
-      debugger;
-      
+      let duelistA = {}, duelistB = {};
+      EventBus.$emit('retrieveModalID', {chara: this.charaInPlay, inModal: true}, duelistA);
+      EventBus.$emit('retrieveModalID', {chara: this.chosenEnemy, inModal: true}, duelistB);
+      EventBus.$emit('retrieveStats', {uniqueIdentifier: duelistA.id, stats: duelistA});
+      EventBus.$emit('retrieveStats', {uniqueIdentifier: duelistB.id, stats: duelistB});
+
       rollDice(this.$refs.dice);
 
       let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));

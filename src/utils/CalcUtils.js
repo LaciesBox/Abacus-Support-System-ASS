@@ -5,15 +5,12 @@ Number.prototype.clamp = function(min, max) {
   return Math.min(Math.max(this, min), max);
 };
 
-let buffs = [];
-let debuffs = [];
-
 const PERCENTAGE_MULTIPLIER = 5,
     MAX_ROLL = 20,
     CRITICAL_FAIL = 1,
     CRITICAL_SUCC = 20;
 
-const consumeStat = function(stat, multiplier, isPositive){
+const consumeStat = function(stat, multiplier, isPositive, buffs, debuffs){
   if(stat && stat.base && stat.willCalculate){
     multiplier = isPositive ? multiplier : multiplier * -1;
 
@@ -31,7 +28,7 @@ const consumeStat = function(stat, multiplier, isPositive){
   return 0;
 }
 
-const computeStats = function(stats, type, multiplier, isPositive, max){
+const computeStats = function(stats, type, multiplier, isPositive, max, buffs, debuffs){
   let sum = 0;
   let stat = {};
 
@@ -40,7 +37,7 @@ const computeStats = function(stats, type, multiplier, isPositive, max){
     //type + i: basically "talent1","affliction2", "occupation5", etc.
     stat = stats[type+i];
 
-    sum += consumeStat(stat, multiplier, isPositive);
+    sum += consumeStat(stat, multiplier, isPositive, buffs, debuffs);
   }
 
   return sum;
@@ -88,32 +85,34 @@ const precedenceRoll = function(charas){
   return returnedSort;
 }
 
-const getTotalStats = function(stats) {
+const getTotalStats = function(stats, buffs, debuffs) {
   let totalStats = 0;
   let stat = {};
   Consts.PHYSICAL_PROPERTIES.forEach(property =>{
     stat = stats[property];
 
-    totalStats += consumeStat(stat, 1, true);
+    totalStats += consumeStat(stat, 1, true, buffs, debuffs);
   });
 
   //compute occupations
-  totalStats += computeStats(stats, Consts.OCCUPATION, 1, true, 5);
+  totalStats += computeStats(stats, Consts.OCCUPATION, 1, true, 5, buffs, debuffs);
 
   //compute talents
-  totalStats += computeStats(stats, Consts.TALENT, 1, true, 5);
+  totalStats += computeStats(stats, Consts.TALENT, 1, true, 5, buffs, debuffs);
 
   //compute afflictions
-  totalStats += computeStats(stats, Consts.AFFLICTION, 1, false, 5);
+  totalStats += computeStats(stats, Consts.AFFLICTION, 1, false, 5, buffs, debuffs);
   return totalStats;
 }
 
 const pvpRoll = function(duelists) {
   const rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let stats = [];
+  let buffs = [];
+  let debuffs = [];
 
   duelists.forEach((duelist, index)=> {
-    stats[index] = getTotalStats(duelist);
+    stats[index] = getTotalStats(duelist, buffs, debuffs);
   })
   const statDiff = stats[0] - stats[1];
 
@@ -128,11 +127,14 @@ const pvpRoll = function(duelists) {
 
 // when player clicks "roll"
 const roll = function(stats) {
+  let buffs = [];
+  let debuffs = [];
+  
   //randomize
   let rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let finalRollValue = rollValue;
 
-  finalRollValue += getTotalStats(stats);
+  finalRollValue += getTotalStats(stats, buffs, debuffs);
 
   finalRollValue = finalRollValue.clamp(1,20);
 

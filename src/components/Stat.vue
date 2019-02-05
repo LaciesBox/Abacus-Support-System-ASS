@@ -52,6 +52,21 @@ export default {
     }
   },
 
+  mounted() {
+    EventBus.$on('retrieveStats', data => {
+      if(data.uniqueIdentifier != this.uniqueIdentifier){
+        return;
+      }
+
+      data.stats[this.fieldName] = {
+        name: this.finalDisplayName,
+        add: Number(this.add),
+        base: Number(this.value),
+        willCalculate: this.willCalculate
+      }
+    });
+  },
+
   computed: {
     finalDisplayName(){
       return this.displayName || this.statName || "";
@@ -94,6 +109,10 @@ export default {
       required: true
     },
     statName: {
+      type: String,
+      required: true
+    },
+    uniqueIdentifier: {
       type: String,
       required: true
     },
