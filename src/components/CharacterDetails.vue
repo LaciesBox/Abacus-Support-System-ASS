@@ -55,18 +55,14 @@
                 class="col-xs-6 col-sm-12 col-md-6 col-lg-6"
                 v-for="stat in Consts.PHYSICAL_PROPERTIES" 
                 v-bind:key="stat">
-<<<<<<< HEAD
-                <stat :chara-name ="chosenCharaName"
+                <stat
+                    :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler"
-                    :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
-                    :btn-class="['col-lg-8','col-md-7', 'col-xs-8']" 
-=======
-                <stat :chara-index ="charaIndex"
+                    @stat-data-handler="statDataHandler" 
+                    :chara-index ="charaIndex"
                     :unique-identifier="uniqueIdentifier"
                     :base-class="['col-lg-4','col-md-4','col-xs-4','text-center']" 
                     :btn-class="['col-lg-8','col-md-8', 'col-xs-8']" 
->>>>>>> Fixed chara-index duplication bugging the rolls.
                     :display-name="Consts[stat+'Display']"
                     :field-name="stat" :stat-name="stat.substr(0,3)" 
                     :value="chosenChara[stat]"/>
@@ -78,14 +74,12 @@
             <div class="row">
               <div class="col-xs-12 col-lg-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
-<<<<<<< HEAD
-                  <stat :chara-name ="chosenCharaName"
+                  <stat 
+                      :chara-name ="chosenCharaName"
                       :roll-listener="rollListener"
                       @stat-data-handler="statDataHandler"
-=======
-                  <stat :chara-index ="charaIndex" 
+                      :chara-index ="charaIndex" 
                       :unique-identifier="uniqueIdentifier"
->>>>>>> Fixed chara-index duplication bugging the rolls.
                       :field-name="Consts.OCCUPATION+i"
                       :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
                       :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
@@ -97,14 +91,12 @@
             <div class="row">
               <div class="col-xs-12 col-lg-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
-<<<<<<< HEAD
-                <stat :chara-name ="chosenCharaName"
+                <stat
+                    :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler"
-=======
-                <stat :chara-index ="charaIndex" 
+                    @stat-data-handler="statDataHandler" 
+                    :chara-index ="charaIndex" 
                     :unique-identifier="uniqueIdentifier"
->>>>>>> Fixed chara-index duplication bugging the rolls.
                     :field-name="Consts.TALENT+i"
                     :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
                     :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
@@ -116,14 +108,12 @@
             <div class="row">
               <div class="col-xs-12 col-lg-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
-<<<<<<< HEAD
-                <stat :chara-name ="chosenCharaName"
+                <stat 
+                    :chara-name ="chosenCharaName"
                     :roll-listener="rollListener"
                     @stat-data-handler="statDataHandler"
-=======
-                <stat :chara-index ="charaIndex" 
+                    :chara-index ="charaIndex" 
                     :unique-identifier="uniqueIdentifier"
->>>>>>> Fixed chara-index duplication bugging the rolls.
                     :field-name="Consts.AFFLICTION+i"
                     :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
                     :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
@@ -136,6 +126,7 @@
             <strong class="col-auto q-pt-md">MORTALITY NUMBER: </strong>
             <q-input class="col-1" align="center" v-model="stats.mortalityNumber"/>
           </div>
+          <!-- ROLL -->
           <div class="row" v-if="showRoller">
             <div class="col-2">
             <q-btn class="full-width full-height" @click="doRoll" 
@@ -163,34 +154,6 @@
                 <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
               </div>
           </div>
-          <!-- ROLL -->
-          <div class="row" v-show="!isInModal">
-            <div class="col-2">
-            <q-btn class="full-width full-height" @click="doRoll" 
-              size="lg">
-              <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
-            </q-btn>
-            </div>
-            <div class="col-10 q-pl-sm">
-              <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
-              <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
-                <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
-              </ass-text>
-              <q-slide-transition>
-                <div v-show="showBreakdown">
-                  <!-- apply subtle color changes between Base Roll, buffs, debuffs,
-                      and total when color has been decided on -->
-                  <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
-                  <stat-breakdown :buffs="rollResult.buffs" />
-                  <stat-breakdown :buffs="rollResult.debuffs"/>
-                  <hr width="100%">
-                  <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
-                </div>
-              </q-slide-transition>
-                <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
-                <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
-              </div>  
-            </div>
           </q-item-main>
           </q-item>
         </q-list>
@@ -216,8 +179,6 @@ import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
 import { rollDice, rollNumber, } from "../anime.js";
-
-import { rollDice, rollNumber } from "../anime.js";
 
 export default {
   name: "CharacterDetails",
@@ -263,6 +224,7 @@ export default {
     });
 
     EventBus.$on('retrieveModalID', (data, entity) => {
+      console.log(this.chosenCharaName + ": " + this.isInModal);
       if(data.chara == this.chosenCharaName && data.inModal == this.isInModal) {
         entity.id = this.uniqueIdentifier;
       }
@@ -286,7 +248,6 @@ export default {
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
       select: "1",
-<<<<<<< HEAD
       rollResult: {
         roll: "",
         finalRoll: "",
@@ -299,10 +260,8 @@ export default {
       rollListener: true,
       stats: {
         mortalityNumber: EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0
-      }
-=======
+      },
       uniqueIdentifier: this.makeUniqueID(),
->>>>>>> Fixed chara-index duplication bugging the rolls.
     };
   },
 
@@ -441,13 +400,8 @@ export default {
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
     },
-<<<<<<< HEAD
     doRoll: function(){
-      //EventBus.$emit('retrieveStats', {charaIndex: 0, stats});
-      
       this.rollListener = !this.rollListener;
-
-      console.log(this.stats);
 
       rollDice(this.$refs.dice);
 
@@ -461,12 +415,11 @@ export default {
         this.rollResult.debuffs =  currRollResult.debuffs;
       })
     },
-    statDataHandler(statName, statData){
+    statDataHandler: function(statName, statData){
       this.stats[statName] = statData;
-=======
+    },
     makeUniqueID: function() {
       return Math.random().toString(36).substring(7);
->>>>>>> Fixed chara-index duplication bugging the rolls.
     }
   }
 };
