@@ -1,1 +1,0 @@
-export {default as BattleModal} from "./BattleModal.vue";
