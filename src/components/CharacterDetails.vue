@@ -8,8 +8,10 @@
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
       <center><br>
-        <span class="center luxia-lg">{{chosenChara.name}}</span><br>
-        <span class="center ptsans-sm">{{chosenChara.codename}}</span>
+        <a v-if="chosenChara.fbLink" class="center luxia-lg link-no-decoration" :href="chosenChara.fbLink" target="_blank">{{chosenChara.name}}</a>
+        <span v-else class="center luxia-lg">{{chosenChara.name}}</span><br>
+        <a v-if="chosenChara.fbLink" class="center ptsans-sm link-no-decoration" :href="chosenChara.fbLink" target="_blank">{{chosenChara.codename}}</a>
+        <span v-else class="center ptsans-sm">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
         <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense v-show="!isInModal"></q-btn> 
@@ -453,4 +455,8 @@ a
 .subtext
   font-size 12px
 
+a.link-no-decoration{
+  text-decoration none
+  color inherit
+}
 </style>
