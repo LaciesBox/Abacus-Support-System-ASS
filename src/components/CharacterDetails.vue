@@ -8,11 +8,13 @@
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
       <center><br>
-        <span class="center luxia-lg">{{chosenChara.name}}</span><br>
-        <span class="center ptsans-sm">{{chosenChara.codename}}</span>
+        <a v-if="chosenChara.fbLink" class="center luxia-lg link-no-decoration" :href="chosenChara.fbLink" target="_blank">{{chosenChara.name}}</a>
+        <span v-else class="center luxia-lg">{{chosenChara.name}}</span><br>
+        <a v-if="chosenChara.fbLink" class="center ptsans-sm link-no-decoration" :href="chosenChara.fbLink" target="_blank">{{chosenChara.codename}}</a>
+        <span v-else class="center ptsans-sm">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
-        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense></q-btn> 
+        <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense v-show="!isInModal"></q-btn> 
       
       <!--stamp removed! commenting out just in case it will be used in the future-->
       <!--<div class="chara-stamp absolute-center" :class="stampClass">
@@ -33,7 +35,8 @@
         <character-profile :chosen-chara="chosenChara" />
       </div>
     </transition>
-
+    
+      {{storedStats}}
     <!-- Character Calculator UI -->
     <transition
     appear
@@ -41,26 +44,9 @@
     >
     <div class="character-calculator" v-show="isCalculatorOpen">
     <q-card class="bg-grey-3 text-black">
-      <!-- <q-card-title class="q-pa-sm q-pl-lg">
-      <div class="row q-pa-none q-pa-none">
-        <div class="col-9">
-        <q-toggle
-        v-model="pvpCheck"
-        checked-icon="sentiment very satisfied"
-        unchecked-icon="sentiment very dissatisfied"
-        :color="pvpColor"
-        class="q-mr-sm" />
-        <span v-if="pvpCheck">PVP</span><span v-else>Dice</span> Roller
-        </div>
-        <div class="col-3" v-show="pvpCheck">
-        <q-select
-          v-model="select"
-          radio
-          :options="options"
-        />
-        </div>
-      </div>  
-      </q-card-title>-->
+      <q-card-title class="q-pa-sm q-pl-lg">
+      Dice Roller
+      </q-card-title>
       <q-card-separator class="bg-grey-7"/>
       <q-card-main class="q-pa-none">
         <q-list separator>
@@ -68,12 +54,15 @@
           <q-collapsible icon="ion-ios-body" label="Physical Properties" highlight>
             <div class="row">
               <div
-                class="col-md-3 col-xs-6"
+                class="col-xs-6 col-lg-3"
                 v-for="stat in Consts.PHYSICAL_PROPERTIES" 
                 v-bind:key="stat">
-                <stat :chara-index ="charaIndex" 
-                    :base-class="['col-lg-4','col-md-5','col-xs-4','text-center']" 
-                    :btn-class="['col-lg-6','col-md-5', 'col-xs-6']" 
+                <stat
+                    :chara-name ="chosenCharaName"
+                    :chara-index ="charaIndex"
+                    :unique-identifier="uniqueIdentifier"
+                    :base-class="['col-lg-4','col-md-4','col-xs-4','text-center']" 
+                    :btn-class="['col-lg-8','col-md-8', 'col-xs-8']" 
                     :display-name="Consts[stat+'Display']"
                     :field-name="stat" :stat-name="stat.substr(0,3)" 
                     :value="chosenChara[stat]"/>
@@ -83,9 +72,12 @@
           <!-- Occupation COLLAPSIBLE -->
           <q-collapsible icon="fas fa-user-secret" label="Occupation" highlight>
             <div class="row">
-              <div class="col-lg-4 col-xs-6" v-for="i in occupationCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
-                  <stat :chara-index ="charaIndex" 
+                  <stat 
+                      :chara-name ="chosenCharaName"
+                      :chara-index ="charaIndex" 
+                      :unique-identifier="uniqueIdentifier"
                       :field-name="Consts.OCCUPATION+i"
                       :stat-name="chosenChara[Consts.OCCUPATION_ARR][i-1]" 
                       :value="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR][i-1]"/>
@@ -95,9 +87,12 @@
           <!-- Talents COLLAPSIBLE -->
           <q-collapsible icon="star" label="Talents" highlight>
             <div class="row">
-              <div class="col-lg-4 col-xs-6" v-for="i in talentCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
-                <stat :chara-index ="charaIndex" 
+                <stat
+                    :chara-name ="chosenCharaName"
+                    :chara-index ="charaIndex" 
+                    :unique-identifier="uniqueIdentifier"
                     :field-name="Consts.TALENT+i"
                     :stat-name="chosenChara[Consts.TALENT_ARR][i-1]" 
                     :value="chosenChara[Consts.TALENT_PROFICIENCY_ARR][i-1]"/>
@@ -107,19 +102,54 @@
           <!-- Afflictions COLLAPSIBLE -->
           <q-collapsible icon="fas fa-heartbeat" label="Afflictions" highlight>
             <div class="row">
-              <div class="col-lg-4 col-xs-6" v-for="i in afflictionCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
-                <stat :chara-index ="charaIndex" 
+                <stat 
+                    :chara-name ="chosenCharaName"
+                    :chara-index ="charaIndex" 
+                    :unique-identifier="uniqueIdentifier"
                     :field-name="Consts.AFFLICTION+i"
                     :stat-name="chosenChara[Consts.AFFLICTION_ARR][i-1]" 
                     :value="chosenChara[Consts.AFFLICTION_SEVERITY_ARR][i-1]"/>
               </div>
             </div>
           </q-collapsible>
+          <q-item>
+          <q-item-main>
           <div class="row q-pa-sm">
             <strong class="col-auto q-pt-md">MORTALITY NUMBER: </strong>
-            <q-input class="col-1" align="center" v-model="mortalityNumber"/>
+            <q-input class="col-1" align="center" v-model="stats.mortalityNumber"/>
           </div>
+          <!-- ROLL -->
+          <div class="row" v-if="showRoller">
+            <div class="col-2">
+            <q-btn class="full-width full-height" @click="doRoll" 
+              size="lg">
+              <div ref="dice"><q-icon name="casino" size="3em"></q-icon></div>
+            </q-btn>
+            </div>
+            <div class="col-10 q-pl-sm">
+              <ass-text label="Roll" :content="appendPercentageToValue(rollResult.roll)" ref="roll"/>
+              <ass-text label="Final Roll" :content="appendPercentageToValue(rollResult.finalRoll)" ref="finalRoll">
+                <a class="subtext" @click="toggleBreakdown()">Show breakdown</a>
+              </ass-text>
+              <q-slide-transition>
+                <div v-show="showBreakdown">
+                  <!-- apply subtle color changes between Base Roll, buffs, debuffs,
+                      and total when color has been decided on -->
+                  <stat-breakdown :buffs="[{name:'Base Roll',value:rollResult.roll}]"/>
+                  <stat-breakdown :buffs="rollResult.buffs" />
+                  <stat-breakdown :buffs="rollResult.debuffs"/>
+                  <hr width="100%">
+                  <stat-breakdown :buffs="[{name:'Total',value:rollResult.finalRoll}]"/>
+                </div>
+              </q-slide-transition>
+                <ass-text label="Chance of Dying" :content="rollResult.chanceOfDying" ref="roll"/>
+                <ass-text label="Verdict" :content="rollResult.verdict" ref="finalRoll"/>
+              </div>
+          </div>
+          </q-item-main>
+          </q-item>
         </q-list>
       </q-card-main>
     </q-card>
@@ -137,22 +167,22 @@ import {
 
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
-import SectionHeader from "./SectionHeader.vue";
 import StatBreakdown from './StatBreakdown.vue';
 import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
+import { rollDice, rollNumber, } from "../anime.js";
 
 export default {
   name: "CharacterDetails",
   components: {
     Stat,
     AssText,
-    SectionHeader,
     StatBreakdown,
     CharacterProfile
   },
   created() {
+    this.storedStats = EventBus.storedStats[this.charaName];
     this.Consts = Consts;
     this.GANGS = Lookups.GANGS;
     this.DEVAS = Lookups.DEVAS;
@@ -165,7 +195,7 @@ export default {
         let member = {};
         let stats = {};
         let isNewTeam = true;
-        EventBus.$emit('retrieveStats', {charaIndex: this.charaIndex, stats});
+        EventBus.$emit('retrieveStats', {uniqueIdentifier: this.uniqueIdentifier, stats});
         member.name = this.chosenCharaName; 
         member.strength = CalcUtils.getStrength(stats);
         teams.forEach(team => {
@@ -184,16 +214,35 @@ export default {
         }
       }
     });
+
+    EventBus.$on('retrieveModalID', (data, entity) => {
+      if(data.chara == this.chosenCharaName && data.inModal == this.isInModal) {
+        entity.id = this.uniqueIdentifier;
+      }
+    });
   },
   data() {
     return {
       charaNamesFiltered: null,
       placeholder: null,
       mortalityNumber: 0,
+      rollResult: {
+        roll: "",
+        finalRoll: "",
+        status: "",
+        chanceOfDying: "",
+        verdict: "",
+        buffs: [],
+        debuffs: []
+      },
       isCalculatorOpen: true,
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
       select: "1",
+      stats: {
+        mortalityNumber: EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0
+      },
+      uniqueIdentifier: this.makeUniqueID(),
     };
   },
 
@@ -248,7 +297,7 @@ export default {
     },
     team() {
       return this.select;
-    },
+    }
   },
 
   props: {
@@ -260,12 +309,48 @@ export default {
     charaIndex: {
       type: Number,
       required: true
+    },
+    isInModal: {
+      type: Boolean,
+      default: false,
+    },
+    showRoller: {
+      type: Boolean,
+      default: false
     }
   },
 
+  watch: {
+    "stats.mortalityNumber": function(){
+      EventBus.storeStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber", this.stats.mortalityNumber);
+    },
+    chosenCharaName: function(){
+      this.stats.mortalityNumber = EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0;
+    }
+  },
+  
   methods: {
+    getStats: function(){
+      return this.stats;
+    },
     toggleBreakdown: function(){
       this.showBreakdown = !this.showBreakdown;
+    },
+    doRoll: function(){
+      //provide reference, then collect data from children
+      let stats = {};
+      stats.mortalityNumber = this.mortalityNumber;
+      EventBus.$emit('retrieveStats', {uniqueIdentifier: this.uniqueIdentifier, stats});
+      
+      rollDice(this.$refs.dice);
+      let currRollResult = Object.assign({},CalcUtils.roll(stats));
+      //define callback upon complete
+      this.rollResult.verdict = "...";
+      rollNumber(this.rollResult, currRollResult, () => {
+        this.rollResult.verdict = currRollResult.verdict;
+        this.rollResult.buffs =  currRollResult.buffs;
+        this.rollResult.debuffs =  currRollResult.debuffs;
+      })
     },
     getCount: function(field){
       const count = this.chosenChara[field];
@@ -294,6 +379,9 @@ export default {
     },
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
+    },
+    makeUniqueID: function() {
+      return Math.random().toString(36).substring(7);
     }
   }
 };
@@ -367,4 +455,8 @@ a
 .subtext
   font-size 12px
 
+a.link-no-decoration{
+  text-decoration none
+  color inherit
+}
 </style>

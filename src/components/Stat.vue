@@ -13,12 +13,11 @@
             self="bottom middle" :offset="[10, 3]" v-show="btnLabel.length >= 10">
             <strong>{{btnLabel}}</strong>
           </q-tooltip>
+          <q-chip class="chip text-center" square floating
+           :color="statColor" :text-color="statTextColor">
+            {{this.value}}
+          </q-chip>
       </q-btn>
-    </div>
-    <div :class="baseClass">
-      <q-chip class="chip" square :color="statColor" :text-color="statTextColor">
-        {{this.value}}
-      </q-chip>
     </div>
     <div class="col-2">
       <q-field
@@ -48,14 +47,14 @@ export default {
 
   data() {
     return {
-      willCalculate: false,
-      add: 0
+      willCalculate: EventBus.getStoredStat(this.charaName, this.fieldName, "willCalculate") || false,
+      add: EventBus.getStoredStat(this.charaName, this.fieldName, "add") || 0
     }
   },
 
   mounted() {
     EventBus.$on('retrieveStats', data => {
-      if(data.charaIndex != this.charaIndex){
+      if(data.uniqueIdentifier != this.uniqueIdentifier){
         return;
       }
 
@@ -93,6 +92,10 @@ export default {
   },
 
   props: {
+    charaName: {
+      type: String,
+      required: true
+    },
     displayName: {
       type: String,
       required: false
@@ -102,6 +105,10 @@ export default {
       required: true
     },
     statName: {
+      type: String,
+      required: true
+    },
+    uniqueIdentifier: {
       type: String,
       required: true
     },
@@ -121,16 +128,26 @@ export default {
       type: Number,
       required: true
     },
-    baseClass: {
-      type: Array,
-      default: () => ["col-3", "text-center"]
-    },
     btnClass: {
       type: Array,
-      default: () => ["col-7"]
+      default: () => ["col-10"]
     }
   },
+  
 
+  watch: {
+    add: function(){
+      EventBus.storeStat(this.charaName, this.fieldName, "add", this.add);
+    },
+    willCalculate: function(){
+      EventBus.storeStat(this.charaName, this.fieldName, "willCalculate", this.willCalculate);
+    },
+    charaName: function(){
+      this.willCalculate = EventBus.getStoredStat(this.charaName, this.fieldName, "willCalculate") || false;
+      this.add = EventBus.getStoredStat(this.charaName, this.fieldName, "add") || 0;
+    }
+  },
+  
   methods: {
     toggleCompute: function(){
       this.willCalculate = !this.willCalculate;
@@ -152,10 +169,5 @@ export default {
 
 .bg-stat
   background #E5d6b5
-
-.chip
-  height: 2.6em
-  width: 100% 
-  z-index: 5
 
 </style>

@@ -26,7 +26,7 @@
             </div>
             <div class="row">
             <div class="col-12">
-            <character-profile-row label="Name:" :center-content="chosenChara[Consts.NAME]"></character-profile-row>
+            <character-profile-row label="Name:" :label-width="6" :center-content="chosenChara[Consts.NAME]"></character-profile-row>
             </div>
             <div class="col-12">
             <character-profile-row label="Codename:" :center-content="chosenChara[Consts.CODENAME]"></character-profile-row>
@@ -133,29 +133,35 @@
             }"
             :delay="1500">
             <div class="row">
-            <div class="col-12"><section-subheader content="Weapons"></section-subheader></div>
-            <div class="col-12">
-            <character-profile-row :center-content="chosenChara[Consts.WEAPONS]" icon="fas fa-khanda"></character-profile-row>
-            </div>
-            </div>
+              <div class="row">
+                <div class="col-12"><section-subheader content="Devas"></section-subheader></div>
+              </div>
+            
             <div class="row">
             <div class="col-12"><section-subheader content="Skills"></section-subheader></div>
             <div class="col-xs-12 col-lg-12">
             <character-profile-row :center-content="chosenChara[Consts.SKILLS]" 
             :content-description="chosenChara[Consts.SKILLS_DESC]" icon="fas fa-cogs"></character-profile-row>
             </div>
-            </div><div class="row">
-            <div class="col-12"><section-subheader content="Occupation"></section-subheader></div>
-            <div class="col-12">
-            <character-profile-row :center-content="chosenChara[Consts.OCCUPATION_ARR]"
-            :content-level="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR]" icon="fab fa-joomla"></character-profile-row>
-            </div>
             </div>
             <div class="row">
-            <div class="col-12"><section-subheader content="Talents"></section-subheader></div>
-            <div class="col-xs-12 col-lg-12">
-            <character-profile-row :center-content="chosenChara[Consts.TALENT_ARR]"
-            :content-level="chosenChara[Consts.TALENT_PROFICIENCY_ARR]" icon="star"></character-profile-row>
+              <div class="col-12"><section-subheader content="Occupation"></section-subheader></div>
+                <div class="col-12">
+                  <character-profile-row :center-content="chosenChara[Consts.OCCUPATION_ARR]"
+                      :content-level="chosenChara[Consts.OCCUPATION_PROFICIENCY_ARR]" icon="fab fa-joomla"></character-profile-row>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12"><section-subheader content="Talents"></section-subheader></div>
+                <div class="col-xs-12 col-lg-12">
+                  <character-profile-row :center-content="chosenChara[Consts.TALENT_ARR]"
+                      :content-level="chosenChara[Consts.TALENT_PROFICIENCY_ARR]" icon="star"></character-profile-row>
+              </div>
+            </div>
+            
+            <div class="col-12"><section-subheader content="Weapons"></section-subheader></div>
+            <div class="col-12">
+            <character-profile-row :center-content="chosenChara[Consts.WEAPONS]" icon="fas fa-khanda"></character-profile-row>
             </div>
             </div>
             </q-scroll-area>
@@ -169,13 +175,9 @@
 
 <script>
 import { 
-  Consts,
-  CalcUtils,
-  Lookups
+  Consts
 } from "utils";
 
-import Stat from "./Stat.vue";
-import SectionHeader from "./SectionHeader.vue";
 import SectionSubheader from "./SectionSubheader.vue";
 import CharacterProfileRow from "./CharacterProfileRow.vue";
 import AssText from "./AssText.vue";
@@ -201,9 +203,7 @@ export default {
     }
   },
   components: {
-    Stat,
     AssText,
-    SectionHeader,
     SectionSubheader,
     CharacterProfileRow,
   },

@@ -1,6 +1,6 @@
 <template>
   <q-layout id="q-app" view="lHh Lpr lFf" 
-  class="bg-color txt-color" >
+  class="bg-color txt-color lato-l" >
     <toolbar :is-landing="isLanding" ref="toolbar"></toolbar>
     <router-view></router-view>
   </q-layout>
@@ -133,4 +133,7 @@ export default {
 
 img 
   width 100%
+
+.vertical-aligned
+  margin auto 0
 </style>

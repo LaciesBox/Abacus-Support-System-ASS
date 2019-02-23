@@ -9,7 +9,7 @@
         appear
         leave-active-class="animated fadeOut"
       >
-      <div class="lato-l text-center unselectable" key="trans1" v-show="isLanding">
+      <div class="text-center unselectable" key="trans1" v-show="isLanding">
         <div class="inline-block" v-for="(word, index) in speech" :key="index">
           <div class="speech" v-for="(chara, index) in word" :key="index">
             {{chara}}
@@ -21,7 +21,7 @@
         <img class="abacus" src="../assets/abacus-standing.png" alt="Abacus">
       </div>
       <q-list link inset-delimiter dense key="trans3" v-show="isLanding" 
-      :class="{'lato-l q-ma-sm q-pa-sm': true, 'quick-links': isDesktop}">
+      :class="{'q-ma-sm q-pa-sm': true, 'quick-links': isDesktop}">
         <q-item @click.native="openURL('https://facebook.com/groups/unboxlacie/')">
           <q-item-side icon="group"/>
           <q-item-main label="Lacie's Box Community"></q-item-main>
