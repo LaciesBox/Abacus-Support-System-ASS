@@ -1,6 +1,6 @@
 <template>
   <q-item class="q-pa-xs">
-    <q-item-side v-if="label">
+    <q-item-side v-if="label" :class="labelClass" right>
       {{label}}
     </q-item-side>
     <q-item-main>
@@ -40,6 +40,19 @@
 
 export default {
   name: "CharacterProfileRow",
+  created() {
+    let lbClass = {
+      "text-align-right": true
+    };
+    lbClass["col-"+this.labelWidth] = true;
+
+    this.labelClass = Object.assign({},lbClass);
+  },
+  data() {
+    return {
+      labelClass: {}
+    }
+  },
   props: {
     label: String,
     content: String,
@@ -55,6 +68,12 @@ export default {
     icon: {
       type: [String],
     },
+    labelWidth:{
+      type: Number
+    },
+    contentWidth:{
+      type: Number
+    }
   },
   computed: {
     contentIsList(){
@@ -66,3 +85,8 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="stylus">
+.text-align-right
+  text-align right
+</style>

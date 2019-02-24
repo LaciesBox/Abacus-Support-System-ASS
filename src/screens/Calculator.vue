@@ -56,7 +56,7 @@
         dark
         style="height: 2.7em; border-radius: 5px; max-width: 14.3em;"
         >
-          <q-autocomplete @search="showCharaList" @selected="selected" />
+          <q-autocomplete @search="showCharaList" @selected="selected" :max-results="7"/>
         </q-search> 
       </div>
     </q-page-sticky>
@@ -129,12 +129,25 @@ export default {
     CharacterCard,
     CharacterDetails
   },
+  beforeRouteLeave(to, from, next) {
+    this.$q.dialog({
+      title: "Are you sure you wanna leave?",
+      message: "I'd hate to see you go :<",
+      ok: 'Get me out of here!',
+      cancel: 'Sorry, misclick.',
+      color: 'black',
+    }).then(() => {
+      next();
+    }).catch(() => {
+      next(false);
+    })
+  },
   data(){
     return {
       showBattleModal: false,
-      charas: ["Eien Sonzai", "Hanekawa Tsubasa"],
+      charas: [],
       charasInPvp: [],
-      charasShown: ["Eien Sonzai", "Hanekawa Tsubasa"],
+      charasShown: [],
       chosenChara: "",
       d20RollResult: "",
       addMenuOpen: false,
@@ -178,10 +191,6 @@ export default {
       }
     },
     fetchData: function () {
-      // [banonas] temporary; my internet data is sad 
-      // const temp = { "Eien Sonzai": { "avatar": "https://i.imgur.com/Ca6SOTc.png", "name": "Eien Sonzai", "occupationArr": [ "Developer", "Hacker" ], "occupationProficiencyArr": [ "5", "5" ], "occupationIsgeneralistArr": [ "true", "true" ], "constitution": "2", "strength": "1", "agility": "1", "appeal": "5", "talentArr": [ "Public Speaking", "Smug", "Chess" ], "talentProficiencyArr": [ "5", "5", "4" ], "afflictionArr": [ "Gambling" ], "afflictionSeverityArr": [ "1" ], "gang": "?", "codename": "Chaos", "devas": "?" }, "Kristine Heilig Pandora": { "avatar": "https://i.pinimg.com/236x/38/06/60/380660c9bed811d7313a4f3bc1c5e837.jpg", "name": "Kristine Heilig Pandora", "occupationArr": [ "Doctor", "Engineer" ], "occupationProficiencyArr": [ "5", "5" ], "occupationIsgeneralistArr": [ "true", "true" ], "constitution": "2", "strength": "1", "agility": "5", "appeal": "5", "talentArr": [ "Piano", "Dancing", "Singing", "Painting" ], "talentProficiencyArr": [ "5", "3", "3", "3" ], "afflictionArr": [ "Inferiority Complex" ], "afflictionSeverityArr": [ "4" ], "gang": "B", "codename": "Angel", "devas": "翼 WINGS 3 - DASH" } }
-      // EventBus.setCharacters(temp);
-      
       var sheetUrl = SheetUtils.buildSheetUrl(SheetUtils.CHARA_HEADERS_SHEET);
       var xhr = new XMLHttpRequest();
       xhr.open('GET', sheetUrl );
@@ -192,13 +201,17 @@ export default {
       xhr.send()
     },
     showCharaList: function(input, done) {
+      const regex = new RegExp("\\b" + input,"gim");
       let names = [];
-
+      let chara = {};
+      
       Object.keys(EventBus.characters).forEach(charaName => {
-        if (charaName.toUpperCase().includes(input.toUpperCase())) {
+        chara = EventBus.characters[charaName];
+        if (chara.name.match(regex) || chara.codename.match(regex)) {
           names.push({
-            value: charaName,
-            label: charaName
+            value: chara.name,
+            label: chara.name,
+            sublabel: chara.codename
           });
         }
       });

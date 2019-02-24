@@ -8,8 +8,10 @@
     <div class="ass-avatar" 
         :style="{ 'background-image': 'url(' + chosenChara.avatar + ')' }">
       <center><br>
-        <span class="center luxia-lg">{{chosenChara.name}}</span><br>
-        <span class="center ptsans-sm">{{chosenChara.codename}}</span>
+        <a v-if="chosenChara.fbLink" class="center luxia-lg link-no-decoration" :href="chosenChara.fbLink" target="_blank">{{chosenChara.name}}</a>
+        <span v-else class="center luxia-lg">{{chosenChara.name}}</span><br>
+        <a v-if="chosenChara.fbLink" class="center ptsans-sm link-no-decoration" :href="chosenChara.fbLink" target="_blank">{{chosenChara.codename}}</a>
+        <span v-else class="center ptsans-sm">{{chosenChara.codename}}</span>
       </center>
       <q-btn class="absolute-bottom-right" :icon="iconToggle" dense color="black" @click="toggleCalculator"></q-btn>
         <q-btn class="absolute-top-right" icon="clear" color="red" @click="deleteChara" dense v-show="!isInModal"></q-btn> 
@@ -52,13 +54,11 @@
           <q-collapsible icon="ion-ios-body" label="Physical Properties" highlight>
             <div class="row">
               <div
-                class="col-xs-6 col-sm-12 col-md-6 col-lg-3"
+                class="col-xs-6 col-lg-3"
                 v-for="stat in Consts.PHYSICAL_PROPERTIES" 
                 v-bind:key="stat">
                 <stat
                     :chara-name ="chosenCharaName"
-                    :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler" 
                     :chara-index ="charaIndex"
                     :unique-identifier="uniqueIdentifier"
                     :base-class="['col-lg-4','col-md-4','col-xs-4','text-center']" 
@@ -72,12 +72,10 @@
           <!-- Occupation COLLAPSIBLE -->
           <q-collapsible icon="fas fa-user-secret" label="Occupation" highlight>
             <div class="row">
-              <div class="col-xs-6 col-lg-4" v-for="i in occupationCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in occupationCount" 
                   v-bind:key="chosenChara[Consts.OCCUPATION_ARR][i-1]">
                   <stat 
                       :chara-name ="chosenCharaName"
-                      :roll-listener="rollListener"
-                      @stat-data-handler="statDataHandler"
                       :chara-index ="charaIndex" 
                       :unique-identifier="uniqueIdentifier"
                       :field-name="Consts.OCCUPATION+i"
@@ -89,12 +87,10 @@
           <!-- Talents COLLAPSIBLE -->
           <q-collapsible icon="star" label="Talents" highlight>
             <div class="row">
-              <div class="col-xs-6 col-lg-4" v-for="i in talentCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in talentCount" 
                 v-bind:key="chosenChara[Consts.TALENT_ARR][i-1]">
                 <stat
                     :chara-name ="chosenCharaName"
-                    :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler" 
                     :chara-index ="charaIndex" 
                     :unique-identifier="uniqueIdentifier"
                     :field-name="Consts.TALENT+i"
@@ -106,12 +102,10 @@
           <!-- Afflictions COLLAPSIBLE -->
           <q-collapsible icon="fas fa-heartbeat" label="Afflictions" highlight>
             <div class="row">
-              <div class="col-xs-6 col-lg-4" v-for="i in afflictionCount" 
+              <div class="col-xs-12 col-md-6" v-for="i in afflictionCount" 
                 v-bind:key="chosenChara[Consts.AFFLICTION_ARR][i-1]">
                 <stat 
                     :chara-name ="chosenCharaName"
-                    :roll-listener="rollListener"
-                    @stat-data-handler="statDataHandler"
                     :chara-index ="charaIndex" 
                     :unique-identifier="uniqueIdentifier"
                     :field-name="Consts.AFFLICTION+i"
@@ -173,7 +167,6 @@ import {
 
 import Stat from "./Stat.vue";
 import AssText from "./AssText.vue";
-import SectionHeader from "./SectionHeader.vue";
 import StatBreakdown from './StatBreakdown.vue';
 import CharacterProfile from './CharacterProfile.vue';
 
@@ -185,7 +178,6 @@ export default {
   components: {
     Stat,
     AssText,
-    SectionHeader,
     StatBreakdown,
     CharacterProfile
   },
@@ -224,7 +216,6 @@ export default {
     });
 
     EventBus.$on('retrieveModalID', (data, entity) => {
-      console.log(this.chosenCharaName + ": " + this.isInModal);
       if(data.chara == this.chosenCharaName && data.inModal == this.isInModal) {
         entity.id = this.uniqueIdentifier;
       }
@@ -248,16 +239,6 @@ export default {
       showBreakdown: false,
       isDesktop: this.$q.platform.is.desktop,
       select: "1",
-      rollResult: {
-        roll: "",
-        finalRoll: "",
-        status: "",
-        chanceOfDying: "",
-        verdict: "",
-        buffs: [],
-        debuffs: [],
-      },
-      rollListener: true,
       stats: {
         mortalityNumber: EventBus.getStoredStat(this.chosenCharaName, "mortalityNumber", "mortalityNumber") || 0
       },
@@ -350,7 +331,6 @@ export default {
   
   methods: {
     getStats: function(){
-      this.rollListener = !this.rollListener;
       return this.stats;
     },
     toggleBreakdown: function(){
@@ -399,24 +379,6 @@ export default {
     },
     toggleCalculator: function() {
       this.isCalculatorOpen = !this.isCalculatorOpen;
-    },
-    doRoll: function(){
-      this.rollListener = !this.rollListener;
-
-      rollDice(this.$refs.dice);
-
-      let currRollResult = Object.assign({},CalcUtils.roll(this.stats));
-
-      //define callback upon complete
-      this.rollResult.verdict = "...";
-      rollNumber(this.rollResult, currRollResult, () => {
-        this.rollResult.verdict = currRollResult.verdict;
-        this.rollResult.buffs =  currRollResult.buffs;
-        this.rollResult.debuffs =  currRollResult.debuffs;
-      })
-    },
-    statDataHandler: function(statName, statData){
-      this.stats[statName] = statData;
     },
     makeUniqueID: function() {
       return Math.random().toString(36).substring(7);
@@ -493,4 +455,8 @@ a
 .subtext
   font-size 12px
 
+a.link-no-decoration{
+  text-decoration none
+  color inherit
+}
 </style>

@@ -1,6 +1,7 @@
 let path = require('path');
 
 module.exports = {
+  baseUrl: '/Ass-Bisha/',
   configureWebpack: {
     resolve: {
       alias: {
