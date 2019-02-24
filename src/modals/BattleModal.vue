@@ -9,6 +9,16 @@
       </q-chip>
       </div>
     </div>
+    <div class="row justify-center">
+      <q-chip :color="[chara == charaInPlay? 'red-10' : 'secondary']"
+      :pointing="[index == chosenCharas.length - 1 ? '' : 'right']"
+      class="q-mx-xs precedence-chip"
+      text-color="primary"
+      v-for="(chara,index) in chosenCharas" :key="index"
+      @click="skipToChosenCharaIndex(index)">
+      {{chara}}
+      </q-chip>
+    </div>
     <!-- Exit out of modal -->
     <q-page-sticky position="top-right" :offset="[12, -65]">
       <q-btn
@@ -20,12 +30,6 @@
       class="absolute-top-right"
       />
     </q-page-sticky>
-    <div class="row justify-center">
-      <q-btn class="q-ma-md" color="secondary" text-color="primary" 
-      label="Previous Turn" icon="skip_previous" @click="doAddChosenCharaIndex(-1)"/>
-      <q-btn class="q-ma-md" color="secondary" text-color="primary" 
-      label="Skip Turn" icon="skip_next" @click="doAddChosenCharaIndex(1)"/>
-    </div> 
     <div class="row">
       <!-- Character in Play -->
       <div class="col-xs-12 col-sm-5 q-pa-lg">
@@ -46,6 +50,12 @@
     </div>
   </q-modal>
 </template>
+
+<style lang="stylus" scoped>
+  .precedence-chip 
+    cursor pointer
+</style>
+
 
 <script>
 import {
@@ -123,6 +133,10 @@ export default {
       if(this.duelOnly){
         this.chosenEnemy = this.chosenCharas[1];
       }
+    },
+    skipToChosenCharaIndex: function(index) {
+      this.chosenCharaIndex = index;
+      this.chosenEnemy = "";
     },
     doAddChosenCharaIndex: function(increment){
       this.chosenCharaIndex+=increment;
