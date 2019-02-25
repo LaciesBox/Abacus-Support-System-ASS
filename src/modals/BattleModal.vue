@@ -188,6 +188,9 @@ export default {
 
       rollDice(this.$refs.dice);
 
+      duelistA.name = this.charaInPlay;
+      duelistB.name = this.chosenEnemy;
+
       let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));
       this.$q.dialog({
         title: this.generateWinningMessage(currRollResult),
