@@ -10,8 +10,8 @@
       </div>
     </div>
     <div class="row justify-center">
-      <q-chip :color="[chara == charaInPlay? 'red-10' : 'secondary']"
-      :pointing="[index == chosenCharas.length - 1 ? '' : 'right']"
+      <q-chip :color="chipColor(chara)"
+      :pointing="hasPointer(index)"
       class="q-mx-xs precedence-chip"
       text-color="primary"
       v-for="(chara,index) in chosenCharas" :key="index"
@@ -125,6 +125,12 @@ export default {
         }
       })
       return options;
+    },
+    hasPointer() {
+      return index => index == this.chosenCharas.length - 1 ? 'left' : 'right';
+    },
+    chipColor() {
+      return chara => chara == this.charaInPlay? 'red-10' : 'secondary';
     }
   },
   methods: {
