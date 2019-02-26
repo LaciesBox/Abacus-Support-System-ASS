@@ -70,8 +70,6 @@ import { EventBus } from "store/ass-store";
 
 import { rollDice, rollNumber } from "../anime.js";
 
-//moved here so that it wont be instantiated all the time
-//inside the method.
 const WINNING_OPTIONS = [
   " has won!",
   " is on a killing spree!",

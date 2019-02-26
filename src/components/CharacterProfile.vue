@@ -180,7 +180,6 @@ import {
 
 import SectionSubheader from "./SectionSubheader.vue";
 import CharacterProfileRow from "./CharacterProfileRow.vue";
-import AssText from "./AssText.vue";
 import { EventBus } from "store/ass-store";
 
 export default {
@@ -203,16 +202,12 @@ export default {
     }
   },
   components: {
-    AssText,
     SectionSubheader,
     CharacterProfileRow,
   },
   methods:{
     doClose: function(){
       EventBus.$emit('closeProfile');
-    },
-    hide: function(ref) {
-      // TODO: When hiding on desktop, disallow collapsing the entire thing (to retain size)
     },
   }
 }
