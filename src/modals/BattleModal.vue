@@ -48,6 +48,9 @@
         <character-details v-show="chosenEnemy" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
       </div>
     </div>
+
+    <!-- work area -->
+    <work-area/>
   </q-modal>
 </template>
 
@@ -63,6 +66,7 @@ import {
 } from "utils";
 
 import {
+  WorkArea,
   CharacterDetails
 } from "components";
 
@@ -85,6 +89,7 @@ const WINNING_OPTIONS = [
 export default {
   name: "BattleModal",
   components: {
+    WorkArea,
     CharacterDetails
   },
   data(){
@@ -185,6 +190,9 @@ export default {
       EventBus.$emit('retrieveStats', {uniqueIdentifier: duelistB.id, stats: duelistB});
 
       rollDice(this.$refs.dice);
+
+      duelistA.name = this.charaInPlay;
+      duelistB.name = this.chosenEnemy;
 
       let currRollResult = Object.assign({},CalcUtils.pvpRoll([duelistA, duelistB]));
       this.$q.dialog({

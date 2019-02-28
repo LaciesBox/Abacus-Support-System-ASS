@@ -31,6 +31,9 @@
       </div> 
     </div>
 
+    <!-- Work area -->
+    <work-area/>
+
     <!--Character details-->
     <div class="row">
       <div class="col-xs-12 col-sm-6" v-for="(chara,index) in charas" v-bind:key="index">
@@ -119,12 +122,13 @@ import { EventBus } from "store/ass-store";
 
 import { BattleModal } from "modals";
 
-import { CharacterCard, CharacterDetails } from "components";
-import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
+import { CharacterCard, CharacterDetails, WorkArea } from "components";
 
+import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
 export default {
   name: 'Calculator',
   components: {
+    WorkArea,
     BattleModal,
     CharacterCard,
     CharacterDetails
@@ -152,7 +156,7 @@ export default {
       d20RollResult: "",
       addMenuOpen: false,
       showFightResult: false,
-      fightResult: [],
+      fightResult: []
     }
   },
   mounted(){

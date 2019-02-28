@@ -6,5 +6,6 @@ export {default as CharacterCard} from "./CharacterCard.vue";
 export {default as Stat} from "./Stat.vue";
 export {default as AssText} from "./AssText.vue";
 export {default as SectionHeader} from "./SectionHeader.vue";
+export {default as WorkArea} from "./WorkArea.vue";
 
 export {default as ScrollEventMixin} from "./mixins/ScrollEventMixin";

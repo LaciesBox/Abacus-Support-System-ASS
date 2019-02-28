@@ -1,4 +1,5 @@
 import Consts from "./Constants";
+import { EventBus } from "store/ass-store";
 
 //define clamp function for number
 Number.prototype.clamp = function(min, max) {
@@ -105,7 +106,7 @@ const getTotalStats = function(stats, buffs, debuffs) {
   return totalStats;
 }
 
-const pvpRoll = function(duelists) {
+const pvpRoll = function(duelists, logRoll = true) {
   const rollValue = Math.ceil(Math.random() * MAX_ROLL);
   let stats = [];
   let buffs = [];
@@ -118,15 +119,22 @@ const pvpRoll = function(duelists) {
 
   // winner attribute: if rollValue is less than or equal to duelist 1's roll chance,
   // duelist 1 wins; otherwise, duelist 2. Returns 0 for duelist 1, 1 for duelist 2.
-  return {
+  let result = {
     winner: rollValue <= 10 + statDiff ? 0 : 1,
     roll: rollValue,
     statDiff: statDiff
   }
+
+  // if log roll, append to roll history
+  if(logRoll) {
+    EventBus.appendPvpToRollHistory([duelists[0].name, duelists[1].name], result, rollValue);
+  }
+
+  return result;
 }
 
 // when player clicks "roll"
-const roll = function(stats) {
+const roll = function(stats, logRoll = true) {
   let buffs = [];
   let debuffs = [];
   
@@ -137,6 +145,10 @@ const roll = function(stats) {
   finalRollValue += getTotalStats(stats, buffs, debuffs);
 
   finalRollValue = finalRollValue.clamp(1,20);
+
+  if(logRoll){
+    EventBus.appendPveToRollHistory(stats.name, finalRollValue);
+  }
 
   //return json object
   return {

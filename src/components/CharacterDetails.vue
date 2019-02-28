@@ -171,7 +171,7 @@ import StatBreakdown from './StatBreakdown.vue';
 import CharacterProfile from './CharacterProfile.vue';
 
 import { EventBus } from "store/ass-store";
-import { rollDice, rollNumber, } from "../anime.js";
+import { rollDice, rollNumber } from "../anime.js";
 
 export default {
   name: "CharacterDetails",
@@ -341,8 +341,10 @@ export default {
       let stats = {};
       stats.mortalityNumber = this.mortalityNumber;
       EventBus.$emit('retrieveStats', {uniqueIdentifier: this.uniqueIdentifier, stats});
+      stats.name = this.chosenChara.name;
       
       rollDice(this.$refs.dice);
+
       let currRollResult = Object.assign({},CalcUtils.roll(stats));
       //define callback upon complete
       this.rollResult.verdict = "...";
