@@ -6,16 +6,35 @@ export const EventBus = new Vue({
   data:{
     characters: "characters",
     storedStats: {},
-    rollHistory: "",
-    rollHistoryQuantity: 0
+    /**
+     * reactive counterpart of localStorage
+     */
+    vLocalStorage: {
+      rollHistory: "",
+      rollHistoryQuantity: 0,
+      notes:""
+    },
   },
 
   created(){
-    this.rollHistory = localStorage.getItem("rollHistory") || "";
-    this.rollHistoryQuantity = localStorage.getItem("rollHistoryQuantity") ? Number(localStorage.getItem("rollHistoryQuantity")) : 0;
+    // TODO: make button to clear history
+    this.resetRollHistory(); // to reset rolls, uncomment this
+    this.setVLocalStorageOnInit();
   },
 
   methods:{
+    /**
+     * transfers localStorage to vLocalStorage
+     */
+    setVLocalStorageOnInit: function(){
+      Object.keys(localStorage).forEach(key => {
+        // TODO: data types fcking up
+        // keep default value if "false" or empty string
+        if(localStorage.getItem(key)){
+          this.$set(this.vLocalStorage, key, localStorage.getItem(key));
+        }
+      });
+    },
     setCharacters: function(chars){
       this.characters = Object.assign({}, chars);
     },
@@ -43,33 +62,60 @@ export const EventBus = new Vue({
       return this.storedStats[charaName][statName][statAttribName];
     },
     getRollHistory: function(){
-      return this.rollHistory;
-      
+      return this.vLocalStorage.rollHistory;
+    },
+    resetRollHistory: function(emitChange = false){
+      this.setLocalStorageItem("rollHistoryQuantity",0);
+      this.setLocalStorageItem("rollHistory","",emitChange);
+    },
+    getVLocalStorage: function(){
+      // make sure to return a new instance of local storage so that other parts of the code
+      // don't accidentally change root local storage instance.
+      return Object.assign({}, this.vLocalStorage);
     },
     appendToRollHistory: function(toAdd){
-      //if the rollHistory has exceeded max length, append
-      if(this.rollHistoryQuantity >= 50){
-        this.rollHistory = this.rollHistory.substring(this.rollHistory.indexOf("\n"),this.rollHistory.length);
+      // if the rollHistory has exceeded max length, delete earliest log
+      // else, increase rollHistoryQuantity
+      if(this.vLocalStorage.rollHistoryQuantity >= MAX_ROLL_HISTORY - 1){
+        this.vLocalStorage.rollHistory = this.vLocalStorage.rollHistory.substring(0,this.vLocalStorage.rollHistory.lastIndexOf("\n"));
       }else {
-        localStorage.setItem("rollHistoryQuantity", ++this.rollHistoryQuantity);
+        this.setLocalStorageItem("rollHistoryQuantity", Number(this.vLocalStorage.rollHistoryQuantity)+1);
       }
-
-      this.rollHistory += "\n" + toAdd;
-
-      //change localStorage data
-      localStorage.setItem("rollHistory", this.rollHistory);
-
-      //emit change in roll-history
-      EventBus.$emit("modify-roll-history", this.getRollHistory());
+      
+      // add to the top of the logs so that latest isn't in the last of the list.
+      this.setLocalStorageItem("rollHistory", toAdd + "\n" + this.vLocalStorage.rollHistory, true);
     },
     appendPveToRollHistory: function(name, rollValue){
-      this.appendToRollHistory("PVE roll: "+ name + ". Roll: "+ rollValue);
+      this.appendToRollHistory("<strong>[PVE]</strong>: "+ name + ": "+ rollValue);
     },
-    appendPvpToRollHistory: function(duelists, winnerIndex, rollValue) {
-      const color0 = winnerIndex == 0 ? "red" : "green";
-      const color1 = winnerIndex == 1 ? "red" : "green";
+    appendPvpToRollHistory: function(duelists, result, rollValue) {
+      const color0 = result.winner == 0 ? "red" : "green";
+      const color1 = result.winner == 1 ? "red" : "green";
+      const duelist1WinChance = (10 + result.statDiff).clamp(0,20);
       
-      this.appendToRollHistory("PVP roll: <font color="+color0+">"+duelists[0]+"</font> vs <font color="+color1+">"+duelists[1]+"</font>. Roll: "+ rollValue);
+      this.appendToRollHistory("<strong>[PVP]</strong>: <font color="+color0+">"+duelists[0]+"</font>("+duelist1WinChance+") vs <font color="+color1+">"+duelists[1]+"</font>("+(20 - duelist1WinChance)+"): "+ rollValue);
+    },
+    getLocalStorageItem: function(key){
+      return localStorage.getItem(key);
+    },
+    /**
+     * 
+     * @param {String} key 
+     * @param {Object} value 
+     * @param {Boolean} emitChange Set to true if you want to emit. By default it's false to avoid 
+     * unnecessary emits, for example if setLocalStorageItem is called multiple times in a method.
+     * Usually set to true by the end of an algorithm.
+     */
+    setLocalStorageItem: function(key, value, emitChange = false){
+      localStorage.setItem(key, value);
+      this.$set(this.vLocalStorage, key, value);
+
+      //emit change
+      if(emitChange){
+        // appends the name of the key. Therefore, subscribers should be something like
+        // EventBus.$on("modify-local-storage-rollHistory"). TODO: make constants for this.
+        EventBus.$emit("modify-local-storage-"+key, this.getVLocalStorage());
+      }
     }
   }
 }

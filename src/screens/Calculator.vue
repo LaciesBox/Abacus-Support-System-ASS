@@ -31,10 +31,8 @@
       </div> 
     </div>
 
-    <!-- Roll history -->
-    <div class="bg-white" v-show="charas.length > 0" style="white-space: pre-wrap">
-      <p v-html="rollHistory"></p>
-    </div>
+    <!-- Work area -->
+    <work-area/>
 
     <!--Character details-->
     <div class="row">
@@ -124,12 +122,13 @@ import { EventBus } from "store/ass-store";
 
 import { BattleModal } from "modals";
 
-import { CharacterCard, CharacterDetails } from "components";
-import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
+import { CharacterCard, CharacterDetails, WorkArea } from "components";
 
+import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
 export default {
   name: 'Calculator',
   components: {
+    WorkArea,
     BattleModal,
     CharacterCard,
     CharacterDetails
@@ -157,8 +156,7 @@ export default {
       d20RollResult: "",
       addMenuOpen: false,
       showFightResult: false,
-      fightResult: [],
-      rollHistory: EventBus.getRollHistory()
+      fightResult: []
     }
   },
   mounted(){
@@ -169,8 +167,6 @@ export default {
         self.charas.splice(charaIndex, 1);
       }, 1000); 
     });
-    
-    EventBus.$on("modify-roll-history", rollHistory => this.rollHistory = rollHistory);
   },
   watch: {
       currentPage: 'fetchData',

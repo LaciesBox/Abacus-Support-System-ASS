@@ -127,7 +127,7 @@ const pvpRoll = function(duelists, logRoll = true) {
 
   // if log roll, append to roll history
   if(logRoll) {
-    EventBus.appendPvpToRollHistory([duelists[0].name, duelists[1].name], result.winner, rollValue);
+    EventBus.appendPvpToRollHistory([duelists[0].name, duelists[1].name], result, rollValue);
   }
 
   return result;

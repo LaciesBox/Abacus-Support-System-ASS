@@ -48,6 +48,9 @@
         <character-details v-show="chosenEnemy" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
       </div>
     </div>
+
+    <!-- work area -->
+    <work-area/>
   </q-modal>
 </template>
 
@@ -63,6 +66,7 @@ import {
 } from "utils";
 
 import {
+  WorkArea,
   CharacterDetails
 } from "components";
 
@@ -87,6 +91,7 @@ const WINNING_OPTIONS = [
 export default {
   name: "BattleModal",
   components: {
+    WorkArea,
     CharacterDetails
   },
   data(){
