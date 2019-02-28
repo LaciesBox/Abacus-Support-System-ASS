@@ -18,7 +18,6 @@ export default {
     }
   },
   mounted(){
-    // when going to implement this in battleModal, just listen to modify-local-storage
     EventBus.$on("modify-local-storage-rollHistory", localStorage => this.rollHistory = localStorage.rollHistory);
     EventBus.$on("modify-local-storage-notes", localStorage => this.notes = localStorage.notes);
   }
