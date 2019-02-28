@@ -93,9 +93,6 @@
     <!-- battle modal -->
     <battle-modal :show="showBattleModal" :chosen-charas="charasInPvp" @close-handler="battleModalCloseHandler"/>
 
-    <!-- Notes Modal -->
-    <notes-modal :show="true"/>
-
     <!-- Fight result modal -->
     <q-modal v-model="showFightResult" minimized ref="modalRef">
       <div style="padding: 50px">
@@ -120,7 +117,7 @@ import {
 
 import { EventBus } from "store/ass-store";
 
-import { BattleModal, NotesModal } from "modals";
+import { BattleModal } from "modals";
 
 import { CharacterCard, CharacterDetails } from "components";
 import {hideSearch, showSearch, rotatePlus, rollDice} from '../anime.js';
@@ -130,8 +127,7 @@ export default {
   components: {
     BattleModal,
     CharacterCard,
-    CharacterDetails,
-    NotesModal,
+    CharacterDetails
   },
   beforeRouteLeave(to, from, next) {
     this.$q.dialog({
