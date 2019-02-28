@@ -68,7 +68,7 @@ import {
 
 import { EventBus } from "store/ass-store";
 
-import { rollDice, rollNumber } from "../anime.js";
+import { rollDice } from "../anime.js";
 
 const WINNING_OPTIONS = [
   " has won!",
