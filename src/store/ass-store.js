@@ -18,7 +18,7 @@ export const EventBus = new Vue({
 
   created(){
     // TODO: make button to clear history
-    this.resetRollHistory(); // to reset rolls, uncomment this
+    //this.resetRollHistory(); // to reset rolls, uncomment this
     this.setVLocalStorageOnInit();
   },
 
