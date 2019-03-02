@@ -12,7 +12,7 @@
         </q-field>
       </q-collapsible>
       <!-- STATUS FORMATTER COLLAPSIBLE -->
-      <q-collapsible highlight opened
+      <q-collapsible highlight
       label="Status Formatter" header-class="text-center lato-bi">
       <div class="row q-px-sm q-pb-sm lato-r">
         <div class="col-3">
@@ -46,7 +46,7 @@
       </q-field>
       </q-collapsible>
       <!-- ROLL HISTORY COLLAPSIBLE -->
-      <q-collapsible highlight opened
+      <q-collapsible highlight
       label="Logs" header-class="text-center lato-bi" >
       <q-scroll-area style="height: 100px;">
         <div class="row">
@@ -68,7 +68,7 @@ export default {
   data(){
     return {
       rollHistory: EventBus.getRollHistory(),
-      notes: "",
+      notes: EventBus.getNotes(),
       isDesktop: this.$q.platform.is.desktop,
       charaChips: [[]],
       formattedMessage: "",
@@ -89,13 +89,11 @@ export default {
       let formattedMessage = "";
       for(let i = 0; i < this.charas.length; i++) {
         formattedMessage += this.charas[i] + ": <HP> HP; ";
-        if(this.charaChips[i].length == 0) {
-          formattedMessage += "Healthy!";
-        } else {
+        if(this.charaChips[i].length == 0) { formattedMessage += "Healthy!"; } 
+        else {
           this.charaChips[i].forEach(statusEffect => {
             formattedMessage += " [" + statusEffect.toUpperCase() + "]";
-          })
-          
+          }); 
         }
         if(i + 1 < this.charas.length) { formattedMessage +=  "\n"; }
       }
@@ -117,6 +115,9 @@ export default {
       for(let i = 0; i < characters.length; i++) {
         this.charaChips.push([]);
       }
+    }, 
+    notes: function(newNotes) {
+      EventBus.saveNotes(newNotes)
     }
   }
 }

@@ -12,7 +12,8 @@ export const EventBus = new Vue({
     vLocalStorage: {
       rollHistory: "",
       rollHistoryQuantity: 0,
-      notes:""
+      notes:"",
+      statusEffects: {},
     },
   },
 
@@ -116,6 +117,12 @@ export const EventBus = new Vue({
         // EventBus.$on("modify-local-storage-rollHistory"). TODO: make constants for this.
         EventBus.$emit("modify-local-storage-"+key, this.getVLocalStorage());
       }
+    },
+    saveNotes: function(notes) {
+      this.setLocalStorageItem("notes", notes);
+    },
+    getNotes: function() {
+      return this.vLocalStorage.notes;
     }
   }
 }
