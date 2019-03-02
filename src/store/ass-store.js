@@ -39,6 +39,13 @@ export const EventBus = new Vue({
     setCharacters: function(chars){
       this.characters = Object.assign({}, chars);
     },
+    /**
+     * 
+     * @param {String} charaName name of character 
+     * @param {String} statName name of stat (CON, APP, etc)
+     * @param {String} statAttribName attributes of stat (willCalculate, modifier)
+     * @param {Object} statAttribValue value to be set to specified attribute
+     */
     storeStat: function(charaName, statName, statAttribName, statAttribValue){
       if(charaName == ""){
         return;
@@ -52,6 +59,12 @@ export const EventBus = new Vue({
 
       this.storedStats[charaName][statName][statAttribName] = statAttribValue;
     },
+    /**
+     * 
+     * @param {String} charaName name of character 
+     * @param {String} statName name of stat (CON, APP, etc)
+     * @param {String} statAttribName attributes of stat (willCalculate, modifier)
+     */
     getStoredStat: function(charaName, statName, statAttribName){
       if(charaName == ""){
         return;
@@ -90,11 +103,13 @@ export const EventBus = new Vue({
       this.appendToRollHistory("<strong>[PVE]</strong>: "+ name + ": "+ rollValue);
     },
     appendPvpToRollHistory: function(duelists, result, rollValue) {
-      const color0 = result.winner == 0 ? "red" : "green";
-      const color1 = result.winner == 1 ? "red" : "green";
-      const duelist1WinChance = (10 + result.statDiff).clamp(0,20);
-      
-      this.appendToRollHistory("<strong>[PVP]</strong>: <font color="+color0+">"+duelists[0]+"</font>("+duelist1WinChance+") vs <font color="+color1+">"+duelists[1]+"</font>("+(20 - duelist1WinChance)+"): "+ rollValue);
+      const color0 = result.winner == 0 ? "green" : "#f44242";
+      const color1 = result.winner == 1 ? "green" : "#f44242";
+      const duelist1WinChance = (10 + result.statDiff).clamp(1,20);
+      const duelist1FName = duelists[0].substring(0,duelists[0].indexOf(" "));
+      const duelist2FName = duelists[1].substring(0,duelists[1].indexOf(" "));
+
+      this.appendToRollHistory("<strong>[PVP]</strong>: <font color="+color0+">"+duelist1FName+"</font>(1 -"+duelist1WinChance+") vs <font color="+color1+">"+duelist2FName+"</font>("+ (duelist1WinChance + 1).clamp(0,20) + "-20): "+ rollValue);
     },
     getLocalStorageItem: function(key){
       return localStorage.getItem(key);

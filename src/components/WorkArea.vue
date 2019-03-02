@@ -87,14 +87,17 @@ export default {
   methods: {
     formatStatusEffects: function() {
       let formattedMessage = "";
+      let mortalityNumber = "";
       for(let i = 0; i < this.charas.length; i++) {
-        formattedMessage += this.charas[i] + ": <HP> HP; ";
-        if(this.charaChips[i].length == 0) { formattedMessage += "Healthy!"; } 
-        else {
-          this.charaChips[i].forEach(statusEffect => {
-            formattedMessage += " [" + statusEffect.toUpperCase() + "]";
-          }); 
-        }
+        mortalityNumber = EventBus.getStoredStat(this.charas[i], "mortalityNumber", "mortalityNumber") || 0;
+        mortalityNumber *= 5;
+
+        formattedMessage += this.charas[i] + ": "+ mortalityNumber +"%; ";
+
+        this.charaChips[i].forEach(statusEffect => {
+          formattedMessage += " [" + statusEffect.toUpperCase() + "]";
+        });
+
         if(i + 1 < this.charas.length) { formattedMessage +=  "\n"; }
       }
       
