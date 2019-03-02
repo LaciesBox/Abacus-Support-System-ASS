@@ -117,8 +117,8 @@
           <q-item>
           <q-item-main>
           <div class="row q-pa-sm">
-            <strong class="col-auto q-pt-md">MORTALITY NUMBER: </strong>
-            <q-input class="col-1" style="padding-left:5px" v-model="stats.mortalityNumber"/>
+            <strong class="col-auto q-pt-md q-pr-sm">MORTALITY NUMBER:</strong>
+            <q-input class="col-1" style="padding-bottom:0px;" v-model="stats.mortalityNumber"/>
           </div>
           <!-- ROLL -->
           <div class="row" v-if="showRoller">

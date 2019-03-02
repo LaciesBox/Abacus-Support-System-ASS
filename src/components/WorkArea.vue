@@ -2,6 +2,7 @@
   <q-modal v-model="show" position="right" 
   content-classes="bg-primary text-secondary full-height lato-l"
   @hide="closeWorkArea">
+  {{charaChips}}
     <q-list separator no-border :class="{'desktop-width': isDesktop}" dark>
       <!-- NOTES COLLAPSIBLE -->
       <q-collapsible highlight opened
