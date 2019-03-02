@@ -32,7 +32,7 @@
     </div>
 
     <!-- Work area -->
-    <work-area/>
+    <work-area :show="workAreaOpen" :charas="charas"/>
 
     <!--Character details-->
     <div class="row">
@@ -156,16 +156,24 @@ export default {
       d20RollResult: "",
       addMenuOpen: false,
       showFightResult: false,
-      fightResult: []
+      fightResult: [],
+      workAreaOpen: false,
     }
   },
   mounted(){
     EventBus.$on('deleteCharacter', charaIndex => {
       this.charasShown.splice(charaIndex, 1);
+      this.charasInPvp.splice(charaIndex, 1);
       let self = this;
       setTimeout(function() {
         self.charas.splice(charaIndex, 1);
       }, 1000); 
+    });
+    EventBus.$on('showWorkArea', () => {
+      this.workAreaOpen = true;
+    });
+    EventBus.$on('closeWorkArea', () => {
+      this.workAreaOpen = false;
     });
   },
   watch: {

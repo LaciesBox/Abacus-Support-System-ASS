@@ -30,6 +30,14 @@
       class="absolute-top-right"
       />
     </q-page-sticky>
+    <q-page-sticky position="top-right" :offset="[60, -35]">
+      <q-btn round dense
+          @click="showWorkArea"
+          aria-label="Menu"
+          color="secondary">
+          <q-icon name="edit" color="primary"></q-icon>
+      </q-btn>
+    </q-page-sticky>
     <div class="row">
       <!-- Character in Play -->
       <div class="col-xs-12 col-sm-5 q-pa-lg">
@@ -48,9 +56,6 @@
         <character-details v-show="chosenEnemy" :chosen-chara-name="chosenEnemy" :chara-index="1" :is-in-modal="true"/>
       </div>
     </div>
-
-    <!-- work area -->
-    <work-area/>
   </q-modal>
 </template>
 
@@ -66,13 +71,12 @@ import {
 } from "utils";
 
 import {
-  WorkArea,
   CharacterDetails
 } from "components";
 
 import { EventBus } from "store/ass-store";
 
-import { rollDice, rollNumber } from "../anime.js";
+import { rollDice } from "../anime.js";
 
 const WINNING_OPTIONS = [
   " has won!",
@@ -89,7 +93,6 @@ const WINNING_OPTIONS = [
 export default {
   name: "BattleModal",
   components: {
-    WorkArea,
     CharacterDetails
   },
   data(){
@@ -215,6 +218,9 @@ export default {
     generateWinningMessage: function(currRollResult) {
       const winner = currRollResult.winner == 0 ? this.charaInPlay : this.chosenEnemy;
       return winner + WINNING_OPTIONS[Math.ceil(Math.random() * (WINNING_OPTIONS.length - 1))];
+    },
+    showWorkArea: function() {
+      EventBus.$emit('showWorkArea');
     }
   }
 }

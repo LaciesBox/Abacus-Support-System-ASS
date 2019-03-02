@@ -14,7 +14,14 @@
             ABACUS
             </div>
           </span>
-        </q-toolbar-title>
+        </q-toolbar-title>        
+        <q-btn flat dense round
+            @click="showWorkArea"
+            aria-label="Menu"
+            v-show="!isLanding">
+            <q-icon name="edit" color="secondary"></q-icon>
+        </q-btn>
+
         </q-toolbar>
       </div>
         <drawer :drawerOpen="leftDrawerOpen"/>
@@ -23,7 +30,7 @@
 
 <script>
 import Drawer from "./Drawer.vue";
-import { shrinkToolbar, shrinkToolbarLabel } from "../anime.js";
+import { EventBus } from "store/ass-store";
 
 export default {
   name: "Toolbar",
@@ -49,7 +56,7 @@ export default {
       return 'toolbar';
     },
     toolbarTitleClass() {
-      let titleClass = "nova absolute-center text-secondary";
+      let titleClass = "nova text-center text-secondary";
       if(this.isLanding) {
         titleClass += " q-mt-lg";
       }
@@ -69,10 +76,8 @@ export default {
   mounted(){
   },
   methods: {
-    land: function() {
-      // TODO: Animate Land
-      // shrinkToolbar(this.$refs.toolbar);
-      // shrinkToolbarLabel(this.$refs.abacusLabel);
+    showWorkArea: function() {
+      EventBus.$emit('showWorkArea');
     }
   },
   watch: {

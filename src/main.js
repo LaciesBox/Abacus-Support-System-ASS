@@ -52,6 +52,7 @@ import {
   Notify,
   QBtnDropdown,
   Dialog,
+  QChipsInput,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -96,6 +97,7 @@ Vue.use(Quasar, {
     Notify,
     QBtnDropdown,
     Dialog,
+    QChipsInput,
   },
   directives: {},
   plugins: {Notify, Dialog}
